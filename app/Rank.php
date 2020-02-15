@@ -1,0 +1,16 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Rank extends Model
+{
+
+    const ZERO = 1;
+    const BASIC = 2;
+    const STANDARD = 3;
+    const SILVER = 4;
+    const GOLD = 5;
+    const DIAMOND = 6;
+}
