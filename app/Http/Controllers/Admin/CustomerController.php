@@ -109,7 +109,11 @@ class CustomerController extends Controller
 
     public function getAvailableSponsorsAndProducts()
     {
-        $customers = User::with('sponsor')->where('role_id', User::SUB_ADMIN_ROLE)->get();
+        $customers = User::with('sponsor')
+            ->whereNotIn('role_id', [
+                User::SUB_ADMIN_ROLE,
+                User::SUPER_ADMIN_ROLE
+            ])->get();
         $products = Product::all();
         $get_mx_id = !empty($customers->last()) ? $customers->last()->id : 0;
 
