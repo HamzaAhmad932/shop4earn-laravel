@@ -55,8 +55,15 @@ class CustomerController extends Controller
             $parent_id = DefaultSponsor::find(1)->user_id;
         }
 
+        $user = User::create([
+            'name' => $request->user_name,
+            'email' =>  $request->email,
+            'password' => Hash::make($request->password),
+            'role_id'=> User::CUSTOMER_ROLE
+        ]);
+
         $customer =  Customer::create([
-            'user_id' => $request->user_id,
+            'user_id' => $user->id,
             'parent_id' => $parent_id,
             'sponsor_id' => $request->sponsor_id,
             'rank_id' => 1, //zero level by default
@@ -66,13 +73,7 @@ class CustomerController extends Controller
         ]);
 
         if ($customer) {
-            User::create([
-                'name' => $request->user_name,
-                'email' =>  $request->email,
-                'password' => Hash::make($request->password),
-                'customer_id' => $customer->id,
-                'role_id'=> User::CUSTOMER_ROLE
-            ]);
+            $user->update(['customer_id'=> $customer->id]);
         }
         return $customer;
     }
