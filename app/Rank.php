@@ -13,4 +13,8 @@ class Rank extends Model
     const SILVER = 4;
     const GOLD = 5;
     const DIAMOND = 6;
+
+    public function customer() {
+        return $this->hasMany(Customer::class);
+    }
 }
