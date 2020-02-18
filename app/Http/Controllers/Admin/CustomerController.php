@@ -59,7 +59,9 @@ class CustomerController extends Controller
             'name' => $request->user_name,
             'email' =>  $request->email,
             'password' => Hash::make($request->password),
-            'role_id'=> User::CUSTOMER_ROLE
+            'role_id'=> User::CUSTOMER_ROLE,
+            'city'=> $request->city,
+            'mobile'=> $request->mobile,
         ]);
 
         $customer =  Customer::create([

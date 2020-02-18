@@ -37160,7 +37160,7 @@ var getAddCustomerInitial = function getAddCustomerInitial() {
     password: '123456',
     password_confirmation: '123456',
     user_id: '',
-    user_name: 'John Doe',
+    user_name: 'User ',
     city: 'Faisalabad',
     mobile: '03129660932',
     error_status: {

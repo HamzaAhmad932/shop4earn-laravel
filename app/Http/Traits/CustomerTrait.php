@@ -19,9 +19,10 @@ trait CustomerTrait
     public function findLeftPosition(int $sponsor_id){
 
         $sponsor = Customer::where([
-            ['sponsor_id', '=', $sponsor_id],
+            ['parent_id', '=', $sponsor_id],
             ['position', '=', Customer::POSITION_LEFT]
         ])->first();
+
 
         if(empty($sponsor)){
             return $sponsor_id;
@@ -33,7 +34,7 @@ trait CustomerTrait
     public function findRightPosition(int $sponsor_id){
 
         $sponsor = Customer::where([
-            ['sponsor_id', '=', $sponsor_id],
+            ['parent_id', '=', $sponsor_id],
             ['position', '=', Customer::POSITION_RIGHT]
         ])->first();
 
