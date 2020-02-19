@@ -515,6 +515,7 @@ class ComposerStaticInit6ebc50747dd3c93f90b79e919d3dc707
     );
 
     public static $classMap = array (
+        'App\\BVCriteria' => __DIR__ . '/../..' . '/app/BVCriteria.php',
         'App\\Category' => __DIR__ . '/../..' . '/app/Category.php',
         'App\\Compensation' => __DIR__ . '/../..' . '/app/Compensation.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
@@ -540,6 +541,7 @@ class ComposerStaticInit6ebc50747dd3c93f90b79e919d3dc707
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\CustomerRequest' => __DIR__ . '/../..' . '/app/Http/Requests/CustomerRequest.php',
         'App\\Http\\Traits\\CustomerTrait' => __DIR__ . '/../..' . '/app/Http/Traits/CustomerTrait.php',
+        'App\\Jobs\\SalesBonusCalculateJob' => __DIR__ . '/../..' . '/app/Jobs/SalesBonusCalculateJob.php',
         'App\\Product' => __DIR__ . '/../..' . '/app/Product.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
@@ -569,6 +571,7 @@ class ComposerStaticInit6ebc50747dd3c93f90b79e919d3dc707
         'Arrilot\\Widgets\\WidgetGroup' => __DIR__ . '/..' . '/arrilot/laravel-widgets/src/WidgetGroup.php',
         'Arrilot\\Widgets\\WidgetGroupCollection' => __DIR__ . '/..' . '/arrilot/laravel-widgets/src/WidgetGroupCollection.php',
         'Arrilot\\Widgets\\WidgetId' => __DIR__ . '/..' . '/arrilot/laravel-widgets/src/WidgetId.php',
+        'BVCriteriaSeeder' => __DIR__ . '/../..' . '/database/seeds/BVCriteriaSeeder.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonImmutable' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonImmutable.php',
         'Carbon\\CarbonInterface' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterface.php',

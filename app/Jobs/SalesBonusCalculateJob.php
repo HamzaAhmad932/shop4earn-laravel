@@ -40,7 +40,11 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function handle()
     {
-        $users = User::select('id')->with(['customer', 'earnings'])->get();
+        $users = User::select('id')->whereNotIn('id',
+            Earning::where('created_at', '>=', now()->startOfDay()->toDateTimeString())->pluck('user_id')->toArray()
+        )->where('id', '=', 3)->with(['customer', 'earnings'])->get();
+
+        $now = now()->toDateTimeString();
 
         foreach ($users as $user) {
 
@@ -54,8 +58,8 @@ class SalesBonusCalculateJob implements ShouldQueue
             $right_childs_bv = $right_last_earning->carry_forward ?? 0;
 
             $start_date = !empty($right_last_earning)
-                ? Carbon::parse($right_last_earning->created_at)->addDay(1)->startOfDay()->toDateTimeString()
-                : now()->startOfDay()->toDateTimeString();
+                ? Carbon::parse($right_last_earning->created_at)->startOfDay()->toDateTimeString()
+                : now()->subDays(1)->startOfDay()->toDateTimeString();
 
             $end_date = Carbon::parse($start_date)->endOfDay()->toDateTimeString();
 
@@ -74,31 +78,36 @@ class SalesBonusCalculateJob implements ShouldQueue
 
             if ($left_childs_bv < $right_childs_bv) { // Left Weaker
 
-                $points = ($left_childs_bv / 100) * $user->customer->rank->required_basic;
+                $points = ($left_childs_bv / 100) * $user->customer->criteria->percentage;
 
                 $earnings = array(
                     [
                         'user_id' => $user->id, 'direct_bonus' => 0, 'team_bonus' => 0, 'sales_bonus' => $points,
-                        'carry_forward' => 0, 'position' => Customer::POSITION_LEFT, 'paid' => 0
+                        'carry_forward' => 0, 'position' => Customer::POSITION_LEFT, 'paid' => 0, 'created_at' => $now,
+                        'updated_at' => $now,
                     ],
                     [
                         'user_id' => $user->id, 'direct_bonus' => 0, 'team_bonus' => 0, 'sales_bonus' => 0,
-                        'carry_forward' => abs($left_childs_bv - $right_childs_bv), 'position' => Customer::POSITION_RIGHT, 'paid' => 0
+                        'carry_forward' => abs($left_childs_bv - $right_childs_bv), 'position' => Customer::POSITION_RIGHT,
+                        'paid' => 0, 'created_at' => $now, 'updated_at' => $now,
+
                     ]
                 );
 
             } else { //Right Weaker
 
-                $points = ($right_childs_bv / 100) * $user->customer->rank->required_basic;
+                $points = ($right_childs_bv / 100) * $user->customer->criteria->percentage;
 
                 $earnings = array(
                     [
                         'user_id' => $user->id, 'direct_bonus' => 0, 'team_bonus' => 0, 'sales_bonus' => $points,
-                        'carry_forward' => 0, 'position' => Customer::POSITION_RIGHT, 'paid' => 0
+                        'carry_forward' => 0, 'position' => Customer::POSITION_RIGHT, 'paid' => 0, 'created_at' => $now,
+                        'updated_at' => $now,
                     ],
                     [
                         'user_id' => $user->id, 'direct_bonus' => 0, 'team_bonus' => 0, 'sales_bonus' => 0,
-                        'carry_forward' => abs($left_childs_bv - $right_childs_bv), 'position' => Customer::POSITION_LEFT, 'paid' => 0
+                        'carry_forward' => abs($left_childs_bv - $right_childs_bv), 'position' => Customer::POSITION_LEFT,
+                        'paid' => 0, 'created_at' => $now, 'updated_at' => $now,
                     ]
                 );
 
@@ -109,6 +118,13 @@ class SalesBonusCalculateJob implements ShouldQueue
     }
 
 
+    /**
+     * @param $position
+     * @param int $iteration
+     * @return array
+     * $position of root's Child
+     * $iteration always pass as Zero
+     */
 
      public function getAllChilds($position, $iteration = 0) {
 

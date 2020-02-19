@@ -11,7 +11,6 @@
 |
 */
 
-use App\User;
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,25 +41,8 @@ Route::group(['prefix'=> 'v1'], function(){
 });
 
 
-Route::get('/bv-cal', 'Admin\CustomerController@bvCal');
 
-Route::get('/bv-cal2', function () {
-
-    //$users = \App\Customer::select('user_id','parent_id')->get();
-    $users = \App\User::all();
-
-    foreach ($users as $user) {
-//        $n = \Illuminate\Support\Facades\DB::select(DB::raw(
-//            "SELECT c.id, c.user_id, c.parent_id,  c.position  FROM `customers` INNER JOIN customers as c on
-//                    customers.user_id = c.parent_id where c.user_id > {$user->id} and c.user_id != 6"
-//        ));
-
-//dump($user->user_id);
-//dump([$n, $user->id]);
-//        $col = collect($n)->pluck('parent_id','user_id')->toArray();
-//        $a = array_keys($col);
-//        $a = array_merge($a, $col);
-//        dd($a);
-
-    }
+Route::get('/sales-bonus-job', function () {
+    App\Jobs\SalesBonusCalculateJob::dispatchNow();
+    echo "Job Dispatched";
 });
