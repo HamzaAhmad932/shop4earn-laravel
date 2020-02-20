@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\BVCriteria' => $baseDir . '/app/BVCriteria.php',
     'App\\Category' => $baseDir . '/app/Category.php',
     'App\\Compensation' => $baseDir . '/app/Compensation.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
@@ -31,6 +32,7 @@ return array(
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Http\\Requests\\CustomerRequest' => $baseDir . '/app/Http/Requests/CustomerRequest.php',
     'App\\Http\\Traits\\CustomerTrait' => $baseDir . '/app/Http/Traits/CustomerTrait.php',
+    'App\\Jobs\\SalesBonusCalculateJob' => $baseDir . '/app/Jobs/SalesBonusCalculateJob.php',
     'App\\Product' => $baseDir . '/app/Product.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
@@ -60,6 +62,7 @@ return array(
     'Arrilot\\Widgets\\WidgetGroup' => $vendorDir . '/arrilot/laravel-widgets/src/WidgetGroup.php',
     'Arrilot\\Widgets\\WidgetGroupCollection' => $vendorDir . '/arrilot/laravel-widgets/src/WidgetGroupCollection.php',
     'Arrilot\\Widgets\\WidgetId' => $vendorDir . '/arrilot/laravel-widgets/src/WidgetId.php',
+    'BVCriteriaSeeder' => $baseDir . '/database/seeds/BVCriteriaSeeder.php',
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',
     'Carbon\\CarbonImmutable' => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonImmutable.php',
     'Carbon\\CarbonInterface' => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonInterface.php',

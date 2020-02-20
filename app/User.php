@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends \TCG\Voyager\Models\User
 {
+
     use Notifiable;
 
     const SUPER_ADMIN_ROLE = 1;
@@ -48,7 +49,12 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Customer::class,    'sponsor_id', 'id');
     }
 
+    public function earnings(){
+        return $this->hasMany(Earning::class);
+    }
+
     public function customer(){
         return $this->hasOne(Customer::class);
     }
+
 }

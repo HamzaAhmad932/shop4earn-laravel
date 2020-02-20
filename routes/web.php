@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -41,4 +42,11 @@ Route::group(['prefix'=> 'v1'], function(){
     Route::get('get-genealogy-tree', 'Admin\GenealogyController@getGenealogyTree');
 
 
+});
+
+
+
+Route::get('/sales-bonus-job', function () {
+    App\Jobs\SalesBonusCalculateJob::dispatchNow();
+    echo "Job Dispatched";
 });

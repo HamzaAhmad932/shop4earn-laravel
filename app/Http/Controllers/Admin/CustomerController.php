@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Earning;
 use App\User;
 use App\Product;
 use App\Customer;
@@ -9,6 +10,7 @@ use Carbon\Carbon;
 use App\SaleDetail;
 use App\DefaultSponsor;
 use App\Http\Traits\CustomerTrait;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

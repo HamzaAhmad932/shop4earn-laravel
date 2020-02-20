@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\SalesBonusCalculateJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,6 +27,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $this->salesBonusCalculate($schedule);
+
     }
 
     /**
@@ -38,5 +41,12 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
+    }
+
+    private function salesBonusCalculate(Schedule $schedule) {
+        $schedule->job(SalesBonusCalculateJob::class)
+            ->dailyAt('00:01')
+            ->name('sale_bonus_calculate')
+            ->withoutOverlapping();
     }
 }
