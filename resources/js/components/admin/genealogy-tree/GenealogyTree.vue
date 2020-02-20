@@ -11,7 +11,7 @@
 
 <script>
 
-    import TreeChart from "vue-tree-chart";
+    import TreeChart from "../../plugin/tree-chart/TreeChart";
     import {mapActions, mapState} from "vuex";
 
     export default {
