@@ -40,7 +40,7 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function handle()
     {
-        $users = User::select('id')->whereNotIn('id',
+        $users = User::select('id')->where('role_id', 3)->whereNotIn('id',
             Earning::where('created_at', '>=', now()->startOfDay()->toDateTimeString())->pluck('user_id')->toArray()
         )->where('id', '=', 3)->with(['customer', 'earnings'])->get();
 
