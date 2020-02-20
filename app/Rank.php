@@ -13,4 +13,5 @@ class Rank extends Model
     const SILVER = 4;
     const GOLD = 5;
     const DIAMOND = 6;
+
 }

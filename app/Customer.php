@@ -24,4 +24,12 @@ class Customer extends Model
     public function sponsor() {
         return $this->belongsTo(Customer::class,    'sponsor_id', 'id');
     }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function criteria() {
+        return $this->belongsTo(BVCriteria::class, 'rank_id', 'id' );
+    }
 }

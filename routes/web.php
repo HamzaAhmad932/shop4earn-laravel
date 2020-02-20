@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -37,4 +38,11 @@ Route::group(['prefix'=> 'v1'], function(){
     Route::post('pay-lease-sale-detail', 'Api\CustomerController@payLeaseSaleDetail')->name('pay_lease_sale_detail');
 
 
+});
+
+
+
+Route::get('/sales-bonus-job', function () {
+    App\Jobs\SalesBonusCalculateJob::dispatchNow();
+    echo "Job Dispatched";
 });
