@@ -49,9 +49,6 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Customer::class,    'sponsor_id', 'id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function earnings(){
         return $this->hasMany(Earning::class);
     }
@@ -59,6 +56,5 @@ class User extends \TCG\Voyager\Models\User
     public function customer(){
         return $this->hasOne(Customer::class);
     }
-
 
 }

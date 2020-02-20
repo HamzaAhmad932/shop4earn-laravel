@@ -18,6 +18,8 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+
+    Route::get('genealogy-tree', 'Voyager\GenealogyController@index');
 });
 
 
@@ -36,6 +38,8 @@ Route::group(['prefix'=> 'v1'], function(){
     // Installment Paying related Rotes
     Route::post('get-lease-sale-detail-to-pay', 'Api\CustomerController@getLeaseSaleDetailToPay')->name('get_lease_sale_detail_to_pay');
     Route::post('pay-lease-sale-detail', 'Api\CustomerController@payLeaseSaleDetail')->name('pay_lease_sale_detail');
+
+    Route::get('get-genealogy-tree', 'Admin\GenealogyController@getGenealogyTree');
 
 
 });
