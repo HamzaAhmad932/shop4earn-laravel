@@ -30,6 +30,7 @@
         "toastr": "^2.1.4",
         "vue-blockui": "^1.1.7",
         "vue-select": "^3.4.0",
+        "vue-tree-chart": "^1.2.6",
         "vuex": "^3.1.2"
     }
 }
