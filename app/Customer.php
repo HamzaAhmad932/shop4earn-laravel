@@ -32,4 +32,8 @@ class Customer extends Model
     public function criteria() {
         return $this->belongsTo(BVCriteria::class, 'rank_id', 'id' );
     }
+
+    public function rank(){
+        return $this->belongsTo(Rank::class);
+    }
 }

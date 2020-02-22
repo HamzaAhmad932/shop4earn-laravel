@@ -109,4 +109,10 @@ trait CustomerTrait
 
         Customer::where('user_id', $sponsor_id)->update(['rank_id' => $user_rank]);
     }
+
+    public function giveTeamBonus(int $sponsor_id)
+    {
+
+
+    }
 }

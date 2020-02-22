@@ -19,7 +19,7 @@ Route::get('/', function () {
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 
-    Route::get('genealogy-tree', 'Voyager\GenealogyController@index');
+    Route::get('genealogy-tree', 'Voyager\GenealogyController@index')->name('genealogy-tree');
 });
 
 
