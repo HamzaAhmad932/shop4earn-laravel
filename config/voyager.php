@@ -144,7 +144,11 @@ return [
         ],
 
         'widgets' => [
-
+            'App\\Widgets\\SponsorDimmer',
+            'App\\Widgets\\SalesVolumeBonus',
+            'App\\Widgets\\CarryForward',
+            'App\\Widgets\\TeamBonus',
+            'App\\Widgets\\CustomerRank',
         ],
 
     ],

@@ -53,6 +53,7 @@ class CustomerController extends Controller
             $parent_id = $this->getTreeNodeFromManualPosition($request->sponsor_id, $request->position);
 
             $this->updateSponsorRank($request->sponsor_id);
+            $this->giveTeamBonus($request->sponsor_id);
         }else{
             $parent_id = DefaultSponsor::find(1)->user_id;
         }
