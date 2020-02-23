@@ -53,7 +53,7 @@ class SalesBonusCalculateJob implements ShouldQueue
             self::$childs = [];
 
             $right_last_earning = $user->earnings->where('position', Customer::POSITION_RIGHT)->last();
-            $left_last_earning = $user->earnings->where('position', Customer::POSITION_LEFT)->last();
+            $left_last_earning = $user->earnings->where('position', Customer::POSITION_LEsFT)->last();
 
             $left_childs_bv = $left_last_earning->carry_forward ?? 0;
             $right_childs_bv = $right_last_earning->carry_forward ?? 0;
@@ -77,6 +77,8 @@ class SalesBonusCalculateJob implements ShouldQueue
                 $right_childs_bv += $sale[0]->total_bv ?? 0;
             }
 
+            Log::notice('BV' , ['left' => $left_childs_bv, 'right' =>  $right_childs_bv]);
+
             if ($left_childs_bv < $right_childs_bv) { // Left Weaker
 
                 $points = ($left_childs_bv / 100) * $user->customer->criteria->percentage;
@@ -89,7 +91,7 @@ class SalesBonusCalculateJob implements ShouldQueue
                     ],
                     [
                         'user_id' => $user->id, 'direct_bonus' => 0, 'team_bonus' => 0, 'sales_bonus' => 0,
-                        'carry_forward' => abs($right_childs_bv - $left_childs_bv), 'position' => Customer::POSITION_RIGHT,
+                        'carry_forward' => ($right_childs_bv - $left_childs_bv), 'position' => Customer::POSITION_RIGHT,
                         'paid' => 0, 'created_at' => $now, 'updated_at' => $now,
 
                     ]
@@ -107,7 +109,7 @@ class SalesBonusCalculateJob implements ShouldQueue
                     ],
                     [
                         'user_id' => $user->id, 'direct_bonus' => 0, 'team_bonus' => 0, 'sales_bonus' => 0,
-                        'carry_forward' => abs($left_childs_bv - $right_childs_bv), 'position' => Customer::POSITION_LEFT,
+                        'carry_forward' => ($left_childs_bv - $right_childs_bv), 'position' => Customer::POSITION_LEFT,
                         'paid' => 0, 'created_at' => $now, 'updated_at' => $now,
                     ]
                 );
