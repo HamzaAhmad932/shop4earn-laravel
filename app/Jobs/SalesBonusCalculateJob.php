@@ -12,6 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SalesBonusCalculateJob implements ShouldQueue
 {
@@ -30,7 +31,7 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function __construct()
     {
-        //
+        Log::notice(__CLASS__ . 'Dispatched');
     }
 
     /**
@@ -45,7 +46,7 @@ class SalesBonusCalculateJob implements ShouldQueue
         )->where('id', '=', 3)->with(['customer', 'earnings'])->get();
 
         $now = now()->toDateTimeString();
-
+        Log::notice('All Users having Earnings ', $users->pluck('id')->toArray());
         foreach ($users as $user) {
 
             self::$user_id = [$user->id];
@@ -112,7 +113,7 @@ class SalesBonusCalculateJob implements ShouldQueue
                 );
 
             }
-
+            Log::notice('All Users having Earnings ', ['earnings' => $earnings]);
             Earning::insert($earnings);
         }
     }
