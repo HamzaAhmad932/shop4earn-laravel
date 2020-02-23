@@ -53,7 +53,7 @@ class SalesBonusCalculateJob implements ShouldQueue
             self::$childs = [];
 
             $right_last_earning = $user->earnings->where('position', Customer::POSITION_RIGHT)->last();
-            $left_last_earning = $user->earnings->where('position', Customer::POSITION_LEsFT)->last();
+            $left_last_earning = $user->earnings->where('position', Customer::POSITION_LEFT)->last();
 
             $left_childs_bv = $left_last_earning->carry_forward ?? 0;
             $right_childs_bv = $right_last_earning->carry_forward ?? 0;
