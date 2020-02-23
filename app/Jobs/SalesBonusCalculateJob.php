@@ -89,7 +89,7 @@ class SalesBonusCalculateJob implements ShouldQueue
                     ],
                     [
                         'user_id' => $user->id, 'direct_bonus' => 0, 'team_bonus' => 0, 'sales_bonus' => 0,
-                        'carry_forward' => abs($left_childs_bv - $right_childs_bv), 'position' => Customer::POSITION_RIGHT,
+                        'carry_forward' => abs($right_childs_bv - $left_childs_bv), 'position' => Customer::POSITION_RIGHT,
                         'paid' => 0, 'created_at' => $now, 'updated_at' => $now,
 
                     ]
