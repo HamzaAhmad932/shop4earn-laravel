@@ -53,6 +53,10 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Earning::class);
     }
 
+    public function salesBonusDetail(){
+        return $this->hasMany(SalesBonusDetail::class);
+    }
+
     public function customer(){
         return $this->hasOne(Customer::class);
     }

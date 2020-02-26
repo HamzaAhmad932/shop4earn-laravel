@@ -6,6 +6,7 @@ namespace App\Http\Traits;
 
 use App\Rank;
 use App\Customer;
+use App\SaleDetail;
 
 trait CustomerTrait
 {
@@ -110,9 +111,18 @@ trait CustomerTrait
         Customer::where('user_id', $sponsor_id)->update(['rank_id' => $user_rank]);
     }
 
-    public function giveTeamBonus(int $sponsor_id)
+    public function giveTeamBonus($customer)
     {
+        $sponsor = $customer->sponsor;
+        $sponsors = $sponsor->sponsors;
+        $this->deliverTeamBonus($sponsor, $sponsors);
 
+    }
 
+    public function deliverTeamBonus($sponsor, $sponsors){
+
+        foreach ($sponsors as $sponsor){
+
+        }
     }
 }

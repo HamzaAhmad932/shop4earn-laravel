@@ -29,6 +29,7 @@ class CustomerController extends Controller
 
             if (! empty($customer)){
                 $lease_sale = $this->createSaleDetail($request, $customer);
+                $this->giveTeamBonus($customer);
             }
             else{
                 return self::apiErrorResponse('Fail to save Customer', 500);
@@ -53,7 +54,6 @@ class CustomerController extends Controller
             $parent_id = $this->getTreeNodeFromManualPosition($request->sponsor_id, $request->position);
 
             $this->updateSponsorRank($request->sponsor_id);
-            $this->giveTeamBonus($request->sponsor_id);
         }else{
             $parent_id = DefaultSponsor::find(1)->user_id;
         }
@@ -110,7 +110,7 @@ class CustomerController extends Controller
             array_push($bulk_sale, $sale);
         }
 
-        $sale_detail =  SaleDetail::insert($bulk_sale);
+        return SaleDetail::insert($bulk_sale);
     }
 
     public function getAvailableSponsorsAndProducts()
@@ -147,5 +147,13 @@ class CustomerController extends Controller
             'products'=> $product,
             'mx_id'=> $get_mx_id+1
         ]);
+    }
+
+    public function testTeamBonus(){
+
+        $customer = Customer::find(8);
+
+        $this->giveTeamBonus($customer);
+
     }
 }

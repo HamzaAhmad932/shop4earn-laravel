@@ -10,6 +10,8 @@ class Customer extends Model
     const POSITION_RIGHT = 2;
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
+    const NOT_PAIRED = 0;
+    const PAIRED = 1;
 
     protected $fillable = [
         'user_id',
@@ -22,7 +24,7 @@ class Customer extends Model
     ];
 
     public function sponsor() {
-        return $this->belongsTo(Customer::class,    'sponsor_id', 'id');
+        return $this->belongsTo(Customer::class,    'sponsor_id', 'user_id');
     }
 
     public function user() {
@@ -30,10 +32,18 @@ class Customer extends Model
     }
 
     public function criteria() {
-        return $this->belongsTo(BVCriteria::class, 'rank_id', 'id' );
+        return $this->belongsTo(BVCriteria::class, 'rank_id', 'rank_id' );
     }
 
     public function rank(){
         return $this->belongsTo(Rank::class);
+    }
+
+    public function sponsors(){
+        return $this->hasMany(Customer::class, 'sponsor_id', 'user_id');
+    }
+
+    public function salesDetail(){
+        return $this->hasMany(SaleDetail::class, 'user_id', 'user_id');
     }
 }

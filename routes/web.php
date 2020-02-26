@@ -44,7 +44,7 @@ Route::group(['prefix'=> 'v1'], function(){
 
 });
 
-
+Route::get('test-team-bonus', 'Admin\CustomerController@testTeamBonus');
 
 Route::get('/sales-bonus-job', function () {
     App\Jobs\SalesBonusCalculateJob::dispatchNow();
