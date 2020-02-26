@@ -42,7 +42,7 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function handle()
     {
-        $users = User::select('id')->where('role_id', 3)->where('id', '=', 13)->with(['customer', 'salesBonusDetail'])->get();
+        $users = User::select('id')->where('role_id', 3)->with(['customer', 'salesBonusDetail'])->get();
 
         $now = now()->toDateTimeString();
         $update_is_paired_ids = [];
