@@ -63,8 +63,6 @@ class SalesBonusCalculateJob implements ShouldQueue
 
             $right_childs = implode(',', $this->getAllChilds(Customer::POSITION_RIGHT));
 
-            $update_is_paired_ids = array_merge(array_merge(explode(',', $left_childs), explode(',', $right_childs)), $update_is_paired_ids);
-
             $left_childs_bv = 0;
             $right_childs_bv = 0;
 
@@ -81,6 +79,8 @@ class SalesBonusCalculateJob implements ShouldQueue
             if(!($left_childs_bv > 0) && !($right_childs_bv > 0)){
                 continue;
             }
+
+            $update_is_paired_ids = array_merge(array_merge(explode(',', $left_childs), explode(',', $right_childs)), $update_is_paired_ids);
 
             $left_childs_bv += $left_last_earning->carry_forward ?? 0;
             $right_childs_bv += $right_last_earning->carry_forward ?? 0;
