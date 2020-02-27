@@ -139,7 +139,7 @@ class SalesBonusCalculateJob implements ShouldQueue
 
             }
 
-            //dd([$left_points, $right_points, $carry_forward, $sales_bonus_detail]);
+            //dd([$left_points, $right_points, $carry_forward, $sales_bonus_detail, $user->id]);
 
             if(($left_points > 0) || ($right_points > 0)){
 
@@ -150,6 +150,34 @@ class SalesBonusCalculateJob implements ShouldQueue
                     $earnings->sales_bonus += $left_points < $right_points ? $left_points : $right_points;
                     $earnings->carry_forward = $carry_forward;
                     $earnings->save();
+                }else{
+                    //points are equal
+                    $sales_bonus_detail = array(
+                        [
+                            'user_id' => $user->id,
+                            'sales_bonus' => $left_points,
+                            'carry_forward' => 0,
+                            'position' => Customer::POSITION_LEFT,
+                            'created_at' => $now,
+                            'updated_at' => $now,
+                        ],
+                        [
+                            'user_id' => $user->id,
+                            'sales_bonus' => 0,
+                            'carry_forward' => 0,
+                            'position' => Customer::POSITION_RIGHT,
+                            'created_at' => $now,
+                            'updated_at' => $now,
+
+                        ]
+                    );
+
+                    SalesBonusDetail::insert($sales_bonus_detail);
+                    $earnings = Earning::firstOrNew(['user_id' => $user->id]);
+                    $earnings->sales_bonus += $left_points;
+                    $earnings->carry_forward = 0;
+                    $earnings->save();
+
                 }
             }
         }

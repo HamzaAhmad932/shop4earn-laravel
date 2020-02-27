@@ -32,6 +32,10 @@
 
             .position-ref {
                 position: relative;
+                background-image: url("/storage/settings/February2020/LsvwtwwXSt9fSV6QXz1h.jpg");
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
             }
 
             .top-right {
@@ -85,7 +89,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="/admin">Go to admin panel</a>
+{{--                    <a href="/admin">Go to admin panel</a>--}}
                 </div>
             </div>
         </div>

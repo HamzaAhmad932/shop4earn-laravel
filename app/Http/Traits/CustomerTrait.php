@@ -45,6 +45,19 @@ trait CustomerTrait
 
         return $this->findRightPosition($sponsor->user_id);
     }
+    public function findChilds(int $sponsor_id, $position){
+
+        $sponsor = Customer::where([
+            ['parent_id', '=', $sponsor_id],
+            ['position', '=', $position]
+        ])->first();
+
+        if(empty($sponsor)){
+            return $sponsor_id;
+        }
+
+        return $this->findRightPosition($sponsor->user_id);
+    }
 
     public function updateSponsorRank(int $sponsor_id){
 
@@ -70,12 +83,12 @@ trait CustomerTrait
 
         $basic_level_members_in_weaker_leg = 0;
 
-        if($left->count() > $right->count()){
+        if($left->count() < $right->count()){
 
             $basic_level_members_in_weaker_leg = $left->where('rank_id', Rank::BASIC)->count();
         }
 
-        if($right->count() > $left->count()){
+        if($right->count() < $left->count()){
 
             $basic_level_members_in_weaker_leg = $right->where('rank_id', Rank::BASIC)->count();
         }
@@ -87,6 +100,8 @@ trait CustomerTrait
         $gold_rank = $ranks->where('id', Rank::GOLD)->first();
         $diamond = $ranks->where('id', Rank::DIAMOND)->first();
         $user_rank = Rank::ZERO;
+
+        //dd(['direct'=>$direct_sponsor_count, 'left'=>$left, 'right'=>$right, 'basic_in_weaker'=>$basic_level_members_in_weaker_leg]);
 
         if($direct_sponsor_count >= $basic_rank->direct_referral && $basic_level_members_in_weaker_leg >= $basic_rank->required_basic){
             $user_rank = Rank::BASIC;
@@ -108,7 +123,11 @@ trait CustomerTrait
             $user_rank = Rank::DIAMOND;
         }
 
-        Customer::where('user_id', $sponsor_id)->update(['rank_id' => $user_rank]);
+        $customer = Customer::where('user_id', $sponsor_id)->first();//update(['rank_id' => $user_rank]);
+        if($user_rank > intval($customer->rank_id)){
+            $customer->rank_id = $user_rank;
+            $customer->save();
+        }
     }
 
     public function giveTeamBonus($customer)

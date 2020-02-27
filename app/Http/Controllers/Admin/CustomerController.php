@@ -50,10 +50,9 @@ class CustomerController extends Controller
 
     public function createCustomer(CustomerRequest $request)
     {
-        if(!empty($request->sponsor_id)){
+        $sponsor_present = !empty($request->sponsor_id);
+        if($sponsor_present){
             $parent_id = $this->getTreeNodeFromManualPosition($request->sponsor_id, $request->position);
-
-            $this->updateSponsorRank($request->sponsor_id);
         }else{
             $parent_id = DefaultSponsor::find(1)->user_id;
         }
@@ -79,6 +78,9 @@ class CustomerController extends Controller
 
         if ($customer) {
             $user->update(['customer_id'=> $customer->id]);
+            if($sponsor_present){
+                $this->updateSponsorRank($request->sponsor_id);
+            }
         }
         return $customer;
     }
@@ -155,5 +157,10 @@ class CustomerController extends Controller
 
         $this->giveTeamBonus($customer);
 
+    }
+
+    public function rankupdate(){
+
+        $this->updateSponsorRank(3);
     }
 }
