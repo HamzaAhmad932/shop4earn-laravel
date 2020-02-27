@@ -143,12 +143,14 @@ class SalesBonusCalculateJob implements ShouldQueue
 
             if(($left_points > 0) || ($right_points > 0)){
 
-                SalesBonusDetail::insert($sales_bonus_detail);
+                if(!empty($sales_bonus_detail)) {
+                    SalesBonusDetail::insert($sales_bonus_detail);
 
-                $earnings = Earning::firstOrNew(['user_id'=> $user->id]);
-                $earnings->sales_bonus += $left_points < $right_points ? $left_points : $right_points;
-                $earnings->carry_forward = $carry_forward;
-                $earnings->save();
+                    $earnings = Earning::firstOrNew(['user_id' => $user->id]);
+                    $earnings->sales_bonus += $left_points < $right_points ? $left_points : $right_points;
+                    $earnings->carry_forward = $carry_forward;
+                    $earnings->save();
+                }
             }
         }
         if(!empty($update_is_paired_ids)){
