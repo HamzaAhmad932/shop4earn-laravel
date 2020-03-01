@@ -45,18 +45,21 @@ trait CustomerTrait
 
         return $this->findRightPosition($sponsor->user_id);
     }
-    public function findChilds(int $sponsor_id, $position){
+    public function findBasicCountInLeg(int $user_id, int $rank_count = 0){
 
-        $sponsor = Customer::where([
-            ['parent_id', '=', $sponsor_id],
-            ['position', '=', $position]
-        ])->first();
+        $children = Customer::where([
+            ['parent_id', '=', $user_id],
+            ['status', '=', Customer::STATUS_ACTIVE],
+        ])->get();
 
-        if(empty($sponsor)){
-            return $sponsor_id;
+        foreach ($children as $child){
+            if ($child->rank_id == Rank::BASIC){
+                $rank_count ++;
+            }
+            return $this->findBasicCountInLeg($child->user_id, $rank_count);
         }
 
-        return $this->findRightPosition($sponsor->user_id);
+        return $rank_count;
     }
 
     public function updateSponsorRank(int $sponsor_id){
@@ -67,30 +70,41 @@ trait CustomerTrait
         ])->count();
 
         $left = Customer::where([
-            ['sponsor_id', '=', $sponsor_id],
+            ['parent_id', '=', $sponsor_id],
             ['position', '=', Customer::POSITION_LEFT],
             //['rank_id', '=', Rank::BASIC],
             ['status', '=', Customer::STATUS_ACTIVE],
-        ])->get();
+        ])->first();
 
         $right = Customer::where([
-            ['sponsor_id', '=', $sponsor_id],
+            ['parent_id', '=', $sponsor_id],
             ['position', '=', Customer::POSITION_RIGHT],
             //['rank_id', '=', Rank::BASIC],
             ['status', '=', Customer::STATUS_ACTIVE]
-        ])->get();
+        ])->first();
+
+        $left_basic_count = $this->findBasicCountInLeg($left->user_id);
+        $right_basic_count = $this->findBasicCountInLeg($right->user_id);
 
 
         $basic_level_members_in_weaker_leg = 0;
 
-        if($left->count() < $right->count()){
+        if($left_basic_count < $right_basic_count){
 
-            $basic_level_members_in_weaker_leg = $left->where('rank_id', Rank::BASIC)->count();
+            $basic_level_members_in_weaker_leg = $left_basic_count;
         }
 
-        if($right->count() < $left->count()){
+        if($right_basic_count < $left_basic_count){
 
-            $basic_level_members_in_weaker_leg = $right->where('rank_id', Rank::BASIC)->count();
+            $basic_level_members_in_weaker_leg = $right_basic_count;
+        }
+
+        if($right_basic_count == $left_basic_count){
+
+            if($left_basic_count > 0){
+
+                $basic_level_members_in_weaker_leg = $left_basic_count;
+            }
         }
 
         $ranks = Rank::all();
@@ -130,10 +144,14 @@ trait CustomerTrait
         }
     }
 
-    public function giveTeamBonus($customer)
+    public function giveTeamBonus(int $sponsor_id)
     {
-        $sponsor = $customer->sponsor;
-        $sponsors = $sponsor->sponsors;
+        $sponsor = Customer::where('user_id', $sponsor_id)->first();
+        $children = $sponsor->sponsors;
+        foreach ($children as $child){
+
+        }
+        dd([$sponsor, $sponsors, $sponsor]);
         $this->deliverTeamBonus($sponsor, $sponsors);
 
     }

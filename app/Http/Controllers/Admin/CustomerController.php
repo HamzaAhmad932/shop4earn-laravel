@@ -153,9 +153,8 @@ class CustomerController extends Controller
 
     public function testTeamBonus(){
 
-        $customer = Customer::find(8);
-
-        $this->giveTeamBonus($customer);
+        $sponsor_id = 3;
+        $this->giveTeamBonus(3);
 
     }
 
