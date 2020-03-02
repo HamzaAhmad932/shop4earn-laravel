@@ -44,6 +44,7 @@ class SalesBonusCalculateJob implements ShouldQueue
     {
         $users = User::select('id')->where('role_id', 3)->with(['customer', 'salesBonusDetail'])->get();
 
+
         $now = now()->toDateTimeString();
         $update_is_paired_ids = [];
 
@@ -76,17 +77,28 @@ class SalesBonusCalculateJob implements ShouldQueue
                 $right_childs_bv += $sale[0]->total_bv ?? 0;
             }
 
-            if(!($left_childs_bv > 0) && !($right_childs_bv > 0)){
+
+            $update_is_paired_ids = array_merge(array_merge(explode(',', $left_childs), explode(',', $right_childs)), $update_is_paired_ids);
+
+
+            if(empty($left_childs_bv) && empty($right_childs_bv)) {
+                continue;
+            } elseif (empty($right_childs) && !empty($left_childs)) {
+                $this->noWeakerSideFound(Customer::POSITION_LEFT, $left_childs_bv, $user->id);
+                continue;
+            } elseif (!empty($right_childs) && empty($left_childs)) {
+                $this->noWeakerSideFound(Customer::POSITION_RIGHT, $right_childs_bv, $user->id);
                 continue;
             }
 
-            $update_is_paired_ids = array_merge(array_merge(explode(',', $left_childs), explode(',', $right_childs)), $update_is_paired_ids);
+
 
             $left_childs_bv += $left_last_earning->carry_forward ?? 0;
             $right_childs_bv += $right_last_earning->carry_forward ?? 0;
 
             $left_points = ($left_childs_bv / 100) * $user->customer->criteria->percentage;
             $right_points = ($right_childs_bv / 100) * $user->customer->criteria->percentage;
+
 
             if ($left_childs_bv < $right_childs_bv) { // Left Weaker
 
@@ -145,11 +157,7 @@ class SalesBonusCalculateJob implements ShouldQueue
 
                 if(!empty($sales_bonus_detail)) {
                     SalesBonusDetail::insert($sales_bonus_detail);
-
-                    $earnings = Earning::firstOrNew(['user_id' => $user->id]);
-                    $earnings->sales_bonus += $left_points < $right_points ? $left_points : $right_points;
-                    $earnings->carry_forward = $carry_forward;
-                    $earnings->save();
+                    $this->updateEarning($user->id, ($left_points < $right_points ? $left_points : $right_points), $carry_forward);
                 }else{
                     //points are equal
                     $sales_bonus_detail = array(
@@ -173,11 +181,7 @@ class SalesBonusCalculateJob implements ShouldQueue
                     );
 
                     SalesBonusDetail::insert($sales_bonus_detail);
-                    $earnings = Earning::firstOrNew(['user_id' => $user->id]);
-                    $earnings->sales_bonus += $left_points;
-                    $earnings->carry_forward = 0;
-                    $earnings->save();
-
+                    $this->updateEarning($user->id, $left_points, 0);
                 }
             }
         }
@@ -223,6 +227,53 @@ class SalesBonusCalculateJob implements ShouldQueue
         }
 
         return self::$childs;
+     }
+
+    /**
+     * @param $user_id
+     * @param $bv
+     * @param $carry_forward
+     * @return mixed
+     */
+     private function updateEarning($user_id, $bv, $carry_forward) {
+         $earnings = Earning::firstOrNew(['user_id' => $user_id]);
+         $earnings->sales_bonus += $bv;
+         $earnings->carry_forward = $carry_forward;
+         $earnings->save();
+
+         return $earnings;
+     }
+
+
+    /**
+     * @param $position
+     * @param $bv
+     * @param $user_id
+     */
+     private function noWeakerSideFound($position, $bv, $user_id) {
+         // use this bv as carry forward because binary tree, second leg not found.
+         $now = now()->toDateTimeString();
+         SalesBonusDetail::insert(array(
+             [
+                 'user_id' => $user_id,
+                 'sales_bonus' => 0,
+                 'carry_forward' => $bv,
+                 'position' => $position,
+                 'created_at' => $now,
+                 'updated_at' => $now,
+             ],
+             [
+                 'user_id' => $user_id,
+                 'sales_bonus' => 0,
+                 'carry_forward' => 0,
+                 'position' => $position == Customer::POSITION_RIGHT ? Customer::POSITION_LEFT : Customer::POSITION_RIGHT,
+                 'created_at' => $now,
+                 'updated_at' => $now,
+
+             ]
+         ));
+         $this->updateEarning($user_id, 0, $bv);
+         Log::notice('no weaker side found for user id#' .$user_id);
      }
 
 }
