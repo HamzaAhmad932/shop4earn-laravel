@@ -29,7 +29,7 @@ class CustomerController extends Controller
 
             if (! empty($customer)){
                 $lease_sale = $this->createSaleDetail($request, $customer);
-                $this->giveTeamBonus($customer);
+                $this->giveTeamBonus($customer->sponsor_id);
             }
             else{
                 return self::apiErrorResponse('Fail to save Customer', 500);

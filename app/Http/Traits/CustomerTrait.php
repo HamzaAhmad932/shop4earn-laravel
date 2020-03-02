@@ -5,8 +5,10 @@ namespace App\Http\Traits;
 
 
 use App\Rank;
+use App\Earning;
 use App\Customer;
 use App\SaleDetail;
+use App\Compensation;
 
 trait CustomerTrait
 {
@@ -83,8 +85,8 @@ trait CustomerTrait
             ['status', '=', Customer::STATUS_ACTIVE]
         ])->first();
 
-        $left_basic_count = $this->findBasicCountInLeg($left->user_id);
-        $right_basic_count = $this->findBasicCountInLeg($right->user_id);
+        $left_basic_count = !empty($left->user_id) ? $this->findBasicCountInLeg($left->user_id) : 0;
+        $right_basic_count = !empty($right->user_id) ? $this->findBasicCountInLeg($right->user_id) : 0;
 
 
         $basic_level_members_in_weaker_leg = 0;
@@ -147,19 +149,51 @@ trait CustomerTrait
     public function giveTeamBonus(int $sponsor_id)
     {
         $sponsor = Customer::where('user_id', $sponsor_id)->first();
-        $children = $sponsor->sponsors;
-        foreach ($children as $child){
-
-        }
-        dd([$sponsor, $sponsors, $sponsor]);
-        $this->deliverTeamBonus($sponsor, $sponsors);
-
+        $compensation = Compensation::all();
+        $this->deliverTeamBonus([$sponsor_id], $compensation, $sponsor);
     }
 
-    public function deliverTeamBonus($sponsor, $sponsors){
+    public function deliverTeamBonus(array $sponsor_id, $commission_compensation, $sponsor, $level = 1){
 
-        foreach ($sponsors as $sponsor){
-
+        $children = Customer::whereIn('sponsor_id', $sponsor_id)->with('salesDetail')->get();
+        if(!($children->count() > 0) || $level > $commission_compensation->count()){
+            return;
         }
+        $sponsor_ids = [];
+        $tb_sum = 0;
+        foreach ($children as $child){
+            $tb_sum += $child->salesDetail->sum('tb');
+            array_push($sponsor_ids, $child->user_id);
+        }
+        $compensation = $commission_compensation->where('level_number', $level)->first();
+        $percentage = 0;
+        switch ($sponsor->rank_id){
+
+            case 2:
+            case 1:
+                $percentage = $compensation->basic;
+                break;
+            case 3:
+                $percentage = $compensation->standard;
+                break;
+            case 4:
+                $percentage = $compensation->silver;
+                break;
+            case 5:
+                $percentage = $compensation->gold;
+                break;
+            case 6:
+                $percentage = $compensation->diamond;
+                break;
+        }
+
+        $team_bonus = ($tb_sum/100) * $percentage;
+
+        $earnings = Earning::firstOrNew(['user_id' => $sponsor->user_id]);
+        $earnings->team_bonus += $team_bonus;
+        $earnings->save();
+
+        $level++;
+        return $this->deliverTeamBonus($sponsor_ids, $commission_compensation, $sponsor, $level);
     }
 }
