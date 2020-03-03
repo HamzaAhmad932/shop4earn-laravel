@@ -42,8 +42,7 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function handle()
     {
-        $users = User::select('id')->where('role_id', 3)->with(['customer', 'salesBonusDetail'])->get();
-
+        $users = User::select('id')->where('role_id', 3)->where('id', 37)->with(['customer', 'salesBonusDetail'])->get();
 
         $now = now()->toDateTimeString();
         $update_is_paired_ids = [];
@@ -63,6 +62,7 @@ class SalesBonusCalculateJob implements ShouldQueue
             self::$user_id = [$user->id];
 
             $right_childs = implode(',', $this->getAllChilds(Customer::POSITION_RIGHT));
+            //dump([$left_childs, $right_childs]);
 
             $left_childs_bv = 0;
             $right_childs_bv = 0;
@@ -80,6 +80,10 @@ class SalesBonusCalculateJob implements ShouldQueue
 
             $update_is_paired_ids = array_merge(array_merge(explode(',', $left_childs), explode(',', $right_childs)), $update_is_paired_ids);
 
+            $left_childs_bv += $left_last_earning->carry_forward ?? 0;
+            $right_childs_bv += $right_last_earning->carry_forward ?? 0;
+//dump(empty($right_childs) && !empty($left_childs), $user->id);
+//dump(!empty($right_childs) && empty($left_childs), $user->id);
 
             if(empty($left_childs_bv) && empty($right_childs_bv)) {
                 continue;
@@ -90,11 +94,7 @@ class SalesBonusCalculateJob implements ShouldQueue
                 $this->noWeakerSideFound(Customer::POSITION_RIGHT, $right_childs_bv, $user->id);
                 continue;
             }
-
-
-
-            $left_childs_bv += $left_last_earning->carry_forward ?? 0;
-            $right_childs_bv += $right_last_earning->carry_forward ?? 0;
+            //dd([$user, $left_childs_bv, $right_childs_bv, empty($right_childs) && !empty($left_childs), $left_childs, $left_childs]);
 
             $left_points = ($left_childs_bv / 100) * $user->customer->criteria->percentage;
             $right_points = ($right_childs_bv / 100) * $user->customer->criteria->percentage;
@@ -221,7 +221,7 @@ class SalesBonusCalculateJob implements ShouldQueue
         if (!empty($leaves)) {
             self::$user_id = $leaves;
             self::$childs = array_merge(self::$childs, $leaves);
-            $this->getAllChilds($iteration, $position);
+            $this->getAllChilds($position, $iteration);
         } else {
             self::$childs = self::$customers->where('is_paired', Customer::NOT_PAIRED)->whereIn('user_id', self::$childs)->pluck('user_id')->toArray();
         }
