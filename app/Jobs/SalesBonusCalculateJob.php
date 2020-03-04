@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Rank;
 use App\Customer;
 use App\Earning;
 use App\User;
@@ -42,7 +43,7 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function handle()
     {
-        $users = User::select('id')->where('role_id', 3)->where('id', 37)->with(['customer', 'salesBonusDetail'])->get();
+        $users = User::select('id')->where('role_id', 3)->with(['customer', 'salesBonusDetail'])->get();
 
         $now = now()->toDateTimeString();
         $update_is_paired_ids = [];
@@ -82,8 +83,8 @@ class SalesBonusCalculateJob implements ShouldQueue
 
             $left_childs_bv += $left_last_earning->carry_forward ?? 0;
             $right_childs_bv += $right_last_earning->carry_forward ?? 0;
-//dump(empty($right_childs) && !empty($left_childs), $user->id);
-//dump(!empty($right_childs) && empty($left_childs), $user->id);
+            //dump(empty($right_childs) && !empty($left_childs), $user->id);
+            //dump(!empty($right_childs) && empty($left_childs), $user->id);
 
             if(empty($left_childs_bv) && empty($right_childs_bv)) {
                 continue;
@@ -95,6 +96,10 @@ class SalesBonusCalculateJob implements ShouldQueue
                 continue;
             }
             //dd([$user, $left_childs_bv, $right_childs_bv, empty($right_childs) && !empty($left_childs), $left_childs, $left_childs]);
+
+            if ($user->customer->rank_id == Rank::ZERO){
+                continue;
+            }
 
             $left_points = ($left_childs_bv / 100) * $user->customer->criteria->percentage;
             $right_points = ($right_childs_bv / 100) * $user->customer->criteria->percentage;
