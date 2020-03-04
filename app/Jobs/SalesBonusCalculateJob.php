@@ -43,7 +43,7 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function handle()
     {
-        $users = User::select('id')->where('role_id', 3)->with(['customer', 'salesBonusDetail'])->get();
+        $users = User::select('id')->where('role_id', 3)->where('id', 44)->with(['customer', 'salesBonusDetail'])->get();
 
         $now = now()->toDateTimeString();
         $update_is_paired_ids = [];
@@ -63,7 +63,7 @@ class SalesBonusCalculateJob implements ShouldQueue
             self::$user_id = [$user->id];
 
             $right_childs = implode(',', $this->getAllChilds(Customer::POSITION_RIGHT));
-            //dump([$left_childs, $right_childs]);
+//            dump([$left_childs, $right_childs]);
 
             $left_childs_bv = 0;
             $right_childs_bv = 0;
@@ -83,19 +83,22 @@ class SalesBonusCalculateJob implements ShouldQueue
 
             $left_childs_bv += $left_last_earning->carry_forward ?? 0;
             $right_childs_bv += $right_last_earning->carry_forward ?? 0;
-            //dump(empty($right_childs) && !empty($left_childs), $user->id);
-            //dump(!empty($right_childs) && empty($left_childs), $user->id);
+
+//            dump(empty($right_childs) && !empty($left_childs), $user->id);
+//            dump(!empty($right_childs) && empty($left_childs), $user->id);
+//            dd([$left_childs_bv, $right_childs_bv]);
 
             if(empty($left_childs_bv) && empty($right_childs_bv)) {
                 continue;
-            } elseif (empty($right_childs) && !empty($left_childs)) {
+            } elseif (empty($right_childs_bv) && !empty($left_childs_bv)) {
                 $this->noWeakerSideFound(Customer::POSITION_LEFT, $left_childs_bv, $user->id);
                 continue;
-            } elseif (!empty($right_childs) && empty($left_childs)) {
+            } elseif (!empty($right_childs_bv) && empty($left_childs_bv)) {
                 $this->noWeakerSideFound(Customer::POSITION_RIGHT, $right_childs_bv, $user->id);
                 continue;
             }
-            //dd([$user, $left_childs_bv, $right_childs_bv, empty($right_childs) && !empty($left_childs), $left_childs, $left_childs]);
+
+            //dd([$user, $left_childs_bv, $right_childs_bv, $left_childs, $right_childs]);
 
             if ($user->customer->rank_id == Rank::ZERO){
                 continue;
@@ -104,7 +107,9 @@ class SalesBonusCalculateJob implements ShouldQueue
             $left_points = ($left_childs_bv / 100) * $user->customer->criteria->percentage;
             $right_points = ($right_childs_bv / 100) * $user->customer->criteria->percentage;
 
+            //dd([$left_points, $right_points]);
 
+            //dump($left_childs_bv < $right_childs_bv);
             if ($left_childs_bv < $right_childs_bv) { // Left Weaker
 
                 $carry_forward = $right_childs_bv - $left_childs_bv;
@@ -130,7 +135,7 @@ class SalesBonusCalculateJob implements ShouldQueue
                 );
 
             }
-
+            //dump($right_childs_bv < $left_childs_bv);
             if ($right_childs_bv < $left_childs_bv) { //Right Weaker
 
                 $carry_forward = $left_childs_bv - $right_childs_bv;

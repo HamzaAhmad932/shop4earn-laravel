@@ -71,6 +71,18 @@ trait CustomerTrait
             ['status', '=', Customer::STATUS_ACTIVE]
         ])->count();
 
+        $direct_sponsor_count_left = Customer::where([
+            ['sponsor_id', '=', $sponsor_id],
+            ['position', '=', Customer::POSITION_LEFT],
+            ['status', '=', Customer::STATUS_ACTIVE]
+        ])->count();
+
+        $direct_sponsor_count_right = Customer::where([
+            ['sponsor_id', '=', $sponsor_id],
+            ['position', '=', Customer::POSITION_RIGHT],
+            ['status', '=', Customer::STATUS_ACTIVE]
+        ])->count();
+
         $left = Customer::where([
             ['parent_id', '=', $sponsor_id],
             ['position', '=', Customer::POSITION_LEFT],
@@ -119,27 +131,30 @@ trait CustomerTrait
 
         //dd(['direct'=>$direct_sponsor_count, 'left'=>$left, 'right'=>$right, 'basic_in_weaker'=>$basic_level_members_in_weaker_leg]);
 
-        if($direct_sponsor_count >= $basic_rank->direct_referral && $basic_level_members_in_weaker_leg >= $basic_rank->required_basic){
+        $customer = Customer::where('user_id', $sponsor_id)->first();
+
+        if(($direct_sponsor_count_right + $direct_sponsor_count_left) >= $basic_rank->direct_referral && $basic_level_members_in_weaker_leg >= $basic_rank->required_basic){
             $user_rank = Rank::BASIC;
         }
+        if(intval($customer->rank_id) >= Rank::BASIC) {
+            if ($direct_sponsor_count >= $standard_rank->direct_referral && $basic_level_members_in_weaker_leg >= $standard_rank->required_basic) {
+                $user_rank = Rank::STANDARD;
+            }
 
-        if($direct_sponsor_count >= $standard_rank->direct_referral && $basic_level_members_in_weaker_leg >= $standard_rank->required_basic){
-            $user_rank = Rank::STANDARD;
+            if ($direct_sponsor_count >= $silver_rank->direct_referral && $basic_level_members_in_weaker_leg >= $silver_rank->required_basic) {
+                $user_rank = Rank::SILVER;
+            }
+
+            if ($direct_sponsor_count >= $gold_rank->direct_referral && $basic_level_members_in_weaker_leg >= $gold_rank->required_basic) {
+                $user_rank = Rank::GOLD;
+            }
+
+            if ($direct_sponsor_count >= $diamond->direct_referral && $basic_level_members_in_weaker_leg >= $diamond->required_basic) {
+                $user_rank = Rank::DIAMOND;
+            }
         }
 
-        if($direct_sponsor_count >= $silver_rank->direct_referral && $basic_level_members_in_weaker_leg >= $silver_rank->required_basic){
-            $user_rank = Rank::SILVER;
-        }
-
-        if($direct_sponsor_count >= $gold_rank->direct_referral && $basic_level_members_in_weaker_leg >= $gold_rank->required_basic){
-            $user_rank = Rank::GOLD;
-        }
-
-        if($direct_sponsor_count >= $diamond->direct_referral && $basic_level_members_in_weaker_leg >= $diamond->required_basic){
-            $user_rank = Rank::DIAMOND;
-        }
-
-        $customer = Customer::where('user_id', $sponsor_id)->first();//update(['rank_id' => $user_rank]);
+        //update(['rank_id' => $user_rank]);
         if($user_rank > intval($customer->rank_id)){
             $customer->rank_id = $user_rank;
             $customer->save();
