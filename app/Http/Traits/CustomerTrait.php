@@ -9,6 +9,7 @@ use App\Earning;
 use App\Customer;
 use App\SaleDetail;
 use App\Compensation;
+use Illuminate\Support\Facades\Log;
 
 trait CustomerTrait
 {
@@ -161,11 +162,56 @@ trait CustomerTrait
         }
     }
 
-    public function giveTeamBonus(int $sponsor_id)
+    public function giveTeamBonus(Customer $customer)
     {
-        $sponsor = Customer::where('user_id', $sponsor_id)->first();
         $compensation = Compensation::all();
-        $this->deliverTeamBonus([$sponsor_id], $compensation, $sponsor);
+        $team_bonus_points = $customer->salesDetail->sum('tb');
+        $this->teamBonusDeliver($customer, $team_bonus_points, $compensation);
+    }
+
+    public function teamBonusDeliver($user, $total_points, $commission_compensation, $level = 1){
+
+        try {
+
+            $sponsor = Customer::where('user_id', $user->sponsor_id)->first();
+
+            if(empty($sponsor) || $level > $commission_compensation->count()){
+                return;
+            }
+
+            $compensation = $commission_compensation->where('level_number', $level)->first();
+            $percentage = 0;
+            switch ($sponsor->rank_id) {
+
+                case 2:
+                case 1:
+                    $percentage = $compensation->basic;
+                    break;
+                case 3:
+                    $percentage = $compensation->standard;
+                    break;
+                case 4:
+                    $percentage = $compensation->silver;
+                    break;
+                case 5:
+                    $percentage = $compensation->gold;
+                    break;
+                case 6:
+                    $percentage = $compensation->diamond;
+                    break;
+            }
+
+            $team_bonus = ($total_points / 100) * $percentage;
+
+            $earnings = Earning::firstOrNew(['user_id' => $sponsor->user_id]);
+            $earnings->team_bonus += $team_bonus;
+            $earnings->save();
+
+            $level++;
+            return $this->teamBonusDeliver($sponsor, $total_points, $commission_compensation, $level);
+        }catch (\Exception $e){
+            Log::error($e->getMessage(), ['File: '=>__FILE__, 'Team Bonus Level: '=>$level, 'User: '=>$sponsor]);
+        }
     }
 
     public function deliverTeamBonus(array $sponsor_id, $commission_compensation, $sponsor, $level = 1){
