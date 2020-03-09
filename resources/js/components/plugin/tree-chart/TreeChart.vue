@@ -16,7 +16,7 @@
                         <div class="name">{{treeData.mate.name}}</div>
                     </div>
                 </div>
-                <div class="extend_handle" v-if="treeData.children" @click="toggleExtend(treeData)"></div>
+                <div class="extend_handle fa fa-plus-circle" v-if="treeData.children" @click="toggleExtend(treeData)"></div>
             </td>
         </tr>
         <tr v-if="treeData.children && treeData.extend">
@@ -69,12 +69,12 @@
     td{position: relative; vertical-align: top;padding:0 0 50px 0;text-align: center; }
 
     .extend_handle{position: absolute;left:50%;bottom:30px; width:10px;height: 10px;padding:10px;transform: translate3d(-15px,0,0);cursor: pointer;}
-    .extend_handle:before{content:""; display: block; width:100%;height: 100%;box-sizing: border-box; border:2px solid;border-color:#ccc #ccc transparent transparent;
-        transform: rotateZ(135deg);transform-origin: 50% 50% 0;transition: transform ease 300ms;}
+    /*.extend_handle:before{content:""; display: block; width:100%;height: 100%;box-sizing: border-box; border:2px solid;border-color:#ccc #ccc transparent transparent;*/
+    /*    transform: rotateZ(135deg);transform-origin: 50% 50% 0;transition: transform ease 300ms;}*/
     .extend_handle:hover:before{border-color:#333 #333 transparent transparent;}
-    .extend .extend_handle:before{transform: rotateZ(-45deg);}
+    /*.extend .extend_handle:before{transform: rotateZ(-45deg);}*/
 
-    .extend::after{content: "";position: absolute;left:50%;bottom:15px;height:15px;border-left:2px solid #ccc;transform: translate3d(-1px,0,0)}
+    .extend::after{content: "";position: absolute;left:50%;bottom:15px;height:10px;border-left:2px solid #ccc;transform: translate3d(1px,0,0)}
     .childLevel::before{content: "";position: absolute;left:50%;bottom:100%;height:15px;border-left:2px solid #ccc;transform: translate3d(-1px,0,0)}
     .childLevel::after{content: "";position: absolute;left:0;right:0;top:-15px;border-top:2px solid #ccc;}
     .childLevel:first-child:before, .childLevel:last-child:before{display: none;}
