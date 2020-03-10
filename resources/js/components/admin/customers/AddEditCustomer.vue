@@ -159,8 +159,24 @@
                 },
                 products: function (state) {
                     return state.customers.products;
+                },
+                direct_sponsor: function (state) {
+                    return state.customers.add_customer.direct_sponsor;
                 }
             })
+        },
+        watch: {
+            direct_sponsor: {
+                deep: true,
+                handler(new_value, old_value){
+                    console.log(new_value);
+                    if(new_value !== ''){
+                        //this.fetchAvailableSponsorsAndProducts(new_value);
+                    }else{
+                        //this.fetchAvailableSponsorsAndProducts();
+                    }
+                }
+            }
         },
         mounted() {
             this.fetchAvailableSponsorsAndProducts();

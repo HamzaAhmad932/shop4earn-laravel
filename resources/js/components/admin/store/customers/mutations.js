@@ -21,6 +21,9 @@ let mutations = {
         state.products = payload.data.products;
         state.add_customer.user_id = payload.data.mx_id;
         return state;
+    },
+    SET_DIRECT_SPONSOR(state, payload){
+        return state.direct_sponsor = payload;
     }
 };
 

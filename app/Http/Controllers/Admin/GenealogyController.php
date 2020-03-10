@@ -26,11 +26,12 @@ class GenealogyController extends Controller
     public function drawTree($customer, $customers){
 
         $position = $customer->position == 1 ? 'L' : 'R';
+        $tree['user_id'] = $customer->user_id;
         $tree['name'] = $customer->user->name.' ('.$position.')';
         $tree['image_url'] = Voyager::image($customer->user->avatar);
         $tree['extend'] = true;
 
-        $childs = $customers->where('parent_id', $customer->user_id);
+        $childs = $customers->where('parent_id', $customer->user_id)->sortBy('position');
         foreach ($childs as $child){
             $tree['children'][] = $this->drawTree($child, $customers);
         }

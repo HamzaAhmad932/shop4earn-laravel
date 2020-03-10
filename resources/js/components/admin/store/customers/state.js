@@ -10,6 +10,7 @@ export const getAddCustomerInitial = ()=>{
         user_name: 'User ',
         city: 'Faisalabad',
         mobile: '03129660932',
+        direct_sponsor: '',
 
         error_status: {
             sponser_id:  false,

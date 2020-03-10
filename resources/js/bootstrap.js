@@ -1,4 +1,5 @@
 window._ = require('lodash');
+window.Popper = require('popper.js').default;
 window.toastr = require('toastr');
 window.swal = require('sweetalert2');
 

@@ -1,12 +1,22 @@
 <template>
     <table v-if="treeData.name">
         <tr>
-            <td :colspan="treeData.children ? treeData.children.length * 2 : 1" :class="{parentLevel: treeData.children, extend: treeData.children && treeData.extend}">
+            <td :colspan="treeData.children ? treeData.children.length * 2 : 2" :class="{parentLevel: treeData.children, extend: treeData.children && treeData.extend}">
                 <div :class="{node: true, hasMate: treeData.mate}">
                     <div class="person" @click="$emit('click-node', treeData)">
-                        <div class="avat">
-                            <img :src="treeData.image_url" />
-                        </div>
+                        <v-popover
+                            offset="5"
+                            placement="top"
+                        >
+                            <div class="tooltip-target avat">
+                                <img :src="treeData.image_url" />
+                            </div>
+
+                            <template slot="popover">
+                                <button class="btn btn-info btn-sm" @click="assignSponsor(treeData.user_id)"><i class="voyager-plus"></i> Add Member</button>
+                            <!--<a v-close-popover>Close</a>-->
+                            </template>
+                        </v-popover>
                         <div class="name">{{treeData.name}}</div>
                     </div>
                     <div class="person" v-if="treeData.mate" @click="$emit('click-node', treeData.mate)">
@@ -16,7 +26,7 @@
                         <div class="name">{{treeData.mate.name}}</div>
                     </div>
                 </div>
-                <div class="extend_handle fa fa-plus-circle" v-if="treeData.children" @click="toggleExtend(treeData)"></div>
+                <div class="extend_handle" :class="treeData.extend ? 'fa fa-minus-circle' : 'fa fa-plus-circle'" v-if="treeData.children" @click="toggleExtend(treeData)"></div>
             </td>
         </tr>
         <tr v-if="treeData.children && treeData.extend">
@@ -28,6 +38,8 @@
 </template>
 
 <script>
+    import { mapMutations, mapActions } from 'vuex';
+
     export default {
         name: "TreeChart",
         props: ["json"],
@@ -56,6 +68,17 @@
             }
         },
         methods: {
+            ...mapMutations([
+                'SET_DIRECT_SPONSOR'
+            ]),
+            ...mapActions([
+                'fetchAvailableSponsorsAndProducts',
+            ]),
+            assignSponsor: function(user_id){
+                this.SET_DIRECT_SPONSOR(user_id);
+                this.fetchAvailableSponsorsAndProducts(user_id);
+                $('#add_customer').modal('show');
+            },
             toggleExtend: function(treeData){
                 treeData.extend = !treeData.extend;
                 this.$forceUpdate();
@@ -68,13 +91,13 @@
     table{border-collapse: separate!important;border-spacing: 0!important;}
     td{position: relative; vertical-align: top;padding:0 0 50px 0;text-align: center; }
 
-    .extend_handle{position: absolute;left:50%;bottom:30px; width:10px;height: 10px;padding:10px;transform: translate3d(-15px,0,0);cursor: pointer;}
+    .extend_handle{position: absolute;left:50%;bottom:50px; width:35px;height: 10px;padding:10px;transform: translate3d(-15px,0,0);cursor: pointer;}
     /*.extend_handle:before{content:""; display: block; width:100%;height: 100%;box-sizing: border-box; border:2px solid;border-color:#ccc #ccc transparent transparent;*/
     /*    transform: rotateZ(135deg);transform-origin: 50% 50% 0;transition: transform ease 300ms;}*/
     .extend_handle:hover:before{border-color:#333 #333 transparent transparent;}
     /*.extend .extend_handle:before{transform: rotateZ(-45deg);}*/
 
-    .extend::after{content: "";position: absolute;left:50%;bottom:15px;height:10px;border-left:2px solid #ccc;transform: translate3d(1px,0,0)}
+    .extend::after{content: "";position: absolute;left:50%;bottom:15px;height:31px;border-left:2px solid #ccc;transform: translate3d(1px,0,0)}
     .childLevel::before{content: "";position: absolute;left:50%;bottom:100%;height:15px;border-left:2px solid #ccc;transform: translate3d(-1px,0,0)}
     .childLevel::after{content: "";position: absolute;left:0;right:0;top:-15px;border-top:2px solid #ccc;}
     .childLevel:first-child:before, .childLevel:last-child:before{display: none;}

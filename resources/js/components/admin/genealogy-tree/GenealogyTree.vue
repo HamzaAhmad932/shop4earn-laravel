@@ -1,5 +1,22 @@
 <template>
     <div>
+        <div class="modal fade modal-info" id="add_customer">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-hidden="true">&times;</button>
+                        <h4 class="modal-title"><i class="voyager-people"></i> Add Customer</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <add-edit-customer></add-edit-customer>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button @click="showModal()">click</button>
         <div class="row">
             <div class="col-lg-12">
                 <TreeChart :json="g_tree.tree_data" />
@@ -21,7 +38,10 @@
         methods: {
             ...mapActions([
                 'fetchGenealogyTree'
-            ])
+            ]),
+            showModal(){
+                $('#add_customer').modal('show');
+            }
         },
         computed: {
             ...mapState({

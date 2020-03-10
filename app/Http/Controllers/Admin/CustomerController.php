@@ -115,13 +115,22 @@ class CustomerController extends Controller
         return SaleDetail::insert($bulk_sale);
     }
 
-    public function getAvailableSponsorsAndProducts()
+    public function getAvailableSponsorsAndProducts(Request $request)
     {
-        $customers = User::with('sponsor')
-            ->whereNotIn('role_id', [
-                User::SUB_ADMIN_ROLE,
-                User::SUPER_ADMIN_ROLE
-            ])->get();
+        $sponser_id = $request->sponsor_id;
+        if(!empty($sponser_id)){
+            $customers = User::with('sponsor')
+                ->whereNotIn('role_id', [
+                    User::SUB_ADMIN_ROLE,
+                    User::SUPER_ADMIN_ROLE
+                ])->where('id', $sponser_id)->get();
+        }else{
+            $customers = User::with('sponsor')
+                ->whereNotIn('role_id', [
+                    User::SUB_ADMIN_ROLE,
+                    User::SUPER_ADMIN_ROLE
+                ])->get();
+        }
         $products = Product::all();
         $get_mx_id = !empty($customers->last()) ? $customers->last()->id : 0;
 
