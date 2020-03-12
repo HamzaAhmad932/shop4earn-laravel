@@ -2144,7 +2144,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2187,6 +2186,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -43241,7 +43241,8 @@ var render = function() {
                     attrs: {
                       type: "email",
                       id: "email",
-                      placeholder: "you@example.com"
+                      placeholder: "you@example.com",
+                      disabled: ""
                     },
                     domProps: { value: _vm.add_customer.email },
                     on: {
@@ -43271,8 +43272,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.add_customer.user_name,
-                        expression: "add_customer.user_name"
+                        value: _vm.add_customer.name,
+                        expression: "add_customer.name"
                       }
                     ],
                     staticClass: "form-control",
@@ -43281,24 +43282,20 @@ var render = function() {
                       id: "user_name",
                       placeholder: "John doe"
                     },
-                    domProps: { value: _vm.add_customer.user_name },
+                    domProps: { value: _vm.add_customer.name },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(
-                          _vm.add_customer,
-                          "user_name",
-                          $event.target.value
-                        )
+                        _vm.$set(_vm.add_customer, "name", $event.target.value)
                       }
                     }
                   }),
                   _vm._v(" "),
-                  _vm.add_customer.error_status.user_name
+                  _vm.add_customer.error_status.name
                     ? _c("div", { staticClass: "invalid-feedback" }, [
-                        _vm._v(_vm._s(_vm.add_customer.error_message.user_name))
+                        _vm._v(_vm._s(_vm.add_customer.error_message.name))
                       ])
                     : _vm._e()
                 ])
@@ -43306,7 +43303,7 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-md-6 mb-3" }, [
-                  _c("label", [_vm._v("Password ")]),
+                  _c("label", [_vm._v("Password (default = 123456)")]),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
@@ -43689,18 +43686,6 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          on: {
-            click: function($event) {
-              return _vm.showModal()
-            }
-          }
-        },
-        [_vm._v("click")]
-      ),
-      _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c(
           "div",
@@ -43797,13 +43782,20 @@ var render = function() {
                   [
                     _c(
                       "v-popover",
-                      { attrs: { offset: "5", placement: "top" } },
+                      {
+                        attrs: {
+                          offset: "5",
+                          placement: "top",
+                          disabled: "true"
+                        }
+                      },
                       [
                         _c("div", { staticClass: "tooltip-target avat" }, [
                           _c("img", { attrs: { src: _vm.treeData.image_url } })
                         ]),
                         _vm._v(" "),
                         _c("template", { slot: "popover" }, [
+                          _vm._v("cus\n                            "),
                           _c(
                             "button",
                             {
@@ -45569,12 +45561,12 @@ var actions = {
     var _addCustomer = _asyncToGenerator(
     /*#__PURE__*/
     _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref) {
-      var commit, state;
+      var commit, state, dispatch;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref.commit, state = _ref.state;
+              commit = _ref.commit, state = _ref.state, dispatch = _ref.dispatch;
               commit('SHOW_LOADER', null, {
                 root: true
               });
@@ -45588,8 +45580,10 @@ var actions = {
                 });
 
                 if (resp.data.status) {
-                  toastr.success(resp.data.message);
-                  window.location.href = '/admin/customers';
+                  toastr.success(resp.data.message); //window.location.href = '/portal/customers';
+
+                  commit('RESET_ADD_CUSTOMER_FORM');
+                  dispatch('fetchAvailableSponsorsAndProducts');
                 } else {
                   toastr.error(resp.data.message);
                 }
@@ -45735,11 +45729,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./resources/js/components/admin/store/customers/state.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 var mutations = {
   SET_ADD_CUSTOMER_ERRORS: function SET_ADD_CUSTOMER_ERRORS(state, payload) {
@@ -45747,6 +45743,9 @@ var mutations = {
   },
   SET_ADD_CUSTOMER: function SET_ADD_CUSTOMER(state, payload) {
     return state.add_customer = _objectSpread({}, state.add_customer, {}, payload.data.data);
+  },
+  RESET_ADD_CUSTOMER_FORM: function RESET_ADD_CUSTOMER_FORM(state) {
+    return state.add_customer = _objectSpread({}, state.add_customer, {}, _state__WEBPACK_IMPORTED_MODULE_0__["getAddCustomerInitial"]);
   },
   SET_ALL_CUSTOMERS: function SET_ALL_CUSTOMERS(state, payload) {
     return state.customers = _objectSpread({}, state.customers, {}, payload.data.data);
@@ -45758,6 +45757,7 @@ var mutations = {
     state.sponsors = payload.data.sponsors;
     state.products = payload.data.products;
     state.add_customer.user_id = payload.data.mx_id;
+    state.add_customer.name = 'User' + payload.data.mx_id.toString();
     return state;
   },
   SET_DIRECT_SPONSOR: function SET_DIRECT_SPONSOR(state, payload) {
@@ -45786,9 +45786,9 @@ var getAddCustomerInitial = function getAddCustomerInitial() {
     password: '123456',
     password_confirmation: '123456',
     user_id: '',
-    user_name: 'User ',
+    name: '',
     city: 'Faisalabad',
-    mobile: '03129660932',
+    mobile: '03006611403',
     direct_sponsor: '',
     error_status: {
       sponser_id: false,
@@ -45820,7 +45820,7 @@ var getAddCustomerInitial = function getAddCustomerInitial() {
       code: 2
     }],
     selected_products: [{
-      product_id: '',
+      product_id: 1,
       qty: '1'
     }]
   };

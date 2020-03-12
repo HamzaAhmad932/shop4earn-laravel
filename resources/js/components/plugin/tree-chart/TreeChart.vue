@@ -7,12 +7,13 @@
                         <v-popover
                             offset="5"
                             placement="top"
+                            disabled="true"
                         >
                             <div class="tooltip-target avat">
                                 <img :src="treeData.image_url" />
                             </div>
 
-                            <template slot="popover">
+                            <template slot="popover">cus
                                 <button class="btn btn-info btn-sm" @click="assignSponsor(treeData.user_id)"><i class="voyager-plus"></i> Add Member</button>
                             <!--<a v-close-popover>Close</a>-->
                             </template>

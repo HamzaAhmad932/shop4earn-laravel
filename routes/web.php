@@ -13,10 +13,11 @@
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/portal');
+    //return view('welcome');
 });
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'portal'], function () {
     Voyager::routes();
 
     Route::get('genealogy-tree', 'Voyager\GenealogyController@index')->name('genealogy-tree');

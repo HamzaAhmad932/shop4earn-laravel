@@ -25,7 +25,7 @@ class CustomerRequest extends FormRequest
     {
         return [
             'position'=> 'required',
-            'email'=>'required|email|unique:users',
+            'name'=>'required|unique:users',
             'password'=>'required|confirmed|min:6',
             'user_id'=> 'required',
             'city'=> 'required',
@@ -37,6 +37,7 @@ class CustomerRequest extends FormRequest
     {
         return [
             'position'=> 'Position',
+            'name'=> 'Username',
             'email'=>'Email',
             'password'=>'Password',
             'user_id'=> 'User ID',

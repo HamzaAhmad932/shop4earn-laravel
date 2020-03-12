@@ -24,20 +24,20 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="email">Email </label>
-                                <input type="email" v-model="add_customer.email" class="form-control" id="email" placeholder="you@example.com">
+                                <input type="email" v-model="add_customer.email" class="form-control" id="email" placeholder="you@example.com" disabled>
                                 <div class="invalid-feedback" v-if="add_customer.error_status.email">{{add_customer.error_message.email}}</div>
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="user_name">User name </label>
-                                <input type="email" v-model="add_customer.user_name" class="form-control" id="user_name" placeholder="John doe">
-                                <div class="invalid-feedback" v-if="add_customer.error_status.user_name">{{add_customer.error_message.user_name}}</div>
+                                <input type="email" v-model="add_customer.name" class="form-control" id="user_name" placeholder="John doe">
+                                <div class="invalid-feedback" v-if="add_customer.error_status.name">{{add_customer.error_message.name}}</div>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label >Password </label>
+                                <label >Password (default = 123456)</label>
                                 <input type="password" v-model="add_customer.password" class="form-control" id="password" placeholder="Enter Password">
                                 <div class="invalid-feedback" v-if="add_customer.error_status.password">{{add_customer.error_message.password}}</div>
                             </div>

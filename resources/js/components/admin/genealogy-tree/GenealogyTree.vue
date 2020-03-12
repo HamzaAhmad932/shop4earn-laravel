@@ -16,7 +16,6 @@
                 </div>
             </div>
         </div>
-        <button @click="showModal()">click</button>
         <div class="row">
             <div class="col-lg-12">
                 <TreeChart :json="g_tree.tree_data" />

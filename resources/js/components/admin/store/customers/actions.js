@@ -1,6 +1,6 @@
 let actions = {
 
-    addCustomer: async ({commit, state}) => {
+    addCustomer: async ({commit, state, dispatch}) => {
 
         commit('SHOW_LOADER', null, {root: true});
 
@@ -13,7 +13,9 @@ let actions = {
 
             if (resp.data.status){
                 toastr.success(resp.data.message);
-                window.location.href = '/admin/customers';
+                //window.location.href = '/portal/customers';
+                commit('RESET_ADD_CUSTOMER_FORM');
+                dispatch('fetchAvailableSponsorsAndProducts');
             }else{
                 toastr.error(resp.data.message);
             }

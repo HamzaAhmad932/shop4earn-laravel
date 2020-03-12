@@ -7,9 +7,9 @@ export const getAddCustomerInitial = ()=>{
         password:'123456',
         password_confirmation: '123456',
         user_id: '',
-        user_name: 'User ',
+        name: '',
         city: 'Faisalabad',
-        mobile: '03129660932',
+        mobile: '03006611403',
         direct_sponsor: '',
 
         error_status: {
@@ -47,7 +47,7 @@ export const getAddCustomerInitial = ()=>{
         ],
         selected_products : [
             {
-                product_id : '',
+                product_id : 1,
                 qty : '1',
             },
         ],

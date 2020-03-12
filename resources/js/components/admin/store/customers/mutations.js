@@ -1,3 +1,5 @@
+import {getAddCustomerInitial} from './state';
+
 let mutations = {
 
     SET_ADD_CUSTOMER_ERRORS(state, payload){
@@ -6,6 +8,10 @@ let mutations = {
 
     SET_ADD_CUSTOMER(state, payload){
         return state.add_customer = {...state.add_customer, ...payload.data.data};
+    },
+
+    RESET_ADD_CUSTOMER_FORM(state){
+        return state.add_customer = {...state.add_customer, ...getAddCustomerInitial};
     },
 
     SET_ALL_CUSTOMERS(state, payload){
@@ -20,6 +26,7 @@ let mutations = {
         state.sponsors = payload.data.sponsors;
         state.products = payload.data.products;
         state.add_customer.user_id = payload.data.mx_id;
+        state.add_customer.name = 'User'+payload.data.mx_id.toString();
         return state;
     },
     SET_DIRECT_SPONSOR(state, payload){
