@@ -517,6 +517,7 @@ class ComposerStaticInit6ebc50747dd3c93f90b79e919d3dc707
     public static $classMap = array (
         'App\\BVCriteria' => __DIR__ . '/../..' . '/app/BVCriteria.php',
         'App\\Category' => __DIR__ . '/../..' . '/app/Category.php',
+        'App\\CategoryProduct' => __DIR__ . '/../..' . '/app/CategoryProduct.php',
         'App\\Compensation' => __DIR__ . '/../..' . '/app/Compensation.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Customer' => __DIR__ . '/../..' . '/app/Customer.php',
