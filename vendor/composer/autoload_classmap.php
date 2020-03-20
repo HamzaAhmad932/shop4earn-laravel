@@ -47,6 +47,7 @@ return array(
     'App\\Rank' => $baseDir . '/app/Rank.php',
     'App\\SaleDetail' => $baseDir . '/app/SaleDetail.php',
     'App\\SalesBonusDetail' => $baseDir . '/app/SalesBonusDetail.php',
+    'App\\Slider' => $baseDir . '/app/Slider.php',
     'App\\TeamBonusDetail' => $baseDir . '/app/TeamBonusDetail.php',
     'App\\User' => $baseDir . '/app/User.php',
     'App\\Widgets\\CarryForward' => $baseDir . '/app/Widgets/CarryForward.php',
