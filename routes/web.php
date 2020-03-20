@@ -13,6 +13,7 @@
 
 
 Route::get('/', 'HomeController@index');
+Route::get('/shop/category/{id?}', 'ProductController@index')->name('shop.category');
 
 Route::group(['prefix' => 'portal'], function () {
     Voyager::routes();

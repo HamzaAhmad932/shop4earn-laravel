@@ -5,104 +5,106 @@
     <main class="main home">
             <div class="home-top-container">
                 <div class="home-slider owl-carousel owl-theme owl-carousel-lazy">
-                    <div class="home-slide" style="background-image: url('assets/images/slider/slide1.jpg');">
-                        <img class="owl-lazy" src="{{asset('assets/images/lazy.png')}}" alt="slider image">
-                        <div class="home-slide-content container">
-                            <div>
-                                <h2 class="home-slide-subtitle">start the revolution</h2>
-                                <h1 class="home-slide-title">
-                                    drone pro 4
-                                </h1>
-                                <h2 class="home-slide-foot">from <span>$499</span></h2>
-                                <button class="btn btn-dark btn-buy">BUY NOW</button>
-                            </div>
-                        </div><!-- End .home-slide-content -->
+                    @foreach($slider as $image)
+                    <div class="home-slide" style="background-image: url('{{asset('storage/'.$image->url)}}');">
+                        <img class="owl-lazy" src="{{asset('storage/'.$image->url)}}" alt="slider image">
+{{--                        <div class="home-slide-content container">--}}
+{{--                            <div>--}}
+{{--                                <h2 class="home-slide-subtitle">start the revolution</h2>--}}
+{{--                                <h1 class="home-slide-title">--}}
+{{--                                    drone pro 4--}}
+{{--                                </h1>--}}
+{{--                                <h2 class="home-slide-foot">from <span>$499</span></h2>--}}
+{{--                                <button class="btn btn-dark btn-buy">BUY NOW</button>--}}
+{{--                            </div>--}}
+{{--                        </div><!-- End .home-slide-content -->--}}
                     </div><!-- End .home-slide -->
+                    @endforeach
 
-                    <div class="home-slide" style="background-image: url('assets/images/slider/slide2.jpg');">
-                        <img class="owl-lazy" src="{{asset('assets/images/lazy.png')}}" alt="slider image">
-                        <div class="home-slide-content container">
-                            <div>
-                                <h2 class="home-slide-subtitle">amazing deals</h2>
-                                <h1 class="home-slide-title">
-                                    smartphone
-                                </h1>
-                                <h2 class="home-slide-foot">from <span>$199</span></h2>
-                                <button class="btn btn-dark btn-buy">BUY NOW</button>
-                            </div>
-                        </div><!-- End .home-slide-content -->
-                    </div><!-- End .home-slide -->
+{{--                    <div class="home-slide" style="background-image: url('assets/images/slider/slide2.jpg');">--}}
+{{--                        <img class="owl-lazy" src="{{asset('assets/images/lazy.png')}}" alt="slider image">--}}
+{{--                        <div class="home-slide-content container">--}}
+{{--                            <div>--}}
+{{--                                <h2 class="home-slide-subtitle">amazing deals</h2>--}}
+{{--                                <h1 class="home-slide-title">--}}
+{{--                                    smartphone--}}
+{{--                                </h1>--}}
+{{--                                <h2 class="home-slide-foot">from <span>$199</span></h2>--}}
+{{--                                <button class="btn btn-dark btn-buy">BUY NOW</button>--}}
+{{--                            </div>--}}
+{{--                        </div><!-- End .home-slide-content -->--}}
+{{--                    </div><!-- End .home-slide -->--}}
 
-                    <div class="home-slide" style="background-image: url('assets/images/slider/slide3.jpg');">
-                        <img class="owl-lazy" src="{{asset('assets/images/lazy.png')}}" alt="slider image">
-                        <div class="home-slide-content container">
-                            <div>
-                                <h2 class="home-slide-subtitle">best price of the year</h2>
-                                <h1 class="home-slide-title">
-                                    top accessories
-                                </h1>
-                                <h2 class="home-slide-foot">from <span>$19</span></h2>
-                                <button class="btn btn-dark btn-buy">BUY NOW</button>
-                            </div>
-                        </div><!-- End .home-slide-content -->
-                    </div><!-- End .home-slide -->
+{{--                    <div class="home-slide" style="background-image: url('assets/images/slider/slide3.jpg');">--}}
+{{--                        <img class="owl-lazy" src="{{asset('assets/images/lazy.png')}}" alt="slider image">--}}
+{{--                        <div class="home-slide-content container">--}}
+{{--                            <div>--}}
+{{--                                <h2 class="home-slide-subtitle">best price of the year</h2>--}}
+{{--                                <h1 class="home-slide-title">--}}
+{{--                                    top accessories--}}
+{{--                                </h1>--}}
+{{--                                <h2 class="home-slide-foot">from <span>$19</span></h2>--}}
+{{--                                <button class="btn btn-dark btn-buy">BUY NOW</button>--}}
+{{--                            </div>--}}
+{{--                        </div><!-- End .home-slide-content -->--}}
+{{--                    </div><!-- End .home-slide -->--}}
                 </div>
                 <div class="home-slider-sidebar">
                     <ul>
-                        <li class="active">Drones</li>
-                        <li>Phones</li>
-                        <li>Accessories</li>
+                        <li class="active"></li>
+                        <li></li>
+                        <li></li>
                     </ul>
                 </div>
             </div><!-- End .home-slider -->
 
-            <section class="product-panel mt-5">
-                <div class="container">
-                    <div class="section-title">
-                        <h2>Featured Products</h2>
-                    </div>
-                    <div class="product-intro divide-line mt-2 mb-8">
-                        @foreach($featured_products as $product)
-                            <div class="col-6 col-lg-2 col-md-3 col-sm-4 product-default inner-quickview inner-icon">
-                                <figure>
-                                    <a href="product.html">
-                                        @if(!empty($product->productImages[0]))
-                                            <img src="{{asset('storage/'.$product->productImages[0]->url)}}">
-                                        @else
-                                            <img src="{{asset('assets/images/no-image-png-2.png')}}">
-                                        @endif
-                                    </a>
-                                    <div class="btn-icon-group">
-                                        <button class="btn-icon btn-add-cart" data-toggle="modal" data-target="#addCartModal"><i class="icon-bag"></i></button>
-                                    </div>
-                                    <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">Quick View</a>
-                                </figure>
-                                <div class="product-details">
-                                    <div class="category-wrap">
-                                        <div class="category-list">
-                                            <a href="category.html" class="product-category">{{$product->category->category_name}}</a>
-                                        </div>
-                                        <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a>
-                                    </div>
-                                    <h2 class="product-title">
-                                        <a href="product.html">{{$product->product_name}}</a>
-                                    </h2>
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:0%"></span><!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top">0</span>
-                                        </div><!-- End .product-ratings -->
-                                    </div><!-- End .product-container -->
-                                    <div class="price-box">
-                                        <span class="old-price">$59.00</span>
-                                        <span class="product-price">Rs.{{$product->product_price}}</span>
-                                    </div><!-- End .price-box -->
-                                </div><!-- End .product-details -->
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </section>
+{{--            <section class="product-panel mt-5">--}}
+{{--                <div class="container">--}}
+{{--                    <div class="section-title">--}}
+{{--                        <h2>Featured Products</h2>--}}
+{{--                    </div>--}}
+{{--                    <div class="product-intro divide-line mt-2 mb-8">--}}
+{{--                        @foreach($featured_products as $product)--}}
+{{--                            <div class="col-6 col-lg-2 col-md-3 col-sm-4 product-default inner-quickview inner-icon">--}}
+{{--                                <figure>--}}
+{{--                                    <a href="product.html">--}}
+{{--                                        @if(!empty($product->productImages[0]))--}}
+{{--                                            <img src="{{asset('storage/'.$product->productImages[0]->url)}}">--}}
+{{--                                        @else--}}
+{{--                                            <img src="{{asset('assets/images/no-image-png-2.png')}}">--}}
+{{--                                        @endif--}}
+{{--                                    </a>--}}
+{{--                                    <div class="btn-icon-group">--}}
+{{--                                        <button class="btn-icon btn-add-cart" data-toggle="modal" data-target="#addCartModal"><i class="icon-bag"></i></button>--}}
+{{--                                    </div>--}}
+{{--                                    <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">Quick View</a>--}}
+{{--                                </figure>--}}
+{{--                                <div class="product-details">--}}
+{{--                                    <div class="category-wrap">--}}
+{{--                                        <div class="category-list">--}}
+{{--                                            <a href="category.html" class="product-category">{{$product->category->category_name}}</a>--}}
+{{--                                        </div>--}}
+{{--                                        <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a>--}}
+{{--                                    </div>--}}
+{{--                                    <h2 class="product-title">--}}
+{{--                                        <a href="product.html">{{$product->product_name}}</a>--}}
+{{--                                    </h2>--}}
+{{--                                    <div class="ratings-container">--}}
+{{--                                        <div class="product-ratings">--}}
+{{--                                            <span class="ratings" style="width:0%"></span><!-- End .ratings -->--}}
+{{--                                            <span class="tooltiptext tooltip-top">0</span>--}}
+{{--                                        </div><!-- End .product-ratings -->--}}
+{{--                                    </div><!-- End .product-container -->--}}
+{{--                                    <div class="price-box">--}}
+{{--                                        <span class="old-price">$59.00</span>--}}
+{{--                                        <span class="product-price">Rs.{{$product->product_price}}</span>--}}
+{{--                                    </div><!-- End .price-box -->--}}
+{{--                                </div><!-- End .product-details -->--}}
+{{--                            </div>--}}
+{{--                        @endforeach--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </section>--}}
 
             <section class="categories-container">
                 <div class="container categories-carousel owl-carousel owl-theme" data-toggle="owl" data-owl-options="{
