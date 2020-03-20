@@ -57,7 +57,11 @@
                                 <div class="product-default inner-quickview inner-icon">
                                     <figure>
                                         <a href="#">
-                                            <img src="{{asset('storage/'.$product->productImages[0]->url)}}">
+                                            @if(!empty($product->productImages[0]))--}}
+                                                <img src="{{asset('storage/'.$product->productImages[0]->url)}}">
+                                            @else
+                                                <img src="{{asset('assets/images/no-image-png-2.png')}}">
+                                            @endif
                                         </a>
                                         <div class="btn-icon-group">
                                             <button class="btn-icon btn-add-cart" data-toggle="modal" data-target="#addCartModal"><i class="icon-bag"></i></button>
