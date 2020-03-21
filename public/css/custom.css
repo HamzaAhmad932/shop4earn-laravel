@@ -23,3 +23,8 @@
     color: white;
     text-decoration: none;
 }
+
+.bg-theme{
+    background: #002F5F !important;
+    color: white;
+}

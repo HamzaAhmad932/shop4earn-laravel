@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <a href="index-2.html">
-                        <img src="assets/images/logo-dark.png" alt="Porto Logo" class="mt-2">
+                        <img src="{{asset('assets/images/logos/shop4earn_logo.png')}}" alt="Shop4Earn Logo" class="mt-2">
                     </a>
                     <div class="row">
                         <div class="col-sm-6 col-xl-4">
@@ -63,12 +63,9 @@
                             <div class="widget">
                                 <h4 class="widget-title">Categories</h4>
                                 <ul class="links">
-                                    <li><a href="#">Fashion</a></li>
-                                    <li><a href="#">Electronics</a></li>
-                                    <li><a href="#">Gifts</a></li>
-                                    <li><a href="#">Garden</a></li>
-                                    <li><a href="#">Music</a></li>
-                                    <li><a href="#">Motors</a></li>
+                                    @foreach($navbar as $nav)
+                                        <li><a href="{{route('shop.category', $nav->id)}}">{{$nav->category_name}}</a></li>
+                                    @endforeach
                                 </ul>
                             </div><!-- End .widget -->
                         </div>
@@ -100,9 +97,13 @@
                 </div>
             </div><!-- End .row -->
         </div><!-- End .footer-middle -->
-        <div class="footer-bottom">
-            <p class="footer-copyright">Porto eCommerce. &copy;  2019.  All Rights Reserved</p>
-            <img src="assets/images/payments_long.png" width="180px" style="max-height: 24px">
-        </div><!-- End .footer-bottom -->
+    </div>
+    <div class="bg-theme">
+        <div class="container">
+            <div class="footer-bottom">
+                <p class="footer-copyright">Shop4Earn &copy;  {{ now()->year }}.  All Rights Reserved</p>
+                <img src="{{asset('assets/images/payments_long.png')}}" width="180px" style="max-height: 24px">
+            </div><!-- End .footer-bottom -->
+        </div>
     </div>
 </footer><!-- End .footer -->

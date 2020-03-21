@@ -5,15 +5,15 @@
 
     <main class="main">
 
-        <nav aria-label="breadcrumb" class="breadcrumb-nav">
-            <div class="container">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Men</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Accessories</li>
-                </ol>
-            </div><!-- End .container -->
-        </nav>
+{{--        <nav aria-label="breadcrumb" class="breadcrumb-nav">--}}
+{{--            <div class="container">--}}
+{{--                <ol class="breadcrumb">--}}
+{{--                    <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>--}}
+{{--                    <li class="breadcrumb-item"><a href="#">Men</a></li>--}}
+{{--                    <li class="breadcrumb-item active" aria-current="page">Accessories</li>--}}
+{{--                </ol>--}}
+{{--            </div><!-- End .container -->--}}
+{{--        </nav>--}}
 
         <div class="container">
             <div class="mt-4"></div>
@@ -57,7 +57,7 @@
                                 <div class="product-default inner-quickview inner-icon">
                                     <figure>
                                         <a href="#">
-                                            @if(!empty($product->productImages[0]))--}}
+                                            @if(!empty($product->productImages[0]))
                                                 <img src="{{asset('storage/'.$product->productImages[0]->url)}}">
                                             @else
                                                 <img src="{{asset('assets/images/no-image-png-2.png')}}">
