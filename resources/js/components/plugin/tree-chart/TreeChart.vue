@@ -27,7 +27,7 @@
                         <div class="name">{{treeData.mate.name}}</div>
                     </div>
                 </div>
-                <div class="extend_handle" :class="treeData.extend ? 'fa fa-minus-circle' : 'fa fa-plus-circle'" v-if="treeData.children" @click="toggleExtend(treeData)"></div>
+                <div class="extend_handle" :class="treeData.extend ? 'fa fa-minus-circle' : 'fa fa-plus-circle'" @click="toggleExtend(treeData)"></div>
             </td>
         </tr>
         <tr v-if="treeData.children && treeData.extend">
@@ -74,6 +74,7 @@
             ]),
             ...mapActions([
                 'fetchAvailableSponsorsAndProducts',
+                'fetchGenealogyTree'
             ]),
             assignSponsor: function(user_id){
                 this.SET_DIRECT_SPONSOR(user_id);
@@ -82,6 +83,9 @@
             },
             toggleExtend: function(treeData){
                 treeData.extend = !treeData.extend;
+                if(treeData.extend){
+                    this.fetchGenealogyTree(treeData.user_id);
+                }
                 this.$forceUpdate();
             }
         }

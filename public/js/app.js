@@ -2153,7 +2153,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['fetchGenealogyTree']), {
     showModal: function showModal() {
       $('#add_customer').modal('show');
-    }
+    } // fetchNewNode(treeData){
+    //     this.fetchGenealogyTree(treeData.user_id);
+    // }
+
   }),
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])({
     loader: function loader(state) {
@@ -2257,7 +2260,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       immediate: true
     }
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['SET_DIRECT_SPONSOR']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['fetchAvailableSponsorsAndProducts']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['SET_DIRECT_SPONSOR']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['fetchAvailableSponsorsAndProducts', 'fetchGenealogyTree']), {
     assignSponsor: function assignSponsor(user_id) {
       this.SET_DIRECT_SPONSOR(user_id);
       this.fetchAvailableSponsorsAndProducts(user_id);
@@ -2265,6 +2268,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     toggleExtend: function toggleExtend(treeData) {
       treeData.extend = !treeData.extend;
+
+      if (treeData.extend) {
+        this.fetchGenealogyTree(treeData.user_id);
+      }
+
       this.$forceUpdate();
     }
   })
@@ -43690,7 +43698,16 @@ var render = function() {
         _c(
           "div",
           { staticClass: "col-lg-12" },
-          [_c("TreeChart", { attrs: { json: _vm.g_tree.tree_data } })],
+          [
+            _c("TreeChart", {
+              attrs: { json: _vm.g_tree.tree_data },
+              on: {
+                "fetch-node": function($event) {
+                  return _vm.fetchNewNode($event)
+                }
+              }
+            })
+          ],
           1
         )
       ]),
@@ -43849,19 +43866,17 @@ var render = function() {
                   : _vm._e()
               ]),
               _vm._v(" "),
-              _vm.treeData.children
-                ? _c("div", {
-                    staticClass: "extend_handle",
-                    class: _vm.treeData.extend
-                      ? "fa fa-minus-circle"
-                      : "fa fa-plus-circle",
-                    on: {
-                      click: function($event) {
-                        return _vm.toggleExtend(_vm.treeData)
-                      }
-                    }
-                  })
-                : _vm._e()
+              _c("div", {
+                staticClass: "extend_handle",
+                class: _vm.treeData.extend
+                  ? "fa fa-minus-circle"
+                  : "fa fa-plus-circle",
+                on: {
+                  click: function($event) {
+                    return _vm.toggleExtend(_vm.treeData)
+                  }
+                }
+              })
             ]
           )
         ]),
@@ -45856,18 +45871,24 @@ var actions = {
     var _fetchGenealogyTree = _asyncToGenerator(
     /*#__PURE__*/
     _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref) {
-      var commit;
+      var commit,
+          user_id,
+          _args = arguments;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               commit = _ref.commit;
+              user_id = _args.length > 1 && _args[1] !== undefined ? _args[1] : null;
               commit('SHOW_LOADER', null, {
                 root: true
               });
               axios({
                 url: '/v1/get-genealogy-tree',
-                method: 'GET'
+                method: 'POST',
+                data: {
+                  user_id: user_id
+                }
               }).then(function (resp) {
                 commit('SET_GENEALOGY_TREE', resp.data.data);
                 commit('HIDE_LOADER', null, {
@@ -45880,7 +45901,7 @@ var actions = {
                 console.log(err);
               });
 
-            case 3:
+            case 4:
             case "end":
               return _context.stop();
           }
@@ -46180,8 +46201,8 @@ Vue.component('genealogy-tree', __webpack_require__(/*! ./components/admin/genea
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! c:\wamp64\www\shop4earn\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! c:\wamp64\www\shop4earn\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\wamp64\www\shop4earn\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\wamp64\www\shop4earn\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

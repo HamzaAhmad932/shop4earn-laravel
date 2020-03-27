@@ -18,7 +18,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <TreeChart :json="g_tree.tree_data" />
+                <TreeChart :json="g_tree.tree_data" v-on:fetch-node="fetchNewNode($event)" />
             </div>
         </div>
         <BlockUI :html="loader.html" :message="loader.msg" v-if="loader.block === true"></BlockUI>
@@ -40,7 +40,10 @@
             ]),
             showModal(){
                 $('#add_customer').modal('show');
-            }
+            },
+            // fetchNewNode(treeData){
+            //     this.fetchGenealogyTree(treeData.user_id);
+            // }
         },
         computed: {
             ...mapState({

@@ -29,7 +29,7 @@ Route::group(['prefix'=> 'v1'], function(){
     Route::post('get-available-sponsors-and-products', 'Admin\CustomerController@getAvailableSponsorsAndProducts')->name('get_available_sponsors_and_products');
 
 
-    Route::get('get-genealogy-tree', 'Admin\GenealogyController@getGenealogyTree');
+    Route::post('get-genealogy-tree', 'Admin\GenealogyController@getGenealogyTree');
 
 
 });
