@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Auth;
 
 class GenealogyController extends Controller
 {
-    public const LOAD_MAX_LEVEL = 3;
+
+    public const LOAD_MAX_LEVEL = 4;
 
     public function getGenealogyTree(Request $request) {
 
