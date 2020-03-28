@@ -2292,7 +2292,7 @@ exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base
 
 
 // module
-exports.push([module.i, "\n.loading-container[data-v-3605d0f6] {\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  right: 0px;\n  bottom: 0px;\n  text-align: center;\n}\n.loading-container .loading-backdrop[data-v-3605d0f6] {\n    position: fixed;\n    top: 0;\n    left: 0;\n    height: 100%;\n    width: 100%;\n    background-color: lightgray;\n    opacity: 0.5;\n    z-index: 9998;\n}\n.loading-container .loading[data-v-3605d0f6] {\n    z-index: 9999;\n    position: fixed;\n    display: inline-block;\n    background-color: white;\n    padding: 20px 50px;\n    border-radius: 12px;\n    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n}\n.loading-container .loading .loading-icon[data-v-3605d0f6] {\n      margin-bottom: 8px;\n}\n", ""]);
+exports.push([module.i, "\r\n.loading-container[data-v-3605d0f6] {\r\n  position: absolute;\r\n  top: 0px;\r\n  left: 0px;\r\n  right: 0px;\r\n  bottom: 0px;\r\n  text-align: center;\r\n}\r\n.loading-container .loading-backdrop[data-v-3605d0f6] {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    height: 100%;\r\n    width: 100%;\r\n    background-color: lightgray;\r\n    opacity: 0.5;\r\n    z-index: 9998;\r\n}\r\n.loading-container .loading[data-v-3605d0f6] {\r\n    z-index: 9999;\r\n    position: fixed;\r\n    display: inline-block;\r\n    background-color: white;\r\n    padding: 20px 50px;\r\n    border-radius: 12px;\r\n    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\r\n    left: 50%;\r\n    top: 50%;\r\n    transform: translate(-50%, -50%);\r\n}\r\n.loading-container .loading .loading-icon[data-v-3605d0f6] {\r\n      margin-bottom: 8px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -46201,8 +46201,8 @@ Vue.component('genealogy-tree', __webpack_require__(/*! ./components/admin/genea
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\wamp64\www\shop4earn\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\wamp64\www\shop4earn\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\xamp\htdocs\shop4earn-laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\xamp\htdocs\shop4earn-laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
