@@ -2182,7 +2182,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2260,21 +2268,56 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       immediate: true
     }
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['SET_DIRECT_SPONSOR']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['fetchAvailableSponsorsAndProducts', 'fetchGenealogyTree']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['SET_DIRECT_SPONSOR']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['fetchAvailableSponsorsAndProducts', 'fetchGenealogyTree', 'fetchGenealogyTreeChild']), {
     assignSponsor: function assignSponsor(user_id) {
       this.SET_DIRECT_SPONSOR(user_id);
       this.fetchAvailableSponsorsAndProducts(user_id);
       $('#add_customer').modal('show');
     },
-    toggleExtend: function toggleExtend(treeData) {
-      treeData.extend = !treeData.extend;
+    toggleExtend: function () {
+      var _toggleExtend = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(treeData) {
+        var tree;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!treeData.extend) {
+                  _context.next = 6;
+                  break;
+                }
 
-      if (treeData.extend) {
-        this.fetchGenealogyTree(treeData.user_id);
+                console.log('load');
+                _context.next = 4;
+                return this.fetchGenealogyTreeChild(treeData.user_id);
+
+              case 4:
+                tree = _context.sent;
+
+                if (tree.children !== undefined) {
+                  treeData.children = tree.children;
+                } else {
+                  alert('No Child found');
+                }
+
+              case 6:
+                this.$forceUpdate();
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function toggleExtend(_x) {
+        return _toggleExtend.apply(this, arguments);
       }
 
-      this.$forceUpdate();
-    }
+      return toggleExtend;
+    }()
   })
 });
 
@@ -45914,6 +45957,56 @@ var actions = {
     }
 
     return fetchGenealogyTree;
+  }(),
+  fetchGenealogyTreeChild: function () {
+    var _fetchGenealogyTreeChild = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref2) {
+      var commit,
+          user_id,
+          _args2 = arguments;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              commit = _ref2.commit;
+              user_id = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : null;
+              commit('SHOW_LOADER', null, {
+                root: true
+              });
+              return _context2.abrupt("return", new Promise(function (resolve, reject) {
+                axios({
+                  url: '/v1/get-genealogy-tree',
+                  method: 'POST',
+                  data: {
+                    user_id: user_id
+                  }
+                }).then(function (resp) {
+                  resolve(resp.data.data);
+                  commit('HIDE_LOADER', null, {
+                    root: true
+                  });
+                })["catch"](function (err) {
+                  commit('HIDE_LOADER', null, {
+                    root: true
+                  });
+                  console.log(err);
+                });
+              }));
+
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    function fetchGenealogyTreeChild(_x2) {
+      return _fetchGenealogyTreeChild.apply(this, arguments);
+    }
+
+    return fetchGenealogyTreeChild;
   }()
 };
 /* harmony default export */ __webpack_exports__["default"] = (actions);

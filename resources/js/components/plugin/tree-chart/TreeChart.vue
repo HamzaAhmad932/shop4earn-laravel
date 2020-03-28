@@ -74,18 +74,29 @@
             ]),
             ...mapActions([
                 'fetchAvailableSponsorsAndProducts',
-                'fetchGenealogyTree'
+                'fetchGenealogyTree',
+                'fetchGenealogyTreeChild'
             ]),
             assignSponsor: function(user_id){
                 this.SET_DIRECT_SPONSOR(user_id);
                 this.fetchAvailableSponsorsAndProducts(user_id);
                 $('#add_customer').modal('show');
             },
-            toggleExtend: function(treeData){
-                treeData.extend = !treeData.extend;
-                if(treeData.extend){
-                    this.fetchGenealogyTree(treeData.user_id);
+
+            toggleExtend:async function(treeData) {
+                //treeData.extend = !treeData.extend;
+                 if(treeData.extend) {
+
+                    console.log('load');
+                    let tree = await this.fetchGenealogyTreeChild(treeData.user_id);
+
+                    if (tree.children !== undefined) {
+                        treeData.children = tree.children;
+                    } else {
+                        alert('No Child found');
+                    }
                 }
+
                 this.$forceUpdate();
             }
         }

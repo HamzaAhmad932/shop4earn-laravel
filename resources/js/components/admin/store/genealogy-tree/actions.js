@@ -16,6 +16,24 @@ let actions = {
         });
 
     },
+
+    fetchGenealogyTreeChild: async ({commit}, user_id = null) => {
+        commit('SHOW_LOADER', null, {root: true});
+        return new Promise((resolve, reject) => {
+            axios({
+                url: '/v1/get-genealogy-tree',
+                method: 'POST',
+                data: { user_id }
+            }).then((resp) => {
+                resolve(resp.data.data);
+                commit('HIDE_LOADER', null, {root: true});
+            }).catch((err) => {
+                commit('HIDE_LOADER', null, {root: true});
+                console.log(err);
+            });
+
+        });
+    },
 };
 
 
