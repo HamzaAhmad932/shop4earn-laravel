@@ -2077,19 +2077,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     products: function products(state) {
       return state.customers.products;
     },
-    direct_sponsor: function direct_sponsor(state) {
-      return state.customers.add_customer.direct_sponsor;
+    parent_id: function parent_id(state) {
+      return state.customers.add_customer.parent_id;
     }
   })),
   watch: {
-    direct_sponsor: {
+    parent_id: {
       deep: true,
       handler: function handler(new_value, old_value) {
-        console.log(new_value);
-
-        if (new_value !== '') {//this.fetchAvailableSponsorsAndProducts(new_value);
-        } else {//this.fetchAvailableSponsorsAndProducts();
-          }
+        if (new_value !== '') {
+          this.fetchAvailableSponsorsAndProducts(new_value);
+        } else {
+          this.fetchAvailableSponsorsAndProducts();
+        }
       }
     }
   },
@@ -2237,6 +2237,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TreeChart",
@@ -2268,10 +2271,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       immediate: true
     }
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['SET_DIRECT_SPONSOR']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['fetchAvailableSponsorsAndProducts', 'fetchGenealogyTree', 'fetchGenealogyTreeChild']), {
-    assignSponsor: function assignSponsor(user_id) {
-      this.SET_DIRECT_SPONSOR(user_id);
-      this.fetchAvailableSponsorsAndProducts(user_id);
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['SET_DIRECT_PARENT_AND_POSITION']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['fetchAvailableSponsorsAndProducts', 'fetchGenealogyTree', 'fetchGenealogyTreeChild']), {
+    assignSponsor: function assignSponsor(treeData) {
+      this.SET_DIRECT_PARENT_AND_POSITION({
+        parent_id: treeData.parent_id,
+        position: treeData.position
+      });
+      this.fetchAvailableSponsorsAndProducts(treeData.parent_id);
       $('#add_customer').modal('show');
     },
     toggleExtend: function () {
@@ -2283,12 +2289,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                treeData.extend = !treeData.extend;
+
                 if (!treeData.extend) {
                   _context.next = 6;
                   break;
                 }
 
-                console.log('load');
                 _context.next = 4;
                 return this.fetchGenealogyTreeChild(treeData.user_id);
 
@@ -2297,8 +2304,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                 if (tree.children !== undefined) {
                   treeData.children = tree.children;
-                } else {
-                  alert('No Child found');
+                } else {//alert('No Child found');
                 }
 
               case 6:
@@ -2335,7 +2341,7 @@ exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base
 
 
 // module
-exports.push([module.i, "\r\n.loading-container[data-v-3605d0f6] {\r\n  position: absolute;\r\n  top: 0px;\r\n  left: 0px;\r\n  right: 0px;\r\n  bottom: 0px;\r\n  text-align: center;\r\n}\r\n.loading-container .loading-backdrop[data-v-3605d0f6] {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    height: 100%;\r\n    width: 100%;\r\n    background-color: lightgray;\r\n    opacity: 0.5;\r\n    z-index: 9998;\r\n}\r\n.loading-container .loading[data-v-3605d0f6] {\r\n    z-index: 9999;\r\n    position: fixed;\r\n    display: inline-block;\r\n    background-color: white;\r\n    padding: 20px 50px;\r\n    border-radius: 12px;\r\n    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\r\n    left: 50%;\r\n    top: 50%;\r\n    transform: translate(-50%, -50%);\r\n}\r\n.loading-container .loading .loading-icon[data-v-3605d0f6] {\r\n      margin-bottom: 8px;\r\n}\r\n", ""]);
+exports.push([module.i, "\n.loading-container[data-v-3605d0f6] {\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  right: 0px;\n  bottom: 0px;\n  text-align: center;\n}\n.loading-container .loading-backdrop[data-v-3605d0f6] {\n    position: fixed;\n    top: 0;\n    left: 0;\n    height: 100%;\n    width: 100%;\n    background-color: lightgray;\n    opacity: 0.5;\n    z-index: 9998;\n}\n.loading-container .loading[data-v-3605d0f6] {\n    z-index: 9999;\n    position: fixed;\n    display: inline-block;\n    background-color: white;\n    padding: 20px 50px;\n    border-radius: 12px;\n    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n}\n.loading-container .loading .loading-icon[data-v-3605d0f6] {\n      margin-bottom: 8px;\n}\n", ""]);
 
 // exports
 
@@ -43851,18 +43857,36 @@ var render = function() {
                       },
                       [
                         _c("div", { staticClass: "tooltip-target avat" }, [
-                          _c("img", { attrs: { src: _vm.treeData.image_url } })
+                          _vm.treeData.clickable
+                            ? _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.assignSponsor(_vm.treeData)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("img", {
+                                    attrs: { src: _vm.treeData.image_url }
+                                  })
+                                ]
+                              )
+                            : _c("img", {
+                                attrs: { src: _vm.treeData.image_url }
+                              })
                         ]),
                         _vm._v(" "),
                         _c("template", { slot: "popover" }, [
-                          _vm._v("cus\n                            "),
                           _c(
                             "button",
                             {
                               staticClass: "btn btn-info btn-sm",
                               on: {
                                 click: function($event) {
-                                  return _vm.assignSponsor(_vm.treeData.user_id)
+                                  return _vm.assignSponsor(_vm.treeData)
                                 }
                               }
                             },
@@ -43909,17 +43933,19 @@ var render = function() {
                   : _vm._e()
               ]),
               _vm._v(" "),
-              _c("div", {
-                staticClass: "extend_handle",
-                class: _vm.treeData.extend
-                  ? "fa fa-minus-circle"
-                  : "fa fa-plus-circle",
-                on: {
-                  click: function($event) {
-                    return _vm.toggleExtend(_vm.treeData)
-                  }
-                }
-              })
+              _vm.treeData.show_extend
+                ? _c("div", {
+                    staticClass: "extend_handle",
+                    class: _vm.treeData.extend
+                      ? "fa fa-minus-circle"
+                      : "fa fa-plus-circle",
+                    on: {
+                      click: function($event) {
+                        return _vm.toggleExtend(_vm.treeData)
+                      }
+                    }
+                  })
+                : _vm._e()
             ]
           )
         ]),
@@ -45691,7 +45717,7 @@ var actions = {
   fetchAvailableSponsorsAndProducts: function () {
     var _fetchAvailableSponsorsAndProducts = _asyncToGenerator(
     /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref2, sponsor_id) {
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref2, parent_id) {
       var commit;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
         while (1) {
@@ -45705,7 +45731,7 @@ var actions = {
                 url: '/v1/get-available-sponsors-and-products',
                 method: 'POST',
                 data: {
-                  sponsor_id: sponsor_id
+                  parent_id: parent_id
                 }
               }).then(function (resp) {
                 commit('SET_AVAILABLE_SPONSORS_AND_PRODUCTS', resp.data);
@@ -45818,8 +45844,28 @@ var mutations = {
     state.add_customer.name = 'User' + payload.data.mx_id.toString();
     return state;
   },
-  SET_DIRECT_SPONSOR: function SET_DIRECT_SPONSOR(state, payload) {
-    return state.direct_sponsor = payload;
+  SET_DIRECT_PARENT_AND_POSITION: function SET_DIRECT_PARENT_AND_POSITION(state, _ref) {
+    var parent_id = _ref.parent_id,
+        position = _ref.position;
+    state.add_customer.parent_id = parent_id;
+    state.add_customer.position = position;
+    state.add_customer.is_manual = true;
+
+    if (position == 1) {
+      state.add_customer.positions = [{
+        label: 'Left',
+        code: 1
+      }];
+    }
+
+    if (position == 2) {
+      state.add_customer.positions = [{
+        label: 'Right',
+        code: 2
+      }];
+    }
+
+    return state;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (mutations);
@@ -45847,7 +45893,8 @@ var getAddCustomerInitial = function getAddCustomerInitial() {
     name: '',
     city: 'Faisalabad',
     mobile: '03006611403',
-    direct_sponsor: '',
+    parent_id: '',
+    is_manual: false,
     error_status: {
       sponser_id: false,
       position: false,
@@ -46294,8 +46341,8 @@ Vue.component('genealogy-tree', __webpack_require__(/*! ./components/admin/genea
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\xamp\htdocs\shop4earn-laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\xamp\htdocs\shop4earn-laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\wamp64\www\shop4earn\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\wamp64\www\shop4earn\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

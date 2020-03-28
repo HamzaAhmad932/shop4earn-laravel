@@ -21,6 +21,8 @@ class CustomerController extends Controller
 {
     use CustomerTrait;
 
+    public $upline = [];
+
     public function saveCustomer(CustomerRequest $request){
 
         try {
@@ -52,9 +54,25 @@ class CustomerController extends Controller
     {
         $sponsor_present = !empty($request->sponsor_id);
         if($sponsor_present){
-            $parent_id = $this->getTreeNodeFromManualPosition($request->sponsor_id, $request->position);
+            if(!$request->is_manual){
+                $parent_id = $this->getTreeNodeFromManualPosition($request->sponsor_id, $request->position);
+            }else{
+                if($request->parent_id != '') {
+                    $parent_id = $request->parent_id;
+                }else{
+                    $parent_id = $this->getTreeNodeFromManualPosition($request->sponsor_id, $request->position);
+                }
+            }
         }else{
-            $parent_id = DefaultSponsor::find(1)->user_id;
+            if(!$request->is_manual) {
+                $parent_id = DefaultSponsor::find(1)->user_id;
+            }else{
+                if($request->parent_id != '') {
+                    $parent_id = $request->parent_id;
+                }else{
+                    $parent_id = DefaultSponsor::find(1)->user_id;
+                }
+            }
         }
 
         $user = User::create([
@@ -117,13 +135,16 @@ class CustomerController extends Controller
 
     public function getAvailableSponsorsAndProducts(Request $request)
     {
-        $sponser_id = $request->sponsor_id;
-        if(!empty($sponser_id)){
+        $parent_id = $request->parent_id;
+        if(!empty($parent_id)){
+
+            $upline_customer_ids = $this->getUplineIDs($parent_id);
+
             $customers = User::with('sponsor')
                 ->whereNotIn('role_id', [
                     User::SUB_ADMIN_ROLE,
                     User::SUPER_ADMIN_ROLE
-                ])->where('id', $sponser_id)->get();
+                ])->whereIn('id', $upline_customer_ids)->get();
         }else{
             $customers = User::with('sponsor')
                 ->whereNotIn('role_id', [
@@ -132,7 +153,7 @@ class CustomerController extends Controller
                 ])->get();
         }
         $products = Product::all();
-        $get_mx_id = !empty($customers->last()) ? $customers->last()->id : 0;
+        $get_mx_id = User::max('id');
 
         $product = $products->transform(function ($product) {
             return [
@@ -169,6 +190,31 @@ class CustomerController extends Controller
 
     public function rankupdate(){
 
-        $this->updateSponsorRank(3);
+        $parent_id = 68;
+        $this->upline = [];
+        $this->getUpline($parent_id);
+        dd($this->upline);
+
+    }
+
+    public function getUplineIDs(int $parent_id){
+
+        $this->upline = [];
+        $this->getUpline($parent_id);
+        return $this->upline;
+    }
+
+    private function getUpline($parent_id){
+
+        array_push($this->upline, $parent_id);
+        $parent = Customer::where('user_id', $parent_id)->first();
+        if(!empty($parent)){
+
+            if($parent->parent_id == 2){
+                return false;
+            }
+            return $this->getUpline($parent->parent_id);
+        }
     }
 }
+

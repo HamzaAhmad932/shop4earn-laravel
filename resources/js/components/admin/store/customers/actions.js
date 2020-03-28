@@ -42,12 +42,12 @@ let actions = {
     },
 
 
-    fetchAvailableSponsorsAndProducts: async ({commit}, sponsor_id) => {
+    fetchAvailableSponsorsAndProducts: async ({commit}, parent_id) => {
         commit('SHOW_LOADER', null, {root: true});
         axios({
             url: '/v1/get-available-sponsors-and-products',
             method: 'POST',
-            data : {sponsor_id}
+            data : {parent_id}
         }).then((resp) => {
             commit('SET_AVAILABLE_SPONSORS_AND_PRODUCTS', resp.data);
             commit('HIDE_LOADER', null, {root: true});

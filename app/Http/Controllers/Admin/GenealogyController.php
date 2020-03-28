@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class GenealogyController extends Controller
 {
 
-    public const LOAD_MAX_LEVEL = 4;
+    public const LOAD_MAX_LEVEL = 3;
 
     public function getGenealogyTree(Request $request) {
 
@@ -57,10 +57,12 @@ class GenealogyController extends Controller
         $tree['user_id'] = $customer->user_id;
         $tree['name'] = $customer->user->name.' ('.$position.')';
         $tree['image_url'] = Voyager::image($customer->user->avatar);
+        $tree['extend'] = $level < self::LOAD_MAX_LEVEL; // Have sub child, can extend or load sub child by ajax request (Show load more button in UI for this user)
+        $tree['show_extend'] = true;
+        $tree['clickable'] = false;
+        $tree['position'] = $customer->position;
 
         $childs = $customers->where('parent_id', $customer->user_id)->sortBy('position');
-
-        $tree['extend'] = !empty($childs); // Have sub child, can extend or load sub child by ajax request (Show load more button in UI for this user)
 
         foreach ($childs as $child) {
 
@@ -71,6 +73,41 @@ class GenealogyController extends Controller
             } else {
                 break; // Stop Recursion after Required Steps Loaded.
             }
+        }
+
+        if($childs->count() > 0 && $childs->count() < 2){
+            $pos = $childs->first()->position == 1 ? 'R' : 'L';
+            $tree['children'][1]['level'] = '';
+            $tree['children'][1]['user_id'] = '';
+            $tree['children'][1]['position'] = $childs->first()->position == 1 ? 2 : 1;
+            $tree['children'][1]['name'] = 'Add User'.' ('.$pos.')';
+            $tree['children'][1]['image_url'] = asset('/assets/images/plus_icon.png');
+            $tree['children'][1]['extend'] = false;
+            $tree['children'][1]['show_extend'] = false;
+            $tree['children'][1]['clickable'] = true;
+            $tree['children'][1]['parent_id'] = $customer->user_id;
+        }
+
+        if($childs->count() == 0){
+            $tree['children'][0]['level'] = '';
+            $tree['children'][0]['user_id'] = '';
+            $tree['children'][0]['position'] = 1;
+            $tree['children'][0]['name'] = 'Add User (L)';
+            $tree['children'][0]['image_url'] = asset('/assets/images/plus_icon.png');
+            $tree['children'][0]['extend'] = false;
+            $tree['children'][0]['show_extend'] = false;
+            $tree['children'][0]['clickable'] = true;
+            $tree['children'][0]['parent_id'] = $customer->user_id;
+
+            $tree['children'][1]['level'] = '';
+            $tree['children'][1]['user_id'] = '';
+            $tree['children'][1]['position'] = 2;
+            $tree['children'][1]['name'] = 'Add User (R)';
+            $tree['children'][1]['image_url'] = asset('/assets/images/plus_icon.png');
+            $tree['children'][1]['extend'] = false;
+            $tree['children'][1]['show_extend'] = false;
+            $tree['children'][1]['clickable'] = true;
+            $tree['children'][1]['parent_id'] = $customer->user_id;
         }
 
         return $tree;
