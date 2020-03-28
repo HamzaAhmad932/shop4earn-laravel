@@ -10,11 +10,14 @@
                             disabled="true"
                         >
                             <div class="tooltip-target avat">
-                                <img :src="treeData.image_url" />
+                                <a href="#" v-if="treeData.clickable" @click="assignSponsor(treeData)">
+                                    <img :src="treeData.image_url" />
+                                </a>
+                                <img v-else :src="treeData.image_url" />
                             </div>
 
-                            <template slot="popover">cus
-                                <button class="btn btn-info btn-sm" @click="assignSponsor(treeData.user_id)"><i class="voyager-plus"></i> Add Member</button>
+                            <template slot="popover">
+                                <button class="btn btn-info btn-sm" @click="assignSponsor(treeData)"><i class="voyager-plus"></i> Add Member</button>
                             <!--<a v-close-popover>Close</a>-->
                             </template>
                         </v-popover>
@@ -27,7 +30,7 @@
                         <div class="name">{{treeData.mate.name}}</div>
                     </div>
                 </div>
-                <div class="extend_handle" :class="treeData.extend ? 'fa fa-minus-circle' : 'fa fa-plus-circle'" @click="toggleExtend(treeData)"></div>
+                <div class="extend_handle" :class="treeData.extend ? 'fa fa-minus-circle' : 'fa fa-plus-circle'" v-if="treeData.show_extend" @click="toggleExtend(treeData)"></div>
             </td>
         </tr>
         <tr v-if="treeData.children && treeData.extend">
@@ -70,30 +73,29 @@
         },
         methods: {
             ...mapMutations([
-                'SET_DIRECT_SPONSOR'
+                'SET_DIRECT_PARENT_AND_POSITION'
             ]),
             ...mapActions([
                 'fetchAvailableSponsorsAndProducts',
                 'fetchGenealogyTree',
                 'fetchGenealogyTreeChild'
             ]),
-            assignSponsor: function(user_id){
-                this.SET_DIRECT_SPONSOR(user_id);
-                this.fetchAvailableSponsorsAndProducts(user_id);
+            assignSponsor: function(treeData){
+                this.SET_DIRECT_PARENT_AND_POSITION({parent_id : treeData.parent_id, position: treeData.position});
+                this.fetchAvailableSponsorsAndProducts(treeData.parent_id);
                 $('#add_customer').modal('show');
             },
 
             toggleExtend:async function(treeData) {
-                //treeData.extend = !treeData.extend;
+                treeData.extend = !treeData.extend;
                  if(treeData.extend) {
 
-                    console.log('load');
                     let tree = await this.fetchGenealogyTreeChild(treeData.user_id);
 
                     if (tree.children !== undefined) {
                         treeData.children = tree.children;
                     } else {
-                        alert('No Child found');
+                        //alert('No Child found');
                     }
                 }
 

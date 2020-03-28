@@ -29,8 +29,18 @@ let mutations = {
         state.add_customer.name = 'User'+payload.data.mx_id.toString();
         return state;
     },
-    SET_DIRECT_SPONSOR(state, payload){
-        return state.direct_sponsor = payload;
+    SET_DIRECT_PARENT_AND_POSITION(state, {parent_id, position}){
+        state.add_customer.parent_id = parent_id;
+        state.add_customer.position = position;
+        state.add_customer.is_manual = true;
+
+        if(position == 1){
+            state.add_customer.positions = [{label: 'Left', code: 1}];
+        }
+        if(position == 2){
+            state.add_customer.positions = [{label: 'Right', code: 2}];
+        }
+        return state;
     }
 };
 

@@ -160,20 +160,19 @@
                 products: function (state) {
                     return state.customers.products;
                 },
-                direct_sponsor: function (state) {
-                    return state.customers.add_customer.direct_sponsor;
+                parent_id: function (state) {
+                    return state.customers.add_customer.parent_id;
                 }
             })
         },
         watch: {
-            direct_sponsor: {
+            parent_id: {
                 deep: true,
                 handler(new_value, old_value){
-                    console.log(new_value);
                     if(new_value !== ''){
-                        //this.fetchAvailableSponsorsAndProducts(new_value);
+                        this.fetchAvailableSponsorsAndProducts(new_value);
                     }else{
-                        //this.fetchAvailableSponsorsAndProducts();
+                        this.fetchAvailableSponsorsAndProducts();
                     }
                 }
             }
