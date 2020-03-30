@@ -77,15 +77,18 @@ class GenealogyController extends Controller
 
         if($childs->count() > 0 && $childs->count() < 2){
             $pos = $childs->first()->position == 1 ? 'R' : 'L';
-            $tree['children'][1]['level'] = '';
-            $tree['children'][1]['user_id'] = '';
-            $tree['children'][1]['position'] = $childs->first()->position == 1 ? 2 : 1;
-            $tree['children'][1]['name'] = 'Add User'.' ('.$pos.')';
-            $tree['children'][1]['image_url'] = asset('/assets/images/plus_icon.png');
-            $tree['children'][1]['extend'] = false;
-            $tree['children'][1]['show_extend'] = false;
-            $tree['children'][1]['clickable'] = true;
-            $tree['children'][1]['parent_id'] = $customer->user_id;
+            $pos_id = $childs->first()->position == 1 ? 2 : 1;
+            $index = $pos_id == 2 ? 0 : 1;
+            $tree['children'][$index]['level'] = '';
+            $tree['children'][$index]['user_id'] = '';
+            $tree['children'][$index]['position'] = $pos_id;
+            $tree['children'][$index]['name'] = 'Add User'.' ('.$pos.')';
+            $tree['children'][$index]['image_url'] = asset('/assets/images/plus_icon.png');
+            $tree['children'][$index]['extend'] = false;
+            $tree['children'][$index]['show_extend'] = false;
+            $tree['children'][$index]['clickable'] = true;
+            $tree['children'][$index]['parent_id'] = $customer->user_id;
+            sort($tree['children']);
         }
 
         if($childs->count() == 0){
