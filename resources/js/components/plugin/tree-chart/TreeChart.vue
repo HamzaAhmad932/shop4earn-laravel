@@ -7,7 +7,6 @@
                         <v-popover
                             offset="5"
                             placement="top"
-                            disabled="true"
                         >
                             <div class="tooltip-target avat">
                                 <a href="#" v-if="treeData.clickable" @click="assignSponsor(treeData)">
@@ -17,7 +16,12 @@
                             </div>
 
                             <template slot="popover">
-                                <button class="btn btn-info btn-sm" @click="assignSponsor(treeData)"><i class="voyager-plus"></i> Add Member</button>
+                                <p>
+                                    <span>User: </span><span>{{treeData.user_name}}</span>
+                                    <br>
+                                    <span>Sponsored By: </span><span>{{treeData.sponsor}}</span>
+                                </p>
+<!--                                <button class="btn btn-info btn-sm" @click="assignSponsor(treeData)"><i class="voyager-plus"></i> Add Member</button>-->
                             <!--<a v-close-popover>Close</a>-->
                             </template>
                         </v-popover>

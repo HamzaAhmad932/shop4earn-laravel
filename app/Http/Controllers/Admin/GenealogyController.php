@@ -17,7 +17,7 @@ class GenealogyController extends Controller
     public function getGenealogyTree(Request $request) {
 
         $user = Auth::user();
-        $customers = Customer::with('user')->get();
+        $customers = Customer::with('user', 'sponsor')->get()->keyBy('id');
 
         if (!empty($request->user_id)) { //Ajax Reload next levels
 
@@ -59,6 +59,8 @@ class GenealogyController extends Controller
         $tree['image_url'] = Voyager::image($customer->user->avatar);
         $tree['extend'] = $level < self::LOAD_MAX_LEVEL; // Have sub child, can extend or load sub child by ajax request (Show load more button in UI for this user)
         $tree['show_extend'] = true;
+        $tree['sponsor'] = !empty($customer->sponsor) ? $customer->sponsor->user->name.' ('.$customer->sponsor_id.')' : '('.$customer->sponsor_id.')';
+        $tree['user_name'] = $customer->user->name;
         $tree['clickable'] = false;
         $tree['position'] = $customer->position;
 
@@ -76,19 +78,27 @@ class GenealogyController extends Controller
         }
 
         if($childs->count() > 0 && $childs->count() < 2){
-            $pos = $childs->first()->position == 1 ? 'R' : 'L';
-            $pos_id = $childs->first()->position == 1 ? 2 : 1;
+            $first = $childs->first();
+            $pos = $first->position == 1 ? 'R' : 'L';
+            $pos_id = $first->position == 1 ? 2 : 1;
             $index = $pos_id == 2 ? 0 : 1;
+            if(array_key_exists($index, $tree['children'])){
+                $index = $index == 0 ? 1 : 0;
+            }
+
             $tree['children'][$index]['level'] = '';
             $tree['children'][$index]['user_id'] = '';
             $tree['children'][$index]['position'] = $pos_id;
             $tree['children'][$index]['name'] = 'Add User'.' ('.$pos.')';
+            $tree['children'][$index]['sponsor'] = '';
+            $tree['children'][$index]['user_name'] = '';
             $tree['children'][$index]['image_url'] = asset('/assets/images/plus_icon.png');
             $tree['children'][$index]['extend'] = false;
             $tree['children'][$index]['show_extend'] = false;
             $tree['children'][$index]['clickable'] = true;
             $tree['children'][$index]['parent_id'] = $customer->user_id;
-            sort($tree['children']);
+            //sort($tree['children']);
+
         }
 
         if($childs->count() == 0){
@@ -96,6 +106,8 @@ class GenealogyController extends Controller
             $tree['children'][0]['user_id'] = '';
             $tree['children'][0]['position'] = 1;
             $tree['children'][0]['name'] = 'Add User (L)';
+            $tree['children'][0]['sponsor'] = '';
+            $tree['children'][0]['user_name'] = '';
             $tree['children'][0]['image_url'] = asset('/assets/images/plus_icon.png');
             $tree['children'][0]['extend'] = false;
             $tree['children'][0]['show_extend'] = false;
@@ -106,6 +118,8 @@ class GenealogyController extends Controller
             $tree['children'][1]['user_id'] = '';
             $tree['children'][1]['position'] = 2;
             $tree['children'][1]['name'] = 'Add User (R)';
+            $tree['children'][1]['sponsor'] = '';
+            $tree['children'][1]['user_name'] = '';
             $tree['children'][1]['image_url'] = asset('/assets/images/plus_icon.png');
             $tree['children'][1]['extend'] = false;
             $tree['children'][1]['show_extend'] = false;

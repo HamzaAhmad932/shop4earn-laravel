@@ -2240,6 +2240,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TreeChart",
@@ -43848,13 +43852,7 @@ var render = function() {
                   [
                     _c(
                       "v-popover",
-                      {
-                        attrs: {
-                          offset: "5",
-                          placement: "top",
-                          disabled: "true"
-                        }
-                      },
+                      { attrs: { offset: "5", placement: "top" } },
                       [
                         _c("div", { staticClass: "tooltip-target avat" }, [
                           _vm.treeData.clickable
@@ -43880,21 +43878,17 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("template", { slot: "popover" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-info btn-sm",
-                              on: {
-                                click: function($event) {
-                                  return _vm.assignSponsor(_vm.treeData)
-                                }
-                              }
-                            },
-                            [
-                              _c("i", { staticClass: "voyager-plus" }),
-                              _vm._v(" Add Member")
-                            ]
-                          )
+                          _c("p", [
+                            _c("span", [_vm._v("User: ")]),
+                            _c("span", [
+                              _vm._v(_vm._s(_vm.treeData.user_name))
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Sponsored By: ")]),
+                            _c("span", [_vm._v(_vm._s(_vm.treeData.sponsor))])
+                          ])
                         ])
                       ],
                       2
