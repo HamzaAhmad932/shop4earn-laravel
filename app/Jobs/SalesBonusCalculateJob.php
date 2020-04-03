@@ -100,14 +100,8 @@ class SalesBonusCalculateJob implements ShouldQueue
 
             //dd([$user, $left_childs_bv, $right_childs_bv, $left_childs, $right_childs]);
 
-            if ($user->customer->rank_id == Rank::ZERO){
-                continue;
-            }
-
             $left_points = ($left_childs_bv / 100) * $user->customer->criteria->percentage;
             $right_points = ($right_childs_bv / 100) * $user->customer->criteria->percentage;
-
-            //dd([$left_points, $right_points]);
 
             //dump($left_childs_bv < $right_childs_bv);
             if ($left_childs_bv < $right_childs_bv) { // Left Weaker
@@ -163,7 +157,7 @@ class SalesBonusCalculateJob implements ShouldQueue
 
             //dd([$left_points, $right_points, $carry_forward, $sales_bonus_detail, $user->id]);
 
-            if(($left_points > 0) || ($right_points > 0)){
+//            if(($left_points > 0) || ($right_points > 0)){
 
                 if(!empty($sales_bonus_detail)) {
                     SalesBonusDetail::insert($sales_bonus_detail);
@@ -193,7 +187,7 @@ class SalesBonusCalculateJob implements ShouldQueue
                     SalesBonusDetail::insert($sales_bonus_detail);
                     $this->updateEarning($user->id, $left_points, 0);
                 }
-            }
+//            }
         }
         if(!empty($update_is_paired_ids)){
             Customer::whereIn('user_id', $update_is_paired_ids)->update(['is_paired'=> 1]);
