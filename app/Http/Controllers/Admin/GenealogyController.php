@@ -82,7 +82,7 @@ class GenealogyController extends Controller
             $pos = $first->position == 1 ? 'R' : 'L';
             $pos_id = $first->position == 1 ? 2 : 1;
             $index = $pos_id == 2 ? 0 : 1;
-            if(array_key_exists($index, $tree['children'])){
+            if(!empty($tree['children']) && array_key_exists($index, $tree['children'])){
                 $index = $index == 0 ? 1 : 0;
             }
 
