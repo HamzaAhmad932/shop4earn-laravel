@@ -45662,6 +45662,8 @@ var actions = {
 
                   commit('RESET_ADD_CUSTOMER_FORM');
                   dispatch('fetchAvailableSponsorsAndProducts');
+                  dispatch('fetchGenealogyTree');
+                  $('#add_customer').modal('hide');
                 } else {
                   toastr.error(resp.data.message);
                 }

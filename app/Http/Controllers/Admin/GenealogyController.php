@@ -17,7 +17,7 @@ class GenealogyController extends Controller
     public function getGenealogyTree(Request $request) {
 
         $user = Auth::user();
-        $customers = Customer::with('user', 'sponsor')->get()->keyBy('id');
+        $customers = Customer::with('user', 'sponsor')->get();
 
         if (!empty($request->user_id)) { //Ajax Reload next levels
 
@@ -77,11 +77,12 @@ class GenealogyController extends Controller
             }
         }
 
-        if($childs->count() > 0 && $childs->count() < 2){
+        if($childs->count() == 1){
+            //dd($childs);
             $first = $childs->first();
             $pos = $first->position == 1 ? 'R' : 'L';
             $pos_id = $first->position == 1 ? 2 : 1;
-            $index = $pos_id == 1 ? 0 : 1;
+            $index = $first->position == 1 ? 1 : 0;
             if(!empty($tree['children']) && array_key_exists($index, $tree['children'])){
                 $index = $index == 0 ? 1 : 0;
             }
@@ -98,6 +99,10 @@ class GenealogyController extends Controller
             $tree['children'][$index]['clickable'] = true;
             $tree['children'][$index]['parent_id'] = $customer->user_id;
             //sort($tree['children']);
+            if($first->position == 2 && $tree['children'][0]['user_id'] != ''){
+                //dump([$tree['children'], sort($tree['children'])]);
+                sort($tree['children']);
+            }
 
         }
 

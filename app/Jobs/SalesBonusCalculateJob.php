@@ -33,7 +33,7 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function __construct()
     {
-        Log::notice(__CLASS__ . 'Dispatched');
+        //Log::notice(__CLASS__ . 'Dispatched');
     }
 
     /**
@@ -98,17 +98,19 @@ class SalesBonusCalculateJob implements ShouldQueue
                 continue;
             }
 
-            //dd([$user, $left_childs_bv, $right_childs_bv, $left_childs, $right_childs]);
+//            dd([$user, $left_childs_bv, $right_childs_bv, $left_childs, $right_childs]);
 
             $left_points = ($left_childs_bv / 100) * $user->customer->criteria->percentage;
             $right_points = ($right_childs_bv / 100) * $user->customer->criteria->percentage;
+
+            //dd([$user, $left_childs_bv, $right_childs_bv, $left_childs, $right_childs, $left_points, $right_points]);
 
             //dump($left_childs_bv < $right_childs_bv);
             if ($left_childs_bv < $right_childs_bv) { // Left Weaker
 
                 $carry_forward = $right_childs_bv - $left_childs_bv;
 
-                $sales_bonus_detail = array(
+                $sales_bonus_detail = [
                     [
                         'user_id' => $user->id,
                         'sales_bonus' => $left_points,
@@ -126,7 +128,7 @@ class SalesBonusCalculateJob implements ShouldQueue
                         'updated_at' => $now,
 
                     ]
-                );
+                ];
 
             }
             //dump($right_childs_bv < $left_childs_bv);
@@ -134,7 +136,7 @@ class SalesBonusCalculateJob implements ShouldQueue
 
                 $carry_forward = $left_childs_bv - $right_childs_bv;
 
-                $sales_bonus_detail = array(
+                $sales_bonus_detail = [
                     [
                         'user_id' => $user->id,
                         'sales_bonus' => $right_points,
@@ -151,7 +153,7 @@ class SalesBonusCalculateJob implements ShouldQueue
                         'created_at' => $now,
                         'updated_at' => $now,
                     ]
-                );
+                ];
 
             }
 
@@ -161,7 +163,7 @@ class SalesBonusCalculateJob implements ShouldQueue
 
                 if(!empty($sales_bonus_detail)) {
                     SalesBonusDetail::insert($sales_bonus_detail);
-                    $this->updateEarning($user->id, ($left_points < $right_points ? $left_points : $right_points), $carry_forward);
+                    $this->updateEarning($user->id, ($left_points < $right_points ? $left_points : $right_points), !empty($carry_forward) ? $carry_forward : 0);
                 }else{
                     //points are equal
                     $sales_bonus_detail = array(
@@ -277,7 +279,7 @@ class SalesBonusCalculateJob implements ShouldQueue
              ]
          ));
          $this->updateEarning($user_id, 0, $bv);
-         Log::notice('no weaker side found for user id#' .$user_id);
+         //Log::notice('no weaker side found for user id#' .$user_id);
      }
 
 }
