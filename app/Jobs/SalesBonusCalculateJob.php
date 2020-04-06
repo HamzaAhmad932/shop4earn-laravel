@@ -106,7 +106,9 @@ class SalesBonusCalculateJob implements ShouldQueue
             //dd([$user, $left_childs_bv, $right_childs_bv, $left_childs, $right_childs, $left_points, $right_points]);
 
             //dump($left_childs_bv < $right_childs_bv);
-            if ($left_childs_bv < $right_childs_bv) { // Left Weaker
+            $sales_bonus_detail = [];
+            $carry_forward = 0;
+            if (round($left_childs_bv) < round($right_childs_bv)) { // Left Weaker
 
                 $carry_forward = $right_childs_bv - $left_childs_bv;
 
@@ -132,7 +134,7 @@ class SalesBonusCalculateJob implements ShouldQueue
 
             }
             //dump($right_childs_bv < $left_childs_bv);
-            if ($right_childs_bv < $left_childs_bv) { //Right Weaker
+            if (round($right_childs_bv) < round($left_childs_bv)) { //Right Weaker
 
                 $carry_forward = $left_childs_bv - $right_childs_bv;
 
@@ -156,8 +158,8 @@ class SalesBonusCalculateJob implements ShouldQueue
                 ];
 
             }
-
-            //dd([$left_points, $right_points, $carry_forward, $sales_bonus_detail, $user->id]);
+            dump(['right_child_bv'=>$right_childs_bv, 'left_child_bv'=> $left_childs_bv]);
+            dump([$left_points, $right_points, !empty($carry_forward) ? $carry_forward : 'cf=0', !empty($sales_bonus_detail) ? $sales_bonus_detail : 'sales_detail=[]', $user->id]);
 
 //            if(($left_points > 0) || ($right_points > 0)){
 

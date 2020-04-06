@@ -46,4 +46,7 @@ class Customer extends Model
     public function salesDetail(){
         return $this->hasMany(SaleDetail::class, 'user_id', 'user_id');
     }
+    public function earning(){
+        return $this->hasOne(Earning::class, 'user_id', 'user_id');
+    }
 }

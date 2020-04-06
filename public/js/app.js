@@ -2244,6 +2244,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TreeChart",
@@ -43852,7 +43861,13 @@ var render = function() {
                   [
                     _c(
                       "v-popover",
-                      { attrs: { offset: "5", placement: "top" } },
+                      {
+                        attrs: {
+                          offset: "5",
+                          placement: "top",
+                          disabled: !_vm.treeData.popover_show
+                        }
+                      },
                       [
                         _c("div", { staticClass: "tooltip-target avat" }, [
                           _vm.treeData.clickable
@@ -43878,7 +43893,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("template", { slot: "popover" }, [
-                          _c("p", [
+                          _c("p", { staticStyle: { "text-align": "left" } }, [
                             _c("span", [_vm._v("User: ")]),
                             _c("span", [
                               _vm._v(_vm._s(_vm.treeData.user_name))
@@ -43886,8 +43901,28 @@ var render = function() {
                             _vm._v(" "),
                             _c("br"),
                             _vm._v(" "),
+                            _c("span", [_vm._v("Rank: ")]),
+                            _c("span", [_vm._v(_vm._s(_vm.treeData.rank))]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
                             _c("span", [_vm._v("Sponsored By: ")]),
-                            _c("span", [_vm._v(_vm._s(_vm.treeData.sponsor))])
+                            _c("span", [_vm._v(_vm._s(_vm.treeData.sponsor))]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Sales Bonus: ")]),
+                            _c("span", [_vm._v(_vm._s(_vm.treeData.sb))]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Team Bonus: ")]),
+                            _c("span", [_vm._v(_vm._s(_vm.treeData.tb))]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Carry forward: ")]),
+                            _c("span", [_vm._v(_vm._s(_vm.treeData.cf))])
                           ])
                         ])
                       ],

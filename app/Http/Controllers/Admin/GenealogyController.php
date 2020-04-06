@@ -17,7 +17,7 @@ class GenealogyController extends Controller
     public function getGenealogyTree(Request $request) {
 
         $user = Auth::user();
-        $customers = Customer::with('user', 'sponsor')->get();
+        $customers = Customer::with(['rank', 'user', 'user.earning', 'sponsor'])->get();
 
         if (!empty($request->user_id)) { //Ajax Reload next levels
 
@@ -62,7 +62,12 @@ class GenealogyController extends Controller
         $tree['sponsor'] = !empty($customer->sponsor) ? $customer->sponsor->user->name.' ('.$customer->sponsor_id.')' : '('.$customer->sponsor_id.')';
         $tree['user_name'] = $customer->user->name;
         $tree['clickable'] = false;
+        $tree['popover_show'] = true;
+        $tree['rank'] = $customer->rank->rank_name;
         $tree['position'] = $customer->position;
+        $tree['sb'] = !empty($customer->user->earning) ? $customer->user->earning->sales_bonus : '--';
+        $tree['tb'] = !empty($customer->user->earning) ? $customer->user->earning->team_bonus : '--';
+        $tree['cf'] = !empty($customer->user->earning) ? $customer->user->earning->carry_forward: '--';
 
         $childs = $customers->where('parent_id', $customer->user_id)->sortBy('position');
 
@@ -97,6 +102,7 @@ class GenealogyController extends Controller
             $tree['children'][$index]['extend'] = false;
             $tree['children'][$index]['show_extend'] = false;
             $tree['children'][$index]['clickable'] = true;
+            $tree['children'][$index]['popover_show'] = false;
             $tree['children'][$index]['parent_id'] = $customer->user_id;
             //sort($tree['children']);
             if($first->position == 2 && $tree['children'][0]['user_id'] != ''){
@@ -117,6 +123,7 @@ class GenealogyController extends Controller
             $tree['children'][0]['extend'] = false;
             $tree['children'][0]['show_extend'] = false;
             $tree['children'][0]['clickable'] = true;
+            $tree['children'][0]['popover_show'] = false;
             $tree['children'][0]['parent_id'] = $customer->user_id;
 
             $tree['children'][1]['level'] = '';
@@ -129,6 +136,7 @@ class GenealogyController extends Controller
             $tree['children'][1]['extend'] = false;
             $tree['children'][1]['show_extend'] = false;
             $tree['children'][1]['clickable'] = true;
+            $tree['children'][1]['popover_show'] = false;
             $tree['children'][1]['parent_id'] = $customer->user_id;
         }
 
