@@ -2144,6 +2144,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2153,6 +2172,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['fetchGenealogyTree']), {
     showModal: function showModal() {
       $('#add_customer').modal('show');
+    },
+    applySearch: function applySearch() {
+      this.fetchGenealogyTree(this.g_tree.search.query);
+    },
+    resetSearch: function resetSearch() {
+      this.fetchGenealogyTree();
     } // fetchNewNode(treeData){
     //     this.fetchGenealogyTree(treeData.user_id);
     // }
@@ -43757,6 +43782,78 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-lg-12" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-lg-8 text-right" }, [
+              _vm.g_tree.search.error_status.user_id
+                ? _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(_vm._s(_vm.g_tree.search.error_message.user_id))
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-lg-4" }, [
+              _c("form", { staticClass: "form-inline my-2 my-lg-0" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.g_tree.search.query,
+                      expression: "g_tree.search.query"
+                    }
+                  ],
+                  staticClass: "form-control mr-sm-2",
+                  attrs: {
+                    type: "search",
+                    placeholder: "Search",
+                    "aria-label": "Search"
+                  },
+                  domProps: { value: _vm.g_tree.search.query },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.g_tree.search, "query", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-success my-2 my-sm-0",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.applySearch()
+                      }
+                    }
+                  },
+                  [_vm._v("Search")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-success my-2 my-sm-0",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.resetSearch()
+                      }
+                    }
+                  },
+                  [_vm._v("Reset")]
+                )
+              ])
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
         _c(
           "div",
           { staticClass: "col-lg-12" },
@@ -45983,6 +46080,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -46016,10 +46115,32 @@ var actions = {
                   root: true
                 });
               })["catch"](function (err) {
+                var errors = err.response;
+                var error_message = {};
+                var error_status = {};
+
+                if (errors.status == 422) {
+                  if (errors.data) {
+                    for (var k1 in errors.data) {
+                      if (_typeof(errors.data[k1]) == "object") {
+                        var validation_errors = errors.data[k1];
+
+                        for (var k2 in validation_errors) {
+                          error_message[k2] = validation_errors[k2][0];
+                          error_status[k2] = true;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                commit('SET_SEARCH_ERRORS', {
+                  error_message: error_message,
+                  error_status: error_status
+                });
                 commit('HIDE_LOADER', null, {
                   root: true
                 });
-                console.log(err);
               });
 
             case 4:
@@ -46140,9 +46261,18 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var mutations = {
   SET_GENEALOGY_TREE: function SET_GENEALOGY_TREE(state, payload) {
     return state.tree_data = payload;
+  },
+  SET_SEARCH_ERRORS: function SET_SEARCH_ERRORS(state, payload) {
+    return state.search = _objectSpread({}, state.search, {}, payload);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (mutations);
@@ -46159,7 +46289,16 @@ var mutations = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var state = {
-  tree_data: {}
+  tree_data: {},
+  search: {
+    query: '',
+    error_status: {
+      user_id: false
+    },
+    error_message: {
+      user_id: ''
+    }
+  }
 };
 /* harmony default export */ __webpack_exports__["default"] = (state);
 

@@ -18,6 +18,25 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-8 text-right">
+                        <div class="invalid-feedback" v-if="g_tree.search.error_status.user_id">{{g_tree.search.error_message.user_id}}</div>
+                    </div>
+                    <div class="col-lg-4">
+                        <form class="form-inline my-2 my-lg-0">
+<!--                            <select name="" id="" class="form-control">-->
+<!--                                <option value="user_id" selected>User ID</option>-->
+<!--                            </select>-->
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" v-model="g_tree.search.query">
+                            <button class="btn btn-outline-success my-2 my-sm-0" @click.prevent="applySearch()">Search</button>
+                            <button class="btn btn-outline-success my-2 my-sm-0" @click.prevent="resetSearch()">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
                 <TreeChart :json="g_tree.tree_data" v-on:fetch-node="fetchNewNode($event)" />
             </div>
         </div>
@@ -41,6 +60,12 @@
             showModal(){
                 $('#add_customer').modal('show');
             },
+            applySearch(){
+                this.fetchGenealogyTree(this.g_tree.search.query);
+            },
+            resetSearch(){
+                this.fetchGenealogyTree();
+            },
             // fetchNewNode(treeData){
             //     this.fetchGenealogyTree(treeData.user_id);
             // }
@@ -52,7 +77,7 @@
                 },
                 g_tree: (state)=>{
                     return state.genealogy_tree;
-                }
+                },
             })
         },
         mounted() {

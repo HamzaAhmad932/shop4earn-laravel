@@ -1,6 +1,15 @@
 let state = {
 
-    tree_data: {}
+    tree_data: {},
+    search: {
+        query: '',
+        error_status:{
+            user_id: false
+        },
+        error_message: {
+            user_id: ''
+        }
+    }
 };
 
 

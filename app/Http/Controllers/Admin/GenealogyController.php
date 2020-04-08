@@ -8,6 +8,7 @@ use TCG\Voyager\Facades\Voyager;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class GenealogyController extends Controller
 {
@@ -17,11 +18,22 @@ class GenealogyController extends Controller
     public function getGenealogyTree(Request $request) {
 
         $user = Auth::user();
-        $customers = Customer::with(['rank', 'user', 'user.earning', 'sponsor'])->get();
+        $customers = Customer::with(['rank', 'user', 'user.earning', 'user.salesBonusDetail', 'sponsor'])->get();
 
-        if (!empty($request->user_id)) { //Ajax Reload next levels
+        if (!empty($request->user_id)) {
+
+            $this->validate($request, [
+                'user_id'=> 'required|numeric|min:3'
+            ], [
+                'user_id.required'=> 'User ID is required.',
+                'user_id.numeric'=> 'User ID is must be a number.',
+                'user_id.min'=> 'User ID is must be greater than 3.'
+            ]);
 
             $first_customer = $customers->where('user_id', $request->user_id)->first();
+            if(empty($first_customer)){
+                throw ValidationException::withMessages(['user_id' => 'This User does not exist.']);
+            }
 
         } else { // Load first 4 level child.
 
@@ -65,9 +77,14 @@ class GenealogyController extends Controller
         $tree['popover_show'] = true;
         $tree['rank'] = $customer->rank->rank_name;
         $tree['position'] = $customer->position;
+        $cf_position = '';
+        if(!empty($customer->user->salesBonusDetail)){
+            $last_sale_entry = $customer->user->salesBonusDetail->sortByDesc('created_at')->take(2)->where('carry_forward', '!=', 0)->first();
+            $cf_position = !empty($last_sale_entry) ? $last_sale_entry->position == 1 ? 'L': 'R' : '';
+        }
         $tree['sb'] = !empty($customer->user->earning) ? $customer->user->earning->sales_bonus : '--';
         $tree['tb'] = !empty($customer->user->earning) ? $customer->user->earning->team_bonus : '--';
-        $tree['cf'] = !empty($customer->user->earning) ? $customer->user->earning->carry_forward: '--';
+        $tree['cf'] = !empty($customer->user->earning) ? $customer->user->earning->carry_forward.'('.$cf_position.')' : '--';
 
         $childs = $customers->where('parent_id', $customer->user_id)->sortBy('position');
 
