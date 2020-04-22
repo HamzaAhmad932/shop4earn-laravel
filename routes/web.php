@@ -19,6 +19,8 @@ Route::group(['prefix' => 'portal'], function () {
     Voyager::routes();
 
     Route::get('genealogy-tree', 'Voyager\GenealogyController@index')->name('genealogy-tree');
+    Route::get('request-payout', 'Voyager\PayoutRequestController@index')->name('request-payout');
+    Route::get('request-payout/create', 'Voyager\PayoutRequestController@create')->name('request-payout-create');
 });
 
 
@@ -27,11 +29,10 @@ Route::group(['prefix'=> 'v1'], function(){
     // New Customer Registration related Routes
     Route::post('save-customer', 'Admin\CustomerController@saveCustomer')->name('save_customer');
     Route::post('get-available-sponsors-and-products', 'Admin\CustomerController@getAvailableSponsorsAndProducts')->name('get_available_sponsors_and_products');
-
-
     Route::post('get-genealogy-tree', 'Admin\GenealogyController@getGenealogyTree');
-
-
+    Route::post('fetch-all-payout-requests', 'Voyager\PayoutRequestController@fetchAllPayoutRequests');
+    Route::get('fetch-all-payment-method', 'Voyager\PayoutRequestController@fetchAllPaymentMethod');
+    Route::post('add-payout-request', 'Voyager\PayoutRequestController@addPayoutRequest');
 });
 
 Route::get('test-team-bonus', 'Admin\CustomerController@testTeamBonus');

@@ -43,6 +43,8 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::debug('job dispatched');
+
         $users = User::select('id')->where('role_id', 3)->with(['customer', 'salesBonusDetail'])->get();
 
         $now = now()->toDateTimeString();
@@ -81,6 +83,7 @@ class SalesBonusCalculateJob implements ShouldQueue
 
             $update_is_paired_ids = array_merge(array_merge(explode(',', $left_childs), explode(',', $right_childs)), $update_is_paired_ids);
 
+            //dd($update_is_paired_ids);
             $left_childs_bv += $left_last_earning->carry_forward ?? 0;
             $right_childs_bv += $right_last_earning->carry_forward ?? 0;
 
@@ -158,8 +161,8 @@ class SalesBonusCalculateJob implements ShouldQueue
                 ];
 
             }
-            dump(['right_child_bv'=>$right_childs_bv, 'left_child_bv'=> $left_childs_bv]);
-            dump([$left_points, $right_points, !empty($carry_forward) ? $carry_forward : 'cf=0', !empty($sales_bonus_detail) ? $sales_bonus_detail : 'sales_detail=[]', $user->id]);
+            //dump(['right_child_bv'=>$right_childs_bv, 'left_child_bv'=> $left_childs_bv]);
+            //dump([$left_points, $right_points, !empty($carry_forward) ? $carry_forward : 'cf=0', !empty($sales_bonus_detail) ? $sales_bonus_detail : 'sales_detail=[]', $user->id]);
 
 //            if(($left_points > 0) || ($right_points > 0)){
 
