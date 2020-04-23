@@ -118,7 +118,7 @@ class GenealogyController extends Controller
             $tree['children'][$index]['image_url'] = asset('/assets/images/plus_icon.png');
             $tree['children'][$index]['extend'] = false;
             $tree['children'][$index]['show_extend'] = false;
-            $tree['children'][$index]['clickable'] = true;
+            $tree['children'][$index]['clickable'] = !Auth::user()->role_id == User::CUSTOMER_ROLE;
             $tree['children'][$index]['popover_show'] = false;
             $tree['children'][$index]['parent_id'] = $customer->user_id;
             //sort($tree['children']);
@@ -139,7 +139,7 @@ class GenealogyController extends Controller
             $tree['children'][0]['image_url'] = asset('/assets/images/plus_icon.png');
             $tree['children'][0]['extend'] = false;
             $tree['children'][0]['show_extend'] = false;
-            $tree['children'][0]['clickable'] = true;
+            $tree['children'][0]['clickable'] = !Auth::user()->role_id == User::CUSTOMER_ROLE;
             $tree['children'][0]['popover_show'] = false;
             $tree['children'][0]['parent_id'] = $customer->user_id;
 
@@ -152,7 +152,7 @@ class GenealogyController extends Controller
             $tree['children'][1]['image_url'] = asset('/assets/images/plus_icon.png');
             $tree['children'][1]['extend'] = false;
             $tree['children'][1]['show_extend'] = false;
-            $tree['children'][1]['clickable'] = true;
+            $tree['children'][1]['clickable'] = !Auth::user()->role_id == User::CUSTOMER_ROLE;
             $tree['children'][1]['popover_show'] = false;
             $tree['children'][1]['parent_id'] = $customer->user_id;
         }

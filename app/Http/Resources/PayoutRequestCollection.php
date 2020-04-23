@@ -22,6 +22,8 @@ class PayoutRequestCollection extends ResourceCollection
                     'id' => $list->id,
                     'user_id' => $list->user_id,
                     'status' => $status_arr[$list->status],
+                    'amount' => $list->amount,
+                    'phone' => $list->phone,
                     'date_requested' => $list->date_requested,
                     'date_cleared' => $list->date_cleared,
                 ];

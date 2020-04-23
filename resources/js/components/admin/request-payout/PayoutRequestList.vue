@@ -28,6 +28,8 @@
                             <tr role="row">
                                 <th :class="getSortClass('id')" @click="sort('id')">ID</th>
                                 <th :class="getSortClass('user_id')" @click="sort('user_id')">User ID</th>
+                                <th :class="getSortClass('amount')" @click="sort('status')">Amount</th>
+                                <th :class="getSortClass('phone')" @click="sort('status')">Phone</th>
                                 <th :class="getSortClass('status')" @click="sort('status')">Status</th>
                                 <th :class="getSortClass('date_requested')"   @click="sort('date_requested')">Date Requested</th>
                                 <th :class="getSortClass('date_cleared')" @click="sort('date_cleared')">Date Cleared</th>
@@ -37,6 +39,8 @@
                             <tr role="row" class="odd" v-for="payout in payout_list.data">
                                 <td class="no-sort no-click" >{{payout.id}}</td>
                                 <td class="no-sort no-click" >{{payout.user_id}}</td>
+                                <td class="no-sort no-click" >{{payout.amount}}</td>
+                                <td class="no-sort no-click" >{{payout.phone}}</td>
                                 <td class="no-sort no-click" >{{payout.status}}</td>
                                 <td class="no-sort no-click" >{{payout.date_requested}}</td>
                                 <td class="no-sort no-click" >{{payout.date_cleared}}</td>

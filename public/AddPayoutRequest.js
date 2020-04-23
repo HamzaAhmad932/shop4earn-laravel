@@ -188,6 +188,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -703,6 +707,32 @@ var render = function() {
                       _c(
                         "th",
                         {
+                          class: _vm.getSortClass("amount"),
+                          on: {
+                            click: function($event) {
+                              return _vm.sort("status")
+                            }
+                          }
+                        },
+                        [_vm._v("Amount")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          class: _vm.getSortClass("phone"),
+                          on: {
+                            click: function($event) {
+                              return _vm.sort("status")
+                            }
+                          }
+                        },
+                        [_vm._v("Phone")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
                           class: _vm.getSortClass("status"),
                           on: {
                             click: function($event) {
@@ -754,6 +784,14 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", { staticClass: "no-sort no-click" }, [
                             _vm._v(_vm._s(payout.user_id))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "no-sort no-click" }, [
+                            _vm._v(_vm._s(payout.amount))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "no-sort no-click" }, [
+                            _vm._v(_vm._s(payout.phone))
                           ]),
                           _vm._v(" "),
                           _c("td", { staticClass: "no-sort no-click" }, [
