@@ -34,7 +34,29 @@ let actions = {
             url: '/v1/fetch-all-payment-method',
             method: 'GET',
         }).then((resp) => {
-            commit('SET_PAYMENT_METHOD', resp.data);
+            commit('SET_PAYMENT_METHOD', resp.data.data);
+            commit('HIDE_LOADER', null, {root: true});
+        }).catch((err) => {
+            commit('HIDE_LOADER', null, {root: true});
+            console.log(err);
+        });
+    },
+
+    changeStatus: async ({commit, state, dispatch}, data)=> {
+
+        commit('SHOW_LOADER', null, {root: true});
+
+        axios({
+            url: '/v1/update-payout-request-status',
+            method: 'POST',
+            data
+        }).then((resp) => {
+            if(resp.data.status){
+                toastr.success(resp.data.message);
+                dispatch('fetchAllPayoutRequests');
+            }else{
+                toastr.error(resp.data.message);
+            }
             commit('HIDE_LOADER', null, {root: true});
         }).catch((err) => {
             commit('HIDE_LOADER', null, {root: true});

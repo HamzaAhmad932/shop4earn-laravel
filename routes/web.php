@@ -20,6 +20,8 @@ Route::group(['prefix' => 'portal'], function () {
 
     Route::get('genealogy-tree', 'Voyager\GenealogyController@index')->name('genealogy-tree');
     Route::get('request-payout', 'Voyager\PayoutRequestController@index')->name('request-payout');
+    //for admin
+    Route::get('payout-requests', 'Voyager\PayoutRequestController@adminIndex')->name('payout-requests');
     Route::get('request-payout/create', 'Voyager\PayoutRequestController@create')->name('request-payout-create');
 });
 
@@ -33,6 +35,7 @@ Route::group(['prefix'=> 'v1'], function(){
     Route::post('fetch-all-payout-requests', 'Voyager\PayoutRequestController@fetchAllPayoutRequests');
     Route::get('fetch-all-payment-method', 'Voyager\PayoutRequestController@fetchAllPaymentMethod');
     Route::post('add-payout-request', 'Voyager\PayoutRequestController@addPayoutRequest');
+    Route::post('update-payout-request-status', 'Voyager\PayoutRequestController@updatePayoutRequestStatus');
 });
 
 Route::get('test-team-bonus', 'Admin\CustomerController@testTeamBonus');

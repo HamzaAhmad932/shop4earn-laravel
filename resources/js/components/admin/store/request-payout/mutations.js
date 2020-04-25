@@ -8,7 +8,10 @@ let mutations = {
     },
 
     SET_PAYMENT_METHOD(state, payload){
-        return state.payment_methods = payload;
+        state.payment_methods = payload.payment_methods;
+        state.add_payout.phone = payload.phone;
+        state.admin_percentage = parseFloat(payload.admin_percentage);
+        return state;
     },
 
     SET_ADD_PAYOUT_ERRORS(state, payload){

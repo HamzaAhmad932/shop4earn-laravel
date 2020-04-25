@@ -44811,7 +44811,7 @@ var actions = {
                 url: '/v1/fetch-all-payment-method',
                 method: 'GET'
               }).then(function (resp) {
-                commit('SET_PAYMENT_METHOD', resp.data);
+                commit('SET_PAYMENT_METHOD', resp.data.data);
                 commit('HIDE_LOADER', null, {
                   root: true
                 });
@@ -44836,20 +44836,69 @@ var actions = {
 
     return fetchAllPaymentMethods;
   }(),
-  addPayoutRequest: function () {
-    var _addPayoutRequest = _asyncToGenerator(
+  changeStatus: function () {
+    var _changeStatus = _asyncToGenerator(
     /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref3) {
-      var commit, state;
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref3, data) {
+      var commit, state, dispatch;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref3.commit, state = _ref3.state;
+              commit = _ref3.commit, state = _ref3.state, dispatch = _ref3.dispatch;
               commit('SHOW_LOADER', null, {
                 root: true
               });
-              _context3.next = 4;
+              axios({
+                url: '/v1/update-payout-request-status',
+                method: 'POST',
+                data: data
+              }).then(function (resp) {
+                if (resp.data.status) {
+                  toastr.success(resp.data.message);
+                  dispatch('fetchAllPayoutRequests');
+                } else {
+                  toastr.error(resp.data.message);
+                }
+
+                commit('HIDE_LOADER', null, {
+                  root: true
+                });
+              })["catch"](function (err) {
+                commit('HIDE_LOADER', null, {
+                  root: true
+                });
+                console.log(err);
+              });
+
+            case 3:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+
+    function changeStatus(_x3, _x4) {
+      return _changeStatus.apply(this, arguments);
+    }
+
+    return changeStatus;
+  }(),
+  addPayoutRequest: function () {
+    var _addPayoutRequest = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(_ref4) {
+      var commit, state;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              commit = _ref4.commit, state = _ref4.state;
+              commit('SHOW_LOADER', null, {
+                root: true
+              });
+              _context4.next = 4;
               return axios({
                 url: '/v1/add-payout-request',
                 method: 'POST',
@@ -44895,13 +44944,13 @@ var actions = {
 
             case 4:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
         }
-      }, _callee3);
+      }, _callee4);
     }));
 
-    function addPayoutRequest(_x3) {
+    function addPayoutRequest(_x5) {
       return _addPayoutRequest.apply(this, arguments);
     }
 
@@ -44975,7 +45024,10 @@ var mutations = {
     return state.search = _objectSpread({}, state.search, {}, payload);
   },
   SET_PAYMENT_METHOD: function SET_PAYMENT_METHOD(state, payload) {
-    return state.payment_methods = payload;
+    state.payment_methods = payload.payment_methods;
+    state.add_payout.phone = payload.phone;
+    state.admin_percentage = parseFloat(payload.admin_percentage);
+    return state;
   },
   SET_ADD_PAYOUT_ERRORS: function SET_ADD_PAYOUT_ERRORS(state, payload) {
     return state.add_payout = _objectSpread({}, state.add_payout, {}, payload);
@@ -44999,6 +45051,7 @@ var state = {
     data: []
   },
   payment_methods: [],
+  admin_percentage: 0,
   available_amount: [{
     label: 1000,
     code: 1000
@@ -45017,17 +45070,20 @@ var state = {
     amount: 0,
     phone: '',
     password: '',
+    donation: 20,
     error_status: {
       pm_id: false,
       amount: false,
       phone: false,
-      password: false
+      password: false,
+      donation: false
     },
     error_message: {
       pm_id: '',
       amount: '',
       phone: '',
-      password: ''
+      password: '',
+      donation: ''
     }
   }
 };
@@ -45202,11 +45258,17 @@ Vue.component('genealogy-tree', function () {
 Vue.component('payout-requests', function () {
   return __webpack_require__.e(/*! import() | AddPayoutRequest */ "AddPayoutRequest").then(__webpack_require__.bind(null, /*! ./components/admin/request-payout/PayoutRequests.vue */ "./resources/js/components/admin/request-payout/PayoutRequests.vue"));
 });
+Vue.component('payout-requests-admin', function () {
+  return __webpack_require__.e(/*! import() | AddPayoutRequest */ "AddPayoutRequest").then(__webpack_require__.bind(null, /*! ./components/admin/request-payout/PayoutRequestsAdmin.vue */ "./resources/js/components/admin/request-payout/PayoutRequestsAdmin.vue"));
+});
 Vue.component('add-payout-request', function () {
   return __webpack_require__.e(/*! import() | AddPayoutRequest */ "AddPayoutRequest").then(__webpack_require__.bind(null, /*! ./components/admin/request-payout/AddPayoutRequests.vue */ "./resources/js/components/admin/request-payout/AddPayoutRequests.vue"));
 });
 Vue.component('payout-request-list', function () {
   return __webpack_require__.e(/*! import() | AddPayoutRequest */ "AddPayoutRequest").then(__webpack_require__.bind(null, /*! ./components/admin/request-payout/PayoutRequestList */ "./resources/js/components/admin/request-payout/PayoutRequestList.vue"));
+});
+Vue.component('payout-request-list-admin', function () {
+  return __webpack_require__.e(/*! import() | AddPayoutRequest */ "AddPayoutRequest").then(__webpack_require__.bind(null, /*! ./components/admin/request-payout/PayoutRequestListAdmin */ "./resources/js/components/admin/request-payout/PayoutRequestListAdmin.vue"));
 });
 
 /***/ }),

@@ -4,6 +4,9 @@ let state = {
         data:[],
     },
     payment_methods: [],
+
+    admin_percentage: 0,
+
     available_amount: [
     {
         label: 1000,
@@ -27,18 +30,21 @@ let state = {
         amount: 0,
         phone: '',
         password: '',
+        donation: 20,
 
         error_status:{
             pm_id: false,
             amount: false,
             phone: false,
             password: false,
+            donation: false,
         },
         error_message:{
             pm_id: '',
             amount: '',
             phone: '',
             password: '',
+            donation: '',
         }
     },
 };

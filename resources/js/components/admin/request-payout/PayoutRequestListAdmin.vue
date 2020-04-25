@@ -29,10 +29,14 @@
                                 <th :class="getSortClass('id')" @click="sort('id')">ID</th>
                                 <th :class="getSortClass('user_id')" @click="sort('user_id')">User ID</th>
                                 <th :class="getSortClass('amount')" @click="sort('amount')">Amount</th>
+                                <th :class="getSortClass('admin_percentage')" @click="sort('admin_percentage')">Admin Percentage</th>
+                                <th :class="getSortClass('admin_charges')" @click="sort('admin_charges')">Admin Charges</th>
+                                <th :class="getSortClass('donation')" @click="sort('donation')">Donation</th>
                                 <th :class="getSortClass('phone')" @click="sort('phone')">Phone</th>
                                 <th :class="getSortClass('status')" @click="sort('status')">Status</th>
                                 <th :class="getSortClass('date_requested')"   @click="sort('date_requested')">Date Requested</th>
                                 <th :class="getSortClass('date_cleared')" @click="sort('date_cleared')">Date Cleared</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -40,10 +44,25 @@
                                 <td class="no-sort no-click" >{{payout.id}}</td>
                                 <td class="no-sort no-click" >{{payout.user_id}}</td>
                                 <td class="no-sort no-click" >{{payout.amount}}</td>
+                                <td class="no-sort no-click" >{{payout.admin_percentage}}</td>
+                                <td class="no-sort no-click" >{{payout.admin_charges}}</td>
+                                <td class="no-sort no-click" >{{payout.donation}}</td>
                                 <td class="no-sort no-click" >{{payout.phone}}</td>
-                                <td class="no-sort no-click" >{{payout.status_info.status}}</td>
+                                <td class="no-sort no-click" ><span :class="payout.status_info.class">{{payout.status_info.status}}</span></td>
                                 <td class="no-sort no-click" >{{payout.date_requested}}</td>
                                 <td class="no-sort no-click" >{{payout.date_cleared}}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Update status
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <p><a class="dropdown-item" href="#" @click.prevent="changeStatus({status: 1, request_id: payout.id})">Paid</a></p>
+                                            <p><a class="dropdown-item" href="#" @click.prevent="changeStatus({status: 0, request_id: payout.id})">Pending</a></p>
+                                            <p><a class="dropdown-item" href="#" @click.prevent="changeStatus({status: 2, request_id: payout.id})">Rejected</a></p>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -80,7 +99,7 @@
             ...mapActions([
                 'fetchAllPayoutRequests',
                 'setFilterSort',
-                //'getSortClass',
+                'changeStatus',
             ]),
             getSortClass(column){
                 let _class = 'sorting';
@@ -117,3 +136,16 @@
         },
     }
 </script>
+<style scoped>
+    .dropdown-item {
+        width: 100%;
+        padding: .25rem 1.5rem;
+        clear: both;
+        font-weight: 400;
+        color: #212529;
+        text-align: inherit;
+        white-space: nowrap;
+        background-color: transparent;
+        border: 0;
+    }
+</style>

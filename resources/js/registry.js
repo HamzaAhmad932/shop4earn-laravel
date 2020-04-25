@@ -25,5 +25,7 @@ Vue.component('v-popover', VPopover);
 Vue.component('add-edit-customer', ()=> import('./components/admin/customers/AddEditCustomer.vue' /* webpackChunkName: "AddEditCustomer" */));
 Vue.component('genealogy-tree', ()=> import('./components/admin/genealogy-tree/GenealogyTree.vue' /* webpackChunkName: "GenealogyTree" */));
 Vue.component('payout-requests', ()=> import('./components/admin/request-payout/PayoutRequests.vue' /* webpackChunkName: "AddPayoutRequest" */));
+Vue.component('payout-requests-admin', ()=> import('./components/admin/request-payout/PayoutRequestsAdmin.vue' /* webpackChunkName: "AddPayoutRequest" */));
 Vue.component('add-payout-request', ()=> import('./components/admin/request-payout/AddPayoutRequests.vue' /* webpackChunkName: "AddPayoutRequest" */));
 Vue.component('payout-request-list', ()=> import('./components/admin/request-payout/PayoutRequestList' /* webpackChunkName: "AddPayoutRequest" */));
+Vue.component('payout-request-list-admin', ()=> import('./components/admin/request-payout/PayoutRequestListAdmin' /* webpackChunkName: "AddPayoutRequest" */));

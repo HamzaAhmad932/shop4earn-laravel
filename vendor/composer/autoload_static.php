@@ -521,6 +521,7 @@ class ComposerStaticInit6ebc50747dd3c93f90b79e919d3dc707
         'App\\CategoryProduct' => __DIR__ . '/../..' . '/app/CategoryProduct.php',
         'App\\Compensation' => __DIR__ . '/../..' . '/app/Compensation.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\CustomSetting' => __DIR__ . '/../..' . '/app/CustomSetting.php',
         'App\\Customer' => __DIR__ . '/../..' . '/app/Customer.php',
         'App\\DefaultSponsor' => __DIR__ . '/../..' . '/app/DefaultSponsor.php',
         'App\\Earning' => __DIR__ . '/../..' . '/app/Earning.php',

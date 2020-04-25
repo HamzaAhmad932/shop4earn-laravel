@@ -11,6 +11,7 @@ return array(
     'App\\CategoryProduct' => $baseDir . '/app/CategoryProduct.php',
     'App\\Compensation' => $baseDir . '/app/Compensation.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\CustomSetting' => $baseDir . '/app/CustomSetting.php',
     'App\\Customer' => $baseDir . '/app/Customer.php',
     'App\\DefaultSponsor' => $baseDir . '/app/DefaultSponsor.php',
     'App\\Earning' => $baseDir . '/app/Earning.php',
