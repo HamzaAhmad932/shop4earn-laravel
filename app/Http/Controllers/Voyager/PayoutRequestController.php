@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Voyager;
 
 use App\User;
+use App\Earning;
 use App\PayoutRequest;
 use App\PaymentMethod;
 use App\CustomSetting;
@@ -133,6 +134,12 @@ class PayoutRequestController extends Controller
             if(!empty($p_request)){
                 $p_request->status = $status;
                 $p_request->save();
+
+                if($status == PayoutRequest::PAID_STATUS){
+                    $earning = Earning::where('user_id', $p_request->user_id)->first();
+                    $earning->paid += $p_request->amount;
+                    $earning->save();
+                }
 
                 return self::apiSuccessResponse('Status updated.', 200, null);
             }

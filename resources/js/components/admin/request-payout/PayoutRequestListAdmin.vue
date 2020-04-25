@@ -56,10 +56,13 @@
                                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Update status
                                         </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="payout.status_info.allow_update">
                                             <p><a class="dropdown-item" href="#" @click.prevent="changeStatus({status: 1, request_id: payout.id})">Paid</a></p>
                                             <p><a class="dropdown-item" href="#" @click.prevent="changeStatus({status: 0, request_id: payout.id})">Pending</a></p>
-                                            <p><a class="dropdown-item" href="#" @click.prevent="changeStatus({status: 2, request_id: payout.id})">Rejected</a></p>
+                                            <p><a class="dropdown-item" href="#" @click.prevent="changeStatus({status: 2, request_id: payout.id})">Reject</a></p>
+                                        </div>
+                                        <div v-else class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <p>No option available</p>
                                         </div>
                                     </div>
                                 </td>

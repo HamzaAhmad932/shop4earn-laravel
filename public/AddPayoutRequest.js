@@ -374,6 +374,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1690,76 +1693,87 @@ var render = function() {
                                 ]
                               ),
                               _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "dropdown-menu",
-                                  attrs: {
-                                    "aria-labelledby": "dropdownMenuButton"
-                                  }
-                                },
-                                [
-                                  _c("p", [
-                                    _c(
-                                      "a",
-                                      {
-                                        staticClass: "dropdown-item",
-                                        attrs: { href: "#" },
-                                        on: {
-                                          click: function($event) {
-                                            $event.preventDefault()
-                                            return _vm.changeStatus({
-                                              status: 1,
-                                              request_id: payout.id
-                                            })
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("Paid")]
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("p", [
-                                    _c(
-                                      "a",
-                                      {
-                                        staticClass: "dropdown-item",
-                                        attrs: { href: "#" },
-                                        on: {
-                                          click: function($event) {
-                                            $event.preventDefault()
-                                            return _vm.changeStatus({
-                                              status: 0,
-                                              request_id: payout.id
-                                            })
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("Pending")]
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("p", [
-                                    _c(
-                                      "a",
-                                      {
-                                        staticClass: "dropdown-item",
-                                        attrs: { href: "#" },
-                                        on: {
-                                          click: function($event) {
-                                            $event.preventDefault()
-                                            return _vm.changeStatus({
-                                              status: 2,
-                                              request_id: payout.id
-                                            })
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("Rejected")]
-                                    )
-                                  ])
-                                ]
-                              )
+                              payout.status_info.allow_update
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass: "dropdown-menu",
+                                      attrs: {
+                                        "aria-labelledby": "dropdownMenuButton"
+                                      }
+                                    },
+                                    [
+                                      _c("p", [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "dropdown-item",
+                                            attrs: { href: "#" },
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                return _vm.changeStatus({
+                                                  status: 1,
+                                                  request_id: payout.id
+                                                })
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("Paid")]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "dropdown-item",
+                                            attrs: { href: "#" },
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                return _vm.changeStatus({
+                                                  status: 0,
+                                                  request_id: payout.id
+                                                })
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("Pending")]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "dropdown-item",
+                                            attrs: { href: "#" },
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                return _vm.changeStatus({
+                                                  status: 2,
+                                                  request_id: payout.id
+                                                })
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("Reject")]
+                                        )
+                                      ])
+                                    ]
+                                  )
+                                : _c(
+                                    "div",
+                                    {
+                                      staticClass: "dropdown-menu",
+                                      attrs: {
+                                        "aria-labelledby": "dropdownMenuButton"
+                                      }
+                                    },
+                                    [_c("p", [_vm._v("No option available")])]
+                                  )
                             ])
                           ])
                         ]

@@ -205,6 +205,7 @@ trait CustomerTrait
 
             $earnings = Earning::firstOrNew(['user_id' => $sponsor->user_id]);
             $earnings->team_bonus += $team_bonus;
+            $earnings->earned = (float) $earnings->sales_bonus + (float) $team_bonus;
             $earnings->save();
 
             $level++;
