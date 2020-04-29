@@ -45027,6 +45027,7 @@ var mutations = {
     state.payment_methods = payload.payment_methods;
     state.add_payout.phone = payload.phone;
     state.admin_percentage = parseFloat(payload.admin_percentage);
+    state.balance = payload.balance;
     return state;
   },
   SET_ADD_PAYOUT_ERRORS: function SET_ADD_PAYOUT_ERRORS(state, payload) {
@@ -45052,6 +45053,7 @@ var state = {
   },
   payment_methods: [],
   admin_percentage: 0,
+  balance: 0,
   available_amount: [{
     label: 1000,
     code: 1000
@@ -45070,7 +45072,7 @@ var state = {
     amount: 0,
     phone: '',
     password: '',
-    donation: 20,
+    donation: '',
     error_status: {
       pm_id: false,
       amount: false,

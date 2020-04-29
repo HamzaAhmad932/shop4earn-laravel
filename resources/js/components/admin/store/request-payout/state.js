@@ -6,6 +6,7 @@ let state = {
     payment_methods: [],
 
     admin_percentage: 0,
+    balance: 0,
 
     available_amount: [
     {
@@ -30,7 +31,7 @@ let state = {
         amount: 0,
         phone: '',
         password: '',
-        donation: 20,
+        donation: '',
 
         error_status:{
             pm_id: false,

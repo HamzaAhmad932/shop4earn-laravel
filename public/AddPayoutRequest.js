@@ -117,10 +117,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.fetchAllPaymentMethods();
+  },
+  data: function data() {
+    return {
+      amount_payable: ''
+    };
   },
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['fetchAllPaymentMethods', 'addPayoutRequest'])),
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
@@ -138,8 +153,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     add_payout: function add_payout(state) {
       return state.payouts.add_payout;
+    },
+    balance: function balance(state) {
+      return state.payouts.balance;
     }
-  }))
+  })),
+  watch: {
+    add_payout: {
+      deep: true,
+      immediate: true,
+      handler: function handler(new_value, old_value) {
+        if (typeof new_value.amount !== "undefined" && !isNaN(new_value.amount) && new_value.amount != null) {
+          var donation = this.add_payout.donation == '' || parseInt(this.add_payout.donation) < 20 ? 20 : this.add_payout.donation;
+          var amount_calculated = parseFloat(this.add_payout.amount) - this.admin_percentage * (parseFloat(this.add_payout.amount) / 100) - parseFloat(donation);
+          this.amount_payable = parseFloat(amount_calculated) < 0 ? 0 : amount_calculated;
+        }
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -624,16 +655,18 @@ var render = function() {
                       [
                         _c("label", [
                           _vm._v(
-                            "Amount \n                                        "
+                            "Amount  (Available Balance: Rs." +
+                              _vm._s(_vm.balance) +
+                              ")\n                                            "
                           ),
                           _vm.add_payout.error_status.amount
                             ? _c("span", { staticClass: "invalid-feedback" }, [
                                 _vm._v(
-                                  "\n                                            " +
+                                  "\n                                               * " +
                                     _vm._s(
                                       _vm.add_payout.error_message.amount
                                     ) +
-                                    "\n                                        "
+                                    "\n                                            "
                                 )
                               ])
                             : _vm._e()
@@ -665,14 +698,14 @@ var render = function() {
                       [
                         _c("label", [
                           _vm._v(
-                            "Payment Method \n                                        "
+                            "Payment Method \n                                            "
                           ),
                           _vm.add_payout.error_status.pm_id
                             ? _c("span", { staticClass: "invalid-feedback" }, [
                                 _vm._v(
-                                  "\n                                            * " +
+                                  "\n                                                * " +
                                     _vm._s(_vm.add_payout.error_message.pm_id) +
-                                    "\n                                        "
+                                    "\n                                            "
                                 )
                               ])
                             : _vm._e()
@@ -703,59 +736,14 @@ var render = function() {
                     _c("div", { staticClass: "col-md-6" }, [
                       _c("label", [
                         _vm._v(
-                          "Donation \n                                        "
-                        ),
-                        _vm.add_payout.error_status.donation
-                          ? _c("span", { staticClass: "invalid-feedback" }, [
-                              _vm._v(
-                                "\n                                            * " +
-                                  _vm._s(
-                                    _vm.add_payout.error_message.donation
-                                  ) +
-                                  "\n                                        "
-                              )
-                            ])
-                          : _vm._e()
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.add_payout.donation,
-                            expression: "add_payout.donation"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "number", min: "20" },
-                        domProps: { value: _vm.add_payout.donation },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.add_payout,
-                              "donation",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-6" }, [
-                      _c("label", [
-                        _vm._v(
-                          "Phone \n                                        "
+                          "Phone \n                                            "
                         ),
                         _vm.add_payout.error_status.phone
                           ? _c("span", { staticClass: "invalid-feedback" }, [
                               _vm._v(
-                                "\n                                            * " +
+                                "\n                                                * " +
                                   _vm._s(_vm.add_payout.error_message.phone) +
-                                  "\n                                        "
+                                  "\n                                            "
                               )
                             ])
                           : _vm._e()
@@ -791,16 +779,81 @@ var render = function() {
                     _c("div", { staticClass: "col-md-6" }, [
                       _c("label", [
                         _vm._v(
-                          "Password \n                                        "
+                          "Admin Charges  (" +
+                            _vm._s(this.admin_percentage) +
+                            "%)"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-control",
+                        attrs: { type: "text", disabled: "" },
+                        domProps: {
+                          value:
+                            _vm.admin_percentage *
+                            (parseFloat(_vm.add_payout.amount) / 100)
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c("label", [
+                        _vm._v(
+                          "Donation (By Default Rs.20)\n                                            "
+                        ),
+                        _vm.add_payout.error_status.donation
+                          ? _c("span", { staticClass: "invalid-feedback" }, [
+                              _vm._v(
+                                "\n                                                * " +
+                                  _vm._s(
+                                    _vm.add_payout.error_message.donation
+                                  ) +
+                                  "\n                                            "
+                              )
+                            ])
+                          : _vm._e()
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.add_payout.donation,
+                            expression: "add_payout.donation"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number" },
+                        domProps: { value: _vm.add_payout.donation },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.add_payout,
+                              "donation",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c("label", [
+                        _vm._v(
+                          "Password \n                                            "
                         ),
                         _vm.add_payout.error_status.password
                           ? _c("span", { staticClass: "invalid-feedback" }, [
                               _vm._v(
-                                "\n                                            * " +
+                                "\n                                                * " +
                                   _vm._s(
                                     _vm.add_payout.error_message.password
                                   ) +
-                                  "\n                                        "
+                                  "\n                                            "
                               )
                             ])
                           : _vm._e()
@@ -834,63 +887,13 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-md-6" }, [
-                      _vm.add_payout.amount !== 0
-                        ? _c("div", [
-                            _c(
-                              "table",
-                              { staticClass: "table table-borderless" },
-                              [
-                                _vm._m(1),
-                                _vm._v(" "),
-                                _c("tbody", [
-                                  _c("tr", [
-                                    _c("td", [
-                                      _vm._v(
-                                        "Rs." + _vm._s(_vm.add_payout.amount)
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm._v(
-                                        "Rs." +
-                                          _vm._s(
-                                            _vm.admin_percentage *
-                                              (parseFloat(
-                                                _vm.add_payout.amount
-                                              ) /
-                                                100)
-                                          )
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm._v(
-                                        "Rs." + _vm._s(_vm.add_payout.donation)
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm._v(
-                                        "Rs." +
-                                          _vm._s(
-                                            parseFloat(_vm.add_payout.amount) -
-                                              _vm.admin_percentage *
-                                                (parseFloat(
-                                                  _vm.add_payout.amount
-                                                ) /
-                                                  100) -
-                                              parseFloat(
-                                                _vm.add_payout.donation
-                                              )
-                                          )
-                                      )
-                                    ])
-                                  ])
-                                ])
-                              ]
-                            )
-                          ])
-                        : _vm._e()
+                      _c("label", [_vm._v("Amount Payable  (Rs.)")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-control",
+                        attrs: { type: "text", disabled: "" },
+                        domProps: { value: _vm.amount_payable }
+                      })
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-md-12 float-right mr-3" }, [
@@ -909,8 +912,9 @@ var render = function() {
                         },
                         [
                           _c("i", { staticClass: "voyager-plus" }),
-                          _vm._v(" "),
-                          _c("span", [_vm._v("Place Request")])
+                          _vm._v(
+                            " Place Request\n                                        "
+                          )
                         ]
                       )
                     ])
@@ -939,23 +943,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "container-fluid" }, [
       _c("h1", { staticClass: "page-title" }, [
         _c("i", { staticClass: "voyager-milestone" }),
-        _vm._v(" New Payout Request\n        ")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("td", [_vm._v("Requested Amount")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("Admin Charges")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("Donation")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("Payable")])
+        _vm._v(" New Payout Request\n            ")
       ])
     ])
   }

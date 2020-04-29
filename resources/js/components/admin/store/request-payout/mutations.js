@@ -11,6 +11,7 @@ let mutations = {
         state.payment_methods = payload.payment_methods;
         state.add_payout.phone = payload.phone;
         state.admin_percentage = parseFloat(payload.admin_percentage);
+        state.balance = payload.balance;
         return state;
     },
 

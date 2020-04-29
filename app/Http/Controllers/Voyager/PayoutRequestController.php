@@ -48,7 +48,13 @@ class PayoutRequestController extends Controller
 
     public function fetchAllPaymentMethod(Request $request){
 
+        $user = Auth::user();
         $pms = PaymentMethod::all();
+        $earning = Earning::where('user_id', $user->id)->first();
+        $balance = 0;
+        if(!empty($earning)){
+            $balance = (floatval($earning->team_bonus) + floatval($earning->sales_bonus)) - floatval($earning->paid);
+        }
 
         $pms_json =  $pms->transform(function ($pm) {
             return [
@@ -59,8 +65,9 @@ class PayoutRequestController extends Controller
 
         $data = [
             'payment_methods'=> $pms_json,
-            'phone'=> Auth::user()->mobile,
-            'admin_percentage'=> CustomSetting::find(1)->admin_charges_percentage
+            'phone'=> $user->mobile,
+            'admin_percentage'=> CustomSetting::find(1)->admin_charges_percentage,
+            'balance'=> $balance
         ];
 
         return self::apiSuccessResponse('', 200, $data);
@@ -73,7 +80,7 @@ class PayoutRequestController extends Controller
             'amount'=> 'required|numeric|min:1000',
             'phone'=> 'required',
             'password'=> 'required',
-            'donation'=> 'required|numeric|min:20'
+            'donation'=> 'nullable|numeric'
         ], [
             'pm_id.required'=> 'Payment method is required.',
             'amount.required'=> 'Amount is required.',
@@ -88,14 +95,32 @@ class PayoutRequestController extends Controller
             ]);
         }
 
+        $earning = Earning::where('user_id', $user->id)->first();
+        if(!empty($earning)){
+            $balance = (floatval($earning->team_bonus) + floatval($earning->sales_bonus)) - floatval($earning->paid);
+            $requested_amount = floatval($request->amount);
+            if($requested_amount > $balance){
+                throw ValidationException::withMessages([
+                    'amount' => ['Requested amount greater than available balance.'],
+                ]);
+            }
+        }else{
+            throw ValidationException::withMessages([
+                'amount' => ['Your current balance is zero.'],
+            ]);
+        }
+
         $admin_percentage = 0;
         $admin_charges = 0;
         $payable_amount = 0;
         $custom_setting = CustomSetting::find(1);
+        $donation_type_casted = (float) $request->donation;
+        $donation = $donation_type_casted < 20 ? 20 : $donation_type_casted;
+
         if(!empty($custom_setting)){
             $admin_percentage = $custom_setting->admin_charges_percentage;
             $admin_charges = $admin_percentage * ((float) $request->amount /100);
-            $payable_amount = (float) $request->amount - $admin_charges - (float) $request->donation;
+            $payable_amount = (float) $request->amount - $admin_charges - (float) $donation;
         }
 
         PayoutRequest::create([
@@ -104,7 +129,7 @@ class PayoutRequestController extends Controller
             'payment_method_id'=> $request->pm_id,
             'amount'=> $request->amount,
             'phone'=> $request->phone,
-            'donation'=> $request->donation,
+            'donation'=> $donation,
             'admin_percentage'=> $admin_percentage,
             'admin_charges'=> $admin_charges,
             'payable_amount'=> $payable_amount,

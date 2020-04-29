@@ -16,6 +16,10 @@ class PayoutRequest extends Model
         'payment_method_id',
         'amount',
         'phone',
+        'donation',
+        'admin_percentage',
+        'admin_charges',
+        'payable_amount',
         'status',
         'date_requested',
         'date_cleared'
