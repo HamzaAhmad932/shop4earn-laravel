@@ -41,7 +41,7 @@
                                 <td class="no-sort no-click" >{{payout.user_id}}</td>
                                 <td class="no-sort no-click" >{{payout.amount}}</td>
                                 <td class="no-sort no-click" >{{payout.phone}}</td>
-                                <td class="no-sort no-click" >{{payout.status_info.status}}</td>
+                                <td class="no-sort no-click" ><span :class="payout.status_info.class">{{payout.status_info.status}}</span></td>
                                 <td class="no-sort no-click" >{{payout.date_requested}}</td>
                                 <td class="no-sort no-click" >{{payout.date_cleared}}</td>
                             </tr>

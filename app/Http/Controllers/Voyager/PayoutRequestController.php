@@ -158,13 +158,16 @@ class PayoutRequestController extends Controller
             $p_request = PayoutRequest::find($payout_request_id);
             if(!empty($p_request)){
                 $p_request->status = $status;
-                $p_request->save();
 
                 if($status == PayoutRequest::PAID_STATUS){
                     $earning = Earning::where('user_id', $p_request->user_id)->first();
                     $earning->paid += $p_request->amount;
                     $earning->save();
+
+                    //add Payout date
+                    $p_request->date_cleared = now()->toDateTimeString();
                 }
+                $p_request->save();
 
                 return self::apiSuccessResponse('Status updated.', 200, null);
             }

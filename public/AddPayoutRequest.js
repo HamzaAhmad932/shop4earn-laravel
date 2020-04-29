@@ -1227,7 +1227,9 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("td", { staticClass: "no-sort no-click" }, [
-                            _vm._v(_vm._s(payout.status_info.status))
+                            _c("span", { class: payout.status_info.class }, [
+                              _vm._v(_vm._s(payout.status_info.status))
+                            ])
                           ]),
                           _vm._v(" "),
                           _c("td", { staticClass: "no-sort no-click" }, [
