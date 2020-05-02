@@ -43,7 +43,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"AddEditCustomer":"AddEditCustomer","AddPayoutRequest":"AddPayoutRequest","GenealogyTree":"GenealogyTree"}[chunkId]||chunkId) + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"AddEditCustomer":"AddEditCustomer","AddPayoutRequest":"AddPayoutRequest","AdminDashboard":"AdminDashboard","GenealogyTree":"GenealogyTree"}[chunkId]||chunkId) + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -2129,6 +2129,17 @@ function toComment(sourceMap) {
 	return '/*# ' + data + ' */';
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/highcharts-vue/dist/highcharts-vue.min.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/highcharts-vue/dist/highcharts-vue.min.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,e){ true?module.exports=e(__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'highcharts'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()))):undefined}("undefined"!=typeof self?self:this,function(t){return function(t){function e(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return t[n].call(o.exports,o,o.exports,e),o.l=!0,o.exports}var r={};return e.m=t,e.c=r,e.d=function(t,r,n){e.o(t,r)||Object.defineProperty(t,r,{configurable:!1,enumerable:!0,get:n})},e.n=function(t){var r=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(r,"a",r),r},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=1)}([function(e,r){e.exports=t},function(t,e,r){"use strict";function n(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};t.component(e.tagName||"highcharts",Object(o.a)(e.highcharts||i.a))}Object.defineProperty(e,"__esModule",{value:!0}),e.default=n,r.d(e,"Chart",function(){return a});var o=r(2),c=r(0),i=r.n(c),a=Object(o.a)(i.a)},function(t,e,r){"use strict";function n(t){return i(t)||c(t)||o()}function o(){throw new TypeError("Invalid attempt to spread non-iterable instance")}function c(t){if(Symbol.iterator in Object(t)||"[object Arguments]"===Object.prototype.toString.call(t))return Array.from(t)}function i(t){if(Array.isArray(t)){for(var e=0,r=new Array(t.length);e<t.length;e++)r[e]=t[e];return r}}var a=r(3),s=function(t){return{template:'<div ref="chart"></div>',render:function(t){return t("div",{ref:"chart"})},props:{constructorType:{type:String,default:"chart"},options:{type:Object,required:!0},callback:Function,updateArgs:{type:Array,default:function(){return[!0,!0]}},highcharts:{type:Object},deepCopyOnUpdate:{type:Boolean,default:!0}},watch:{options:{handler:function(t){var e;(e=this.chart).update.apply(e,[Object(a.a)(t,this.deepCopyOnUpdate)].concat(n(this.updateArgs)))},deep:!0}},mounted:function(){var e=this.highcharts||t;this.options&&e[this.constructorType]?this.chart=e[this.constructorType](this.$refs.chart,Object(a.a)(this.options,!0),this.callback?this.callback:null):this.options?console.warn("'".concat(this.constructorType,"' constructor-type is incorrect. Sometimes this error is caused by the fact, that the corresponding module wasn't imported.")):console.warn('The "options" parameter was not passed.')},beforeDestroy:function(){this.chart&&this.chart.destroy()}}};e.a=s},function(t,e,r){"use strict";function n(t,e,r){function o(o,i){!c.a.isObject(o,!r)||c.a.isClass(o)||c.a.isDOMElement(o)?t[i]=e[i]:t[i]=n(t[i]||c.a.isArray(o)?[]:{},o,r)}return c.a.isArray(e)?e.forEach(o):c.a.objectEach(e,o),t}r.d(e,"a",function(){return i});var o=r(0),c=r.n(o),i=function(t,e){return n({},t,e)}}])});
 
 /***/ }),
 
@@ -45240,11 +45251,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vue_blockui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-blockui */ "./node_modules/vue-blockui/index.js");
+/* harmony import */ var highcharts_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! highcharts-vue */ "./node_modules/highcharts-vue/dist/highcharts-vue.min.js");
+/* harmony import */ var highcharts_vue__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(highcharts_vue__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
 Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
 Vue.use(vue_blockui__WEBPACK_IMPORTED_MODULE_2__["default"]);
+Vue.use(highcharts_vue__WEBPACK_IMPORTED_MODULE_3___default.a);
 v_tooltip__WEBPACK_IMPORTED_MODULE_0__["VTooltip"].options.defaultTemplate = '<div class="tooltip-vue" role="tooltip"><div class="tooltip-vue-arrow"></div><div class="tooltip-vue-inner"></div></div>';
 v_tooltip__WEBPACK_IMPORTED_MODULE_0__["VTooltip"].options.defaultArrowSelector = '.tooltip-vue-arrow, .tooltip-vue__arrow';
 v_tooltip__WEBPACK_IMPORTED_MODULE_0__["VTooltip"].options.defaultInnerSelector = '.tooltip-vue-inner, .tooltip-vue__inner';
@@ -45271,6 +45286,9 @@ Vue.component('payout-request-list', function () {
 });
 Vue.component('payout-request-list-admin', function () {
   return __webpack_require__.e(/*! import() | AddPayoutRequest */ "AddPayoutRequest").then(__webpack_require__.bind(null, /*! ./components/admin/request-payout/PayoutRequestListAdmin */ "./resources/js/components/admin/request-payout/PayoutRequestListAdmin.vue"));
+});
+Vue.component('admin-dashboard', function () {
+  return __webpack_require__.e(/*! import() | AdminDashboard */ "AdminDashboard").then(__webpack_require__.bind(null, /*! ./components/admin/dashboard/AdminDashboard */ "./resources/js/components/admin/dashboard/AdminDashboard.vue"));
 });
 
 /***/ }),

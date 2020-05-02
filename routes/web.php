@@ -18,6 +18,7 @@ Route::get('/shop/category/{id?}', 'ProductController@index')->name('shop.catego
 Route::group(['prefix' => 'portal'], function () {
     Voyager::routes();
 
+    Route::get('/', 'Voyager\DashboardController@index')->name('voyager.dashboard');
     Route::get('genealogy-tree', 'Voyager\GenealogyController@index')->name('genealogy-tree');
     Route::get('request-payout', 'Voyager\PayoutRequestController@index')->name('request-payout');
     //for admin
