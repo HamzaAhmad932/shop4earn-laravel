@@ -15,9 +15,10 @@
 Route::get('/', 'HomeController@index');
 Route::get('/shop/category/{id?}', 'ProductController@index')->name('shop.category');
 
-Route::group(['prefix' => 'portal'], function () {
+Route::group(['prefix' => 'portal', 'middleware'=> 'auth'], function () {
     Voyager::routes();
 
+    Route::get('/', 'Voyager\DashboardController@index')->name('voyager.dashboard');
     Route::get('genealogy-tree', 'Voyager\GenealogyController@index')->name('genealogy-tree');
     Route::get('request-payout', 'Voyager\PayoutRequestController@index')->name('request-payout');
     //for admin
@@ -36,6 +37,7 @@ Route::group(['prefix'=> 'v1'], function(){
     Route::get('fetch-all-payment-method', 'Voyager\PayoutRequestController@fetchAllPaymentMethod');
     Route::post('add-payout-request', 'Voyager\PayoutRequestController@addPayoutRequest');
     Route::post('update-payout-request-status', 'Voyager\PayoutRequestController@updatePayoutRequestStatus');
+    Route::get('get-dashboard-data', 'Voyager\DashboardController@dashboardData');
 });
 
 Route::get('test-team-bonus', 'Admin\CustomerController@testTeamBonus');

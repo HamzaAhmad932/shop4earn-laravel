@@ -2,6 +2,8 @@
 import { VTooltip, VPopover, VClosePopover } from 'v-tooltip';
 import vSelect from 'vue-select';
 import BlockUI from 'vue-blockui';
+import VueApexCharts from 'vue-apexcharts';
+Vue.component('apexchart', VueApexCharts);
 
 
 Vue.component('v-select', vSelect);
@@ -29,3 +31,5 @@ Vue.component('payout-requests-admin', ()=> import('./components/admin/request-p
 Vue.component('add-payout-request', ()=> import('./components/admin/request-payout/AddPayoutRequests.vue' /* webpackChunkName: "AddPayoutRequest" */));
 Vue.component('payout-request-list', ()=> import('./components/admin/request-payout/PayoutRequestList' /* webpackChunkName: "AddPayoutRequest" */));
 Vue.component('payout-request-list-admin', ()=> import('./components/admin/request-payout/PayoutRequestListAdmin' /* webpackChunkName: "AddPayoutRequest" */));
+Vue.component('admin-dashboard', ()=> import('./components/admin/dashboard/AdminDashboard' /* webpackChunkName: "AdminDashboard" */));
+Vue.component('client-dashboard', ()=> import('./components/admin/dashboard/ClientDashboard' /* webpackChunkName: "AdminDashboard" */));
