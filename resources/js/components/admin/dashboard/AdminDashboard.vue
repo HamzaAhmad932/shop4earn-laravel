@@ -1,12 +1,18 @@
 <template>
     <div>
         <div class="page-content">
-            <div class="row">
-                <div class="col-lg-4">
-                    <highcharts :options="chartOptions"></highcharts>
+            <div class="panel panel-bordered">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <apexchart width="100%" type="bar" :options="line_bar.options" :series="line_bar.series"></apexchart>
+                        </div>
+                        <div class="col-lg-4">
+                            <apexchart width="100%" type="donut" :options="donut.options" :series="donut.series"></apexchart>
+                        </div>
+                        <div class="col-lg-4"></div>
+                    </div>
                 </div>
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4"></div>
             </div>
         </div>
     </div>
@@ -16,10 +22,23 @@
     export default {
         data() {
             return {
-                chartOptions: {
+                line_bar:{
+                    options: {
+                        chart: {
+                            id: 'vuechart-example'
+                        },
+                        xaxis: {
+                            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+                        }
+                    },
                     series: [{
-                        data: [1,2,3] // sample data
+                        name: 'series-1',
+                        data: [30, 40, 45, 50, 49, 60, 70, 91]
                     }]
+                },
+                donut: {
+                    options: {},
+                    series: [44, 55]
                 }
             }
         },
