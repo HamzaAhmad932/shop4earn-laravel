@@ -15,15 +15,18 @@
 Route::get('/', 'HomeController@index');
 Route::get('/shop/category/{id?}', 'ProductController@index')->name('shop.category');
 
-Route::group(['prefix' => 'portal', 'middleware'=> 'auth'], function () {
+Route::group(['prefix' => 'portal'], function () {
+
     Voyager::routes();
 
-    Route::get('/', 'Voyager\DashboardController@index')->name('voyager.dashboard');
-    Route::get('genealogy-tree', 'Voyager\GenealogyController@index')->name('genealogy-tree');
-    Route::get('request-payout', 'Voyager\PayoutRequestController@index')->name('request-payout');
-    //for admin
-    Route::get('payout-requests', 'Voyager\PayoutRequestController@adminIndex')->name('payout-requests');
-    Route::get('request-payout/create', 'Voyager\PayoutRequestController@create')->name('request-payout-create');
+    Route::group(['middleware'=> 'auth'], function (){
+        Route::get('/', 'Voyager\DashboardController@index')->name('voyager.dashboard');
+        Route::get('genealogy-tree', 'Voyager\GenealogyController@index')->name('genealogy-tree');
+        Route::get('request-payout', 'Voyager\PayoutRequestController@index')->name('request-payout');
+        //for admin
+        Route::get('payout-requests', 'Voyager\PayoutRequestController@adminIndex')->name('payout-requests');
+        Route::get('request-payout/create', 'Voyager\PayoutRequestController@create')->name('request-payout-create');
+    });
 });
 
 
