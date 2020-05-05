@@ -56,6 +56,11 @@
                                 <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Enter mobile number"
                                        value="{{ old('mobile', $dataTypeContent->mobile ?? '') }}">
                             </div>
+                            <div class="form-group">
+                                <label for="mobile">City</label>
+                                <input type="text" class="form-control" id="city" name="city" placeholder="City"
+                                       value="{{ old('city', $dataTypeContent->city ?? '') }}">
+                            </div>
 
                             <div class="form-group">
                                 <label for="password">{{ __('voyager::generic.password') }}</label>
@@ -64,6 +69,12 @@
                                     <small>{{ __('voyager::profile.password_hint') }}</small>
                                 @endif
                                 <input type="password" class="form-control" id="password" name="password" value="" autocomplete="new-password">
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <label for="role_id">Role</label>
+                                <input type="text" class="form-control" id="role_id" name="role_id"
+                                       value="{{ old('role_id', $dataTypeContent->role_id ?? '') }}">
                             </div>
 
 {{--                            @can('editRoles', $dataTypeContent)--}}
