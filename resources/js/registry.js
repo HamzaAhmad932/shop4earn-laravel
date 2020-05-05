@@ -2,9 +2,6 @@
 import { VTooltip, VPopover, VClosePopover } from 'v-tooltip';
 import vSelect from 'vue-select';
 import BlockUI from 'vue-blockui';
-import VueApexCharts from 'vue-apexcharts';
-Vue.component('apexchart', VueApexCharts);
-
 
 Vue.component('v-select', vSelect);
 Vue.use(BlockUI);

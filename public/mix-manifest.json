@@ -4,5 +4,6 @@
     "/AddEditCustomer.js": "/AddEditCustomer.js",
     "/AddPayoutRequest.js": "/AddPayoutRequest.js",
     "/AdminDashboard.js": "/AdminDashboard.js",
-    "/GenealogyTree.js": "/GenealogyTree.js"
+    "/GenealogyTree.js": "/GenealogyTree.js",
+    "/vendors~AdminDashboard.js": "/vendors~AdminDashboard.js"
 }

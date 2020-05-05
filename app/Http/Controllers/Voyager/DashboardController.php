@@ -14,7 +14,7 @@ class DashboardController extends Controller
 {
     public function index(){
 
-//        return Voyager::view('voyager::index');
+        return Voyager::view('voyager::index');
 
         //$view = 'vendor.voyager.dashboard.admin';
         //return view($view);
@@ -49,9 +49,11 @@ class DashboardController extends Controller
         $upcoming_rank = !empty($u_rank) ? $u_rank->rank_name : false;
         $balance = 0;
         $total_earned = 0;
+        $withdrawn = 0;
         if(!empty($earning)){
             $balance = (floatval($earning->team_bonus) + floatval($earning->sales_bonus)) - floatval($earning->paid);
             $total_earned = (floatval($earning->team_bonus) + floatval($earning->sales_bonus));
+            $withdrawn = $earning->paid;
         }
 
         return response()->json([
@@ -62,7 +64,9 @@ class DashboardController extends Controller
             'rank'=> $rank,
             'upcoming_rank'=> $upcoming_rank,
             'balance'=> $balance,
-            'total_earned'=> $total_earned
+            'total_earned'=> $total_earned,
+            'user'=> $user,
+            'withdrawn'=> $withdrawn
         ]);
 
     }

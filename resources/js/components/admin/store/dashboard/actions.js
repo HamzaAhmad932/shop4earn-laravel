@@ -1,9 +1,9 @@
 let actions = {
 
-    fetchDashboardData: ({commit}) => {
+    fetchDashboardData: async ({commit}) => {
         commit('SHOW_LOADER', null, {root: true});
 
-        axios({
+        await axios({
             url: '/v1/get-dashboard-data',
             method: 'GET',
         }).then((resp) => {
