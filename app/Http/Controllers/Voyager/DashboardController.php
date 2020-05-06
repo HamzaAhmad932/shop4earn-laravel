@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Voyager;
 
 use App\User;
 use App\Rank;
+use Carbon\Carbon;
 use TCG\Voyager\Facades\Voyager;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -55,6 +56,8 @@ class DashboardController extends Controller
             $total_earned = (floatval($earning->team_bonus) + floatval($earning->sales_bonus));
             $withdrawn = $earning->paid;
         }
+
+        $previous_month = Carbon::now()->subDays(15);
 
         return response()->json([
             'referral'=> $referrals,

@@ -443,11 +443,11 @@ var render = function() {
                     _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body" }, [
                         _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(_vm.dashboard.total_earned))
+                          _vm._v(_vm._s(_vm.dashboard.cf))
                         ]),
                         _vm._v(" "),
                         _c("p", { staticClass: "card-text" }, [
-                          _vm._v("Total Earned (Rs.)")
+                          _vm._v("Carry Forward")
                         ])
                       ])
                     ])
@@ -473,11 +473,11 @@ var render = function() {
                     _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body" }, [
                         _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(_vm.dashboard.withdrawn))
+                          _vm._v(_vm._s(_vm.dashboard.total_earned))
                         ]),
                         _vm._v(" "),
                         _c("p", { staticClass: "card-text" }, [
-                          _vm._v("Commission Withdrawn (Rs.)")
+                          _vm._v("Total Earned (Rs.)")
                         ])
                       ])
                     ])

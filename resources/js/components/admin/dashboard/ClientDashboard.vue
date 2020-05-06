@@ -45,8 +45,8 @@
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{dashboard.total_earned}}</h5>
-                                    <p class="card-text">Total Earned (Rs.)</p>
+                                    <h5 class="card-title">{{dashboard.cf}}</h5>
+                                    <p class="card-text">Carry Forward</p>
                                 </div>
                             </div>
                         </div>
@@ -63,8 +63,8 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{dashboard.withdrawn}}</h5>
-                                    <p class="card-text">Commission Withdrawn (Rs.)</p>
+                                    <h5 class="card-title">{{dashboard.total_earned}}</h5>
+                                    <p class="card-text">Total Earned (Rs.)</p>
                                 </div>
                             </div>
                         </div>
