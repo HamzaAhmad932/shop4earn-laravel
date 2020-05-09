@@ -27,6 +27,10 @@ class Customer extends Model
         return $this->belongsTo(Customer::class,    'sponsor_id', 'user_id');
     }
 
+    public function childs() {
+        return $this->hasMany(Customer::class,    'parent_id', 'user_id');
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }

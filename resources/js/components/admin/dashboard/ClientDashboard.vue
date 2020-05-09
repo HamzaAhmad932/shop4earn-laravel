@@ -16,33 +16,44 @@
                                 <div class="col-lg-6 mb-0-important" v-if="dashboard.upcoming_rank">
                                     <div class="panel panel-primary"><div class="panel-body text-primary"><strong>Upcomming Rank : {{dashboard.upcoming_rank}} </strong></div></div>
                                 </div>
+                                <div class="col-lg-6 mb-0-important" v-else>
+                                    <div class="panel panel-info"><div class="panel-body text-info"><strong>Congratulation, You are at highest rank </strong></div></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row p-top-10">
-                <div class="col-lg-5">
+                <div class="col-lg-8">
                     <div class="row p-lf-tp">
-                        <div class="col-lg-6">
-                            <div class="card">
+                        <div class="col-lg-4">
+                            <div class="card box-1">
                                 <div class="card-body">
                                     <h5 class="card-title">{{dashboard.referral}}</h5>
                                     <p class="card-text">Referral Downlines</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{dashboard.balance}}</h5>
-                                    <p class="card-text">Available Balance (Rs.)</p>
+                                    <h5 class="card-title">{{dashboard.total_earned}}</h5>
+                                    <p class="card-text">Total Earned (Rs.)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card box-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{dashboard.sb}}</h5>
+                                    <p class="card-text">Sales Bonus</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row p-lf-tp">
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">{{dashboard.cf}}</h5>
@@ -50,11 +61,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="card">
+                        <div class="col-lg-4">
+                            <div class="card box-2">
                                 <div class="card-body">
                                     <h5 class="card-title">{{dashboard.withdrawn}}</h5>
                                     <p class="card-text">Commission Withdrawn (Rs.)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{dashboard.tb}}</h5>
+                                    <p class="card-text">Team Bonus</p>
                                 </div>
                             </div>
                         </div>
@@ -63,17 +82,24 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{dashboard.total_earned}}</h5>
-                                    <p class="card-text">Total Earned (Rs.)</p>
+                                    <div class="row">
+                                        <div class="col-lg-2 icon-size-42 mb-0-important">
+                                            <i class="fas fa-wallet"></i>
+                                        </div>
+                                        <div class="col-lg-10 mb-0-important">
+                                            <h5 class="card-title">{{dashboard.balance}}</h5>
+                                            <p class="card-text">Available Balance (Rs.)</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-7">
+                <div class="col-lg-4">
                     <div class="card">
                         <div class="card-body">
-                            <apexchart type="area" height="338" :options="area_graph.chartOptions" :series="area_graph.series"></apexchart>
+                            <apexchart type="donut" height="370" :options="donut.options" :series="donut.series"></apexchart>
                         </div>
                     </div>
                 </div>
@@ -108,38 +134,24 @@
                 dashboard: function(state){
                     return state.dashboard.dashboard_data;
                 },
-                area_graph: function (state) {
+                donut: (state) =>{
                     return {
-                        series: [{
-                            name: 'Left',
-                            data: [31, 40, 28, 51, 42, 109, 100]
-                        }, {
-                            name: 'Right',
-                            data: [11, 32, 45, 32, 34, 52, 41]
-                        }],
-                        chartOptions: {
+                        options: {
                             chart: {
-                                height: 350,
-                                type: 'area'
+                                id: 'graph-donut'
                             },
-                            dataLabels: {
-                                enabled: false
+                            labels: state.dashboard.dashboard_data.label,
+                            title: {
+                                text: "Down-line Members",
+                                align: 'center'
                             },
-                            stroke: {
-                                curve: 'smooth'
-                            },
-                            xaxis: {
-                                type: 'datetime',
-                                categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-                            },
-                            tooltip: {
-                                x: {
-                                    format: 'dd/MM/yy HH:mm'
-                                },
-                            },
+                            legend: {
+                                position: 'bottom'
+                            }
                         },
+                        series: state.dashboard.dashboard_data.series
                     }
-                }
+                },
             })
         },
         mounted() {
@@ -165,5 +177,21 @@
     }
     .mb-0-important{
         margin-bottom: 0 !important;
+    }
+
+    .icon-size-42{
+        font-size: 42px;
+    }
+    .box-1{
+        background: #008FFB;
+        color: #FFFFFF;
+    }
+    .box-2{
+        background: #00E396;
+        color: #FFFFFF;
+    }
+    .box-3{
+        background: #716ACA;
+        color: #FFFFFF;
     }
 </style>

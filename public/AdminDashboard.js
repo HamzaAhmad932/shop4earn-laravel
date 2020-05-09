@@ -160,6 +160,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -177,36 +203,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     dashboard: function dashboard(state) {
       return state.dashboard.dashboard_data;
     },
-    area_graph: function area_graph(state) {
+    donut: function donut(state) {
       return {
-        series: [{
-          name: 'Left',
-          data: [31, 40, 28, 51, 42, 109, 100]
-        }, {
-          name: 'Right',
-          data: [11, 32, 45, 32, 34, 52, 41]
-        }],
-        chartOptions: {
+        options: {
           chart: {
-            height: 350,
-            type: 'area'
+            id: 'graph-donut'
           },
-          dataLabels: {
-            enabled: false
+          labels: state.dashboard.dashboard_data.label,
+          title: {
+            text: "Down-line Members",
+            align: 'center'
           },
-          stroke: {
-            curve: 'smooth'
-          },
-          xaxis: {
-            type: 'datetime',
-            categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-          },
-          tooltip: {
-            x: {
-              format: 'dd/MM/yy HH:mm'
-            }
+          legend: {
+            position: 'bottom'
           }
-        }
+        },
+        series: state.dashboard.dashboard_data.series
       };
     }
   })),
@@ -229,7 +241,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.p-lf-tp{\n    padding-left: 10px;\n}\n.p-top-10{\n    padding-top: 10px;\n}\n.min-width-100{\n    min-width: 100%;\n}\n.alert-custom-1{\n    background-color: #ffffff;\n    /*border-color: ;*/\n}\n.mb-0-important{\n    margin-bottom: 0 !important;\n}\n", ""]);
+exports.push([module.i, "\n.p-lf-tp{\n    padding-left: 10px;\n}\n.p-top-10{\n    padding-top: 10px;\n}\n.min-width-100{\n    min-width: 100%;\n}\n.alert-custom-1{\n    background-color: #ffffff;\n    /*border-color: ;*/\n}\n.mb-0-important{\n    margin-bottom: 0 !important;\n}\n.icon-size-42{\n    font-size: 42px;\n}\n.box-1{\n    background: #008FFB;\n    color: #FFFFFF;\n}\n.box-2{\n    background: #00E396;\n    color: #FFFFFF;\n}\n.box-3{\n    background: #716ACA;\n    color: #FFFFFF;\n}\n", ""]);
 
 // exports
 
@@ -399,7 +411,11 @@ var render = function() {
                               )
                             ]
                           )
-                        : _vm._e()
+                        : _c(
+                            "div",
+                            { staticClass: "col-lg-6 mb-0-important" },
+                            [_vm._m(0)]
+                          )
                     ])
                   ])
                 ])
@@ -407,10 +423,10 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "row p-top-10" }, [
-              _c("div", { staticClass: "col-lg-5" }, [
+              _c("div", { staticClass: "col-lg-8" }, [
                 _c("div", { staticClass: "row p-lf-tp" }, [
-                  _c("div", { staticClass: "col-lg-6" }, [
-                    _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "col-lg-4" }, [
+                    _c("div", { staticClass: "card box-1" }, [
                       _c("div", { staticClass: "card-body" }, [
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(_vm.dashboard.referral))
@@ -423,15 +439,29 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col-lg-6" }, [
+                  _c("div", { staticClass: "col-lg-4" }, [
                     _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body" }, [
                         _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(_vm.dashboard.balance))
+                          _vm._v(_vm._s(_vm.dashboard.total_earned))
                         ]),
                         _vm._v(" "),
                         _c("p", { staticClass: "card-text" }, [
-                          _vm._v("Available Balance (Rs.)")
+                          _vm._v("Total Earned (Rs.)")
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-4" }, [
+                    _c("div", { staticClass: "card box-3" }, [
+                      _c("div", { staticClass: "card-body" }, [
+                        _c("h5", { staticClass: "card-title" }, [
+                          _vm._v(_vm._s(_vm.dashboard.sb))
+                        ]),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "card-text" }, [
+                          _vm._v("Sales Bonus")
                         ])
                       ])
                     ])
@@ -439,7 +469,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "row p-lf-tp" }, [
-                  _c("div", { staticClass: "col-lg-6" }, [
+                  _c("div", { staticClass: "col-lg-4" }, [
                     _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body" }, [
                         _c("h5", { staticClass: "card-title" }, [
@@ -453,8 +483,8 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col-lg-6" }, [
-                    _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "col-lg-4" }, [
+                    _c("div", { staticClass: "card box-2" }, [
                       _c("div", { staticClass: "card-body" }, [
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(_vm.dashboard.withdrawn))
@@ -465,6 +495,20 @@ var render = function() {
                         ])
                       ])
                     ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-4" }, [
+                    _c("div", { staticClass: "card" }, [
+                      _c("div", { staticClass: "card-body" }, [
+                        _c("h5", { staticClass: "card-title" }, [
+                          _vm._v(_vm._s(_vm.dashboard.tb))
+                        ]),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "card-text" }, [
+                          _vm._v("Team Bonus")
+                        ])
+                      ])
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
@@ -472,12 +516,22 @@ var render = function() {
                   _c("div", { staticClass: "col-lg-12" }, [
                     _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body" }, [
-                        _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(_vm.dashboard.total_earned))
-                        ]),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "card-text" }, [
-                          _vm._v("Total Earned (Rs.)")
+                        _c("div", { staticClass: "row" }, [
+                          _vm._m(1),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "col-lg-10 mb-0-important" },
+                            [
+                              _c("h5", { staticClass: "card-title" }, [
+                                _vm._v(_vm._s(_vm.dashboard.balance))
+                              ]),
+                              _vm._v(" "),
+                              _c("p", { staticClass: "card-text" }, [
+                                _vm._v("Available Balance (Rs.)")
+                              ])
+                            ]
+                          )
                         ])
                       ])
                     ])
@@ -485,7 +539,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-lg-7" }, [
+              _c("div", { staticClass: "col-lg-4" }, [
                 _c("div", { staticClass: "card" }, [
                   _c(
                     "div",
@@ -493,10 +547,10 @@ var render = function() {
                     [
                       _c("apexchart", {
                         attrs: {
-                          type: "area",
-                          height: "338",
-                          options: _vm.area_graph.chartOptions,
-                          series: _vm.area_graph.series
+                          type: "donut",
+                          height: "370",
+                          options: _vm.donut.options,
+                          series: _vm.donut.series
                         }
                       })
                     ],
@@ -517,7 +571,26 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "panel panel-info" }, [
+      _c("div", { staticClass: "panel-body text-info" }, [
+        _c("strong", [_vm._v("Congratulation, You are at highest rank ")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-lg-2 icon-size-42 mb-0-important" }, [
+      _c("i", { staticClass: "fas fa-wallet" })
+    ])
+  }
+]
 render._withStripped = true
 
 
