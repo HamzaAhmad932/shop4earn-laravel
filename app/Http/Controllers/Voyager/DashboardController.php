@@ -58,7 +58,7 @@ class DashboardController extends Controller
         $withdrawn = 0;
         if(!empty($earning)){
             $balance = (floatval($earning->team_bonus) + floatval($earning->sales_bonus)) - floatval($earning->paid);
-            $total_earned = (floatval($earning->team_bonus) + floatval($earning->sales_bonus)).' (Sales Bonus + Team Bonus)';
+            $total_earned = (floatval($earning->team_bonus) + floatval($earning->sales_bonus)).' ('.$sb.'+ '.$tb.')';
             $withdrawn = $earning->paid;
         }
 
@@ -71,7 +71,7 @@ class DashboardController extends Controller
 
         if(!empty($user->salesBonusDetail)){
             $last_sale_entry = $user->salesBonusDetail->sortByDesc('created_at')->take(2)->where('carry_forward', '!=', 0)->first();
-            $cf_position = !empty($last_sale_entry) ? $last_sale_entry->position == 1 ? 'L': 'R' : '';
+            $cf_position = !empty($last_sale_entry) ? $last_sale_entry->position == 1 ? 'Left': 'Right' : '';
             $cf .= ' ('.$cf_position.')';
         }
 
@@ -86,29 +86,17 @@ class DashboardController extends Controller
             'total_earned'=> $total_earned,
             'user'=> $user,
             'withdrawn'=> $withdrawn,
-            'label'=> ['Left', 'Right'],
+            'label'=> ['Left-'.count($left_childs), 'Right-'.count($right_childs)],
             'series'=> [count($left_childs), count($right_childs)]
         ]);
 
     }
 
-    public function findMembersCount(User $user, $position){
-
-//        $child = $user->child_sponsor->where('position', $position)->first();
-//        if(empty($child)){
-//            return $this->downline_count;
-//        }
-//        $this->downline_count = 1;
-//        return $this->getDownlineCount($child);
-
-        dd($left_childs);
-
-    }
-
     public function getAllChilds($position, $iteration = 0) {
 
-        if (empty(self::$customers))
+        if (empty(self::$customers)) {
             self::$customers = Customer::all();
+        }
 
         $leaves = self::$customers->whereIn('parent_id', self::$user_id);
 
@@ -128,8 +116,6 @@ class DashboardController extends Controller
             self::$user_id = $leaves;
             self::$childs = array_merge(self::$childs, $leaves);
             $this->getAllChilds($position, $iteration);
-        } else {
-            self::$childs = self::$customers->where('is_paired', Customer::NOT_PAIRED)->whereIn('user_id', self::$childs)->pluck('user_id')->toArray();
         }
 
         return self::$childs;

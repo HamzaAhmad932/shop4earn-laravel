@@ -25,9 +25,9 @@
                 </div>
             </div>
             <div class="row p-top-10">
-                <div class="col-lg-8">
+                <div class="col-lg-6">
                     <div class="row p-lf-tp">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="card box-1">
                                 <div class="card-body">
                                     <h5 class="card-title">{{dashboard.referral}}</h5>
@@ -35,25 +35,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">{{dashboard.total_earned}}</h5>
-                                    <p class="card-text">Total Earned (Rs.)</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="card box-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{dashboard.sb}}</h5>
-                                    <p class="card-text">Sales Bonus</p>
+                                    <p class="card-text">Total Earned (Sales Bonus + Team Bonus)</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row p-lf-tp">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">{{dashboard.cf}}</h5>
@@ -61,19 +53,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="card box-2">
                                 <div class="card-body">
                                     <h5 class="card-title">{{dashboard.withdrawn}}</h5>
                                     <p class="card-text">Commission Withdrawn (Rs.)</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{dashboard.tb}}</h5>
-                                    <p class="card-text">Team Bonus</p>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +80,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
                             <apexchart type="donut" height="370" :options="donut.options" :series="donut.series"></apexchart>

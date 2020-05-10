@@ -170,22 +170,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -423,9 +407,9 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "row p-top-10" }, [
-              _c("div", { staticClass: "col-lg-8" }, [
+              _c("div", { staticClass: "col-lg-6" }, [
                 _c("div", { staticClass: "row p-lf-tp" }, [
-                  _c("div", { staticClass: "col-lg-4" }, [
+                  _c("div", { staticClass: "col-lg-6" }, [
                     _c("div", { staticClass: "card box-1" }, [
                       _c("div", { staticClass: "card-body" }, [
                         _c("h5", { staticClass: "card-title" }, [
@@ -439,7 +423,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col-lg-4" }, [
+                  _c("div", { staticClass: "col-lg-6" }, [
                     _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body" }, [
                         _c("h5", { staticClass: "card-title" }, [
@@ -447,21 +431,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("p", { staticClass: "card-text" }, [
-                          _vm._v("Total Earned (Rs.)")
-                        ])
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-lg-4" }, [
-                    _c("div", { staticClass: "card box-3" }, [
-                      _c("div", { staticClass: "card-body" }, [
-                        _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(_vm.dashboard.sb))
-                        ]),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "card-text" }, [
-                          _vm._v("Sales Bonus")
+                          _vm._v("Total Earned (Sales Bonus + Team Bonus)")
                         ])
                       ])
                     ])
@@ -469,7 +439,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "row p-lf-tp" }, [
-                  _c("div", { staticClass: "col-lg-4" }, [
+                  _c("div", { staticClass: "col-lg-6" }, [
                     _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body" }, [
                         _c("h5", { staticClass: "card-title" }, [
@@ -483,7 +453,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col-lg-4" }, [
+                  _c("div", { staticClass: "col-lg-6" }, [
                     _c("div", { staticClass: "card box-2" }, [
                       _c("div", { staticClass: "card-body" }, [
                         _c("h5", { staticClass: "card-title" }, [
@@ -492,20 +462,6 @@ var render = function() {
                         _vm._v(" "),
                         _c("p", { staticClass: "card-text" }, [
                           _vm._v("Commission Withdrawn (Rs.)")
-                        ])
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-lg-4" }, [
-                    _c("div", { staticClass: "card" }, [
-                      _c("div", { staticClass: "card-body" }, [
-                        _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(_vm.dashboard.tb))
-                        ]),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "card-text" }, [
-                          _vm._v("Team Bonus")
                         ])
                       ])
                     ])
@@ -539,7 +495,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-lg-4" }, [
+              _c("div", { staticClass: "col-lg-6" }, [
                 _c("div", { staticClass: "card" }, [
                   _c(
                     "div",
