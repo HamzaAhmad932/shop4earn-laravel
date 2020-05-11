@@ -170,6 +170,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -191,7 +194,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return {
         options: {
           chart: {
-            id: 'graph-donut'
+            id: 'graph-donut',
+            height: 415
+          },
+          plotOptions: {
+            pie: {
+              donut: {
+                size: '78%'
+              }
+            }
           },
           labels: state.dashboard.dashboard_data.label,
           title: {
@@ -200,7 +211,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           },
           legend: {
             position: 'bottom'
-          }
+          },
+          responsive: [{
+            breakpoint: 375,
+            options: {
+              chart: {
+                width: 260,
+                height: 300
+              },
+              legend: {
+                position: "bottom"
+              }
+            }
+          }]
         },
         series: state.dashboard.dashboard_data.series
       };
@@ -225,7 +248,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.p-lf-tp{\n    padding-left: 10px;\n}\n.p-top-10{\n    padding-top: 10px;\n}\n.min-width-100{\n    min-width: 100%;\n}\n.alert-custom-1{\n    background-color: #ffffff;\n    /*border-color: ;*/\n}\n.mb-0-important{\n    margin-bottom: 0 !important;\n}\n.icon-size-42{\n    font-size: 42px;\n}\n.box-1{\n    background: #008FFB;\n    color: #FFFFFF;\n}\n.box-2{\n    background: #00E396;\n    color: #FFFFFF;\n}\n.box-3{\n    background: #716ACA;\n    color: #FFFFFF;\n}\n", ""]);
+exports.push([module.i, "\n.p-lf-tp{\n    padding-left: 10px;\n}\n.p-top-10{\n    padding-top: 10px;\n}\n.min-width-100{\n    min-width: 100%;\n}\n.alert-custom-1{\n    background-color: #ffffff;\n    /*border-color: ;*/\n}\n.mb-0-important{\n    margin-bottom: 0 !important;\n}\n.icon-size-42{\n    font-size: 42px;\n}\n.box-1{\n    background: #008FFB;\n    color: #FFFFFF;\n}\n.box-2{\n    background: #00E396;\n    color: #FFFFFF;\n}\n.box-3{\n    background: #716ACA;\n    color: #FFFFFF;\n}\n.card-body{\n    padding: 10px !important;\n}\n.text-dark-dk {\n    color: #2f3342 !important;\n}\n.font-weight-600{\n    font-weight: 600;\n}\n.font-weight-500{\n    font-weight: 500;\n}\n.font-size-16{\n    font-size: 16px;\n}\n@media only screen and (max-width: 375px) {\n#graph-body{\n        padding: 0 !important;\n}\n}\n", ""]);
 
 // exports
 
@@ -410,15 +433,29 @@ var render = function() {
               _c("div", { staticClass: "col-lg-6" }, [
                 _c("div", { staticClass: "row p-lf-tp" }, [
                   _c("div", { staticClass: "col-lg-6" }, [
-                    _c("div", { staticClass: "card box-1" }, [
+                    _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body" }, [
-                        _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(_vm.dashboard.referral))
+                        _c(
+                          "h5",
+                          {
+                            staticClass:
+                              "card-title font-weight-600 text-dark-dk"
+                          },
+                          [_vm._v("Referral Downlines")]
+                        ),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "card-text text-muted" }, [
+                          _vm._v("Members referred by you")
                         ]),
                         _vm._v(" "),
-                        _c("p", { staticClass: "card-text" }, [
-                          _vm._v("Referral Downlines")
-                        ])
+                        _c(
+                          "p",
+                          {
+                            staticClass:
+                              "font-weight-600 text-dark-dk font-size-16"
+                          },
+                          [_vm._v(_vm._s(_vm.dashboard.referral))]
+                        )
                       ])
                     ])
                   ]),
@@ -426,13 +463,27 @@ var render = function() {
                   _c("div", { staticClass: "col-lg-6" }, [
                     _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body" }, [
-                        _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(_vm.dashboard.total_earned))
+                        _c(
+                          "h5",
+                          {
+                            staticClass:
+                              "card-title font-weight-600 text-dark-dk"
+                          },
+                          [_vm._v("Total Earned (Sales Bonus + Team Bonus)")]
+                        ),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "card-text text-muted" }, [
+                          _vm._v("Commissions and bonuses")
                         ]),
                         _vm._v(" "),
-                        _c("p", { staticClass: "card-text" }, [
-                          _vm._v("Total Earned (Sales Bonus + Team Bonus)")
-                        ])
+                        _c(
+                          "p",
+                          {
+                            staticClass:
+                              "font-weight-600 text-dark-dk font-size-16"
+                          },
+                          [_vm._v(_vm._s(_vm.dashboard.total_earned))]
+                        )
                       ])
                     ])
                   ])
@@ -442,54 +493,92 @@ var render = function() {
                   _c("div", { staticClass: "col-lg-6" }, [
                     _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body" }, [
-                        _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(_vm.dashboard.cf))
+                        _c(
+                          "h5",
+                          {
+                            staticClass:
+                              "card-title font-weight-600 text-dark-dk"
+                          },
+                          [_vm._v("Carry Forward")]
+                        ),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "card-text text-muted" }, [
+                          _vm._v("Points carried forward from a side")
                         ]),
                         _vm._v(" "),
-                        _c("p", { staticClass: "card-text" }, [
-                          _vm._v("Carry Forward")
-                        ])
+                        _c(
+                          "p",
+                          {
+                            staticClass:
+                              "font-weight-600 text-dark-dk font-size-16"
+                          },
+                          [_vm._v(_vm._s(_vm.dashboard.cf))]
+                        )
                       ])
                     ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-lg-6" }, [
-                    _c("div", { staticClass: "card box-2" }, [
+                    _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body" }, [
-                        _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(_vm.dashboard.withdrawn))
+                        _c(
+                          "h5",
+                          {
+                            staticClass:
+                              "card-title font-weight-600 text-dark-dk"
+                          },
+                          [_vm._v("Commission Withdrawn (Rs.)")]
+                        ),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "card-text text-muted" }, [
+                          _vm._v("Withdrawn amount")
                         ]),
                         _vm._v(" "),
-                        _c("p", { staticClass: "card-text" }, [
-                          _vm._v("Commission Withdrawn (Rs.)")
-                        ])
+                        _c(
+                          "p",
+                          {
+                            staticClass:
+                              "font-weight-600 text-dark-dk font-size-16"
+                          },
+                          [_vm._v(_vm._s(_vm.dashboard.withdrawn))]
+                        )
                       ])
                     ])
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-lg-12" }, [
-                    _c("div", { staticClass: "card" }, [
-                      _c("div", { staticClass: "card-body" }, [
-                        _c("div", { staticClass: "row" }, [
-                          _vm._m(1),
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "col-lg-10 col-sm-10 mb-0-important" },
+                        [
+                          _c(
+                            "h5",
+                            {
+                              staticClass:
+                                "card-title font-weight-600 text-dark-dk"
+                            },
+                            [_vm._v("Available Balance (Rs.)")]
+                          ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text text-muted" }, [
+                            _vm._v("Current Balance")
+                          ]),
                           _vm._v(" "),
                           _c(
-                            "div",
-                            { staticClass: "col-lg-10 mb-0-important" },
-                            [
-                              _c("h5", { staticClass: "card-title" }, [
-                                _vm._v(_vm._s(_vm.dashboard.balance))
-                              ]),
-                              _vm._v(" "),
-                              _c("p", { staticClass: "card-text" }, [
-                                _vm._v("Available Balance (Rs.)")
-                              ])
-                            ]
+                            "p",
+                            {
+                              staticClass:
+                                "font-weight-600 text-dark-dk font-size-16"
+                            },
+                            [_vm._v(_vm._s(_vm.dashboard.balance))]
                           )
-                        ])
-                      ])
+                        ]
+                      )
                     ])
                   ])
                 ])
@@ -499,12 +588,11 @@ var render = function() {
                 _c("div", { staticClass: "card" }, [
                   _c(
                     "div",
-                    { staticClass: "card-body" },
+                    { staticClass: "card-body", attrs: { id: "graph-body" } },
                     [
                       _c("apexchart", {
                         attrs: {
                           type: "donut",
-                          height: "370",
                           options: _vm.donut.options,
                           series: _vm.donut.series
                         }
@@ -542,9 +630,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-2 icon-size-42 mb-0-important" }, [
-      _c("i", { staticClass: "fas fa-wallet" })
-    ])
+    return _c(
+      "div",
+      { staticClass: "col-lg-2 col-sm-2 icon-size-42 mb-0-important" },
+      [_c("i", { staticClass: "fas fa-wallet" })]
+    )
   }
 ]
 render._withStripped = true
