@@ -28,18 +28,20 @@
                 <div class="col-lg-6">
                     <div class="row p-lf-tp">
                         <div class="col-lg-6">
-                            <div class="card box-1">
+                            <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{dashboard.referral}}</h5>
-                                    <p class="card-text">Referral Downlines</p>
+                                    <h5 class="card-title font-weight-600 text-dark-dk">Referral Downlines</h5>
+                                    <p class="card-text text-muted">Members referred by you</p>
+                                    <p class="font-weight-600 text-dark-dk font-size-16">{{dashboard.referral}}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{dashboard.total_earned}}</h5>
-                                    <p class="card-text">Total Earned (Sales Bonus + Team Bonus)</p>
+                                    <h5 class="card-title font-weight-600 text-dark-dk">Total Earned (Sales Bonus + Team Bonus)</h5>
+                                    <p class="card-text text-muted">Commissions and bonuses</p>
+                                    <p class="font-weight-600 text-dark-dk font-size-16">{{dashboard.total_earned}}</p>
                                 </div>
                             </div>
                         </div>
@@ -48,42 +50,43 @@
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{dashboard.cf}}</h5>
-                                    <p class="card-text">Carry Forward</p>
+                                    <h5 class="card-title font-weight-600 text-dark-dk">Carry Forward</h5>
+                                    <p class="card-text text-muted">Points carried forward from a side</p>
+                                    <p class="font-weight-600 text-dark-dk font-size-16">{{dashboard.cf}}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="card box-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{dashboard.withdrawn}}</h5>
-                                    <p class="card-text">Commission Withdrawn (Rs.)</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-lg-2 icon-size-42 mb-0-important">
-                                            <i class="fas fa-wallet"></i>
-                                        </div>
-                                        <div class="col-lg-10 mb-0-important">
-                                            <h5 class="card-title">{{dashboard.balance}}</h5>
-                                            <p class="card-text">Available Balance (Rs.)</p>
-                                        </div>
-                                    </div>
+                                    <h5 class="card-title font-weight-600 text-dark-dk">Commission Withdrawn (Rs.)</h5>
+                                    <p class="card-text text-muted">Withdrawn amount</p>
+                                    <p class="font-weight-600 text-dark-dk font-size-16">{{dashboard.withdrawn}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2 icon-size-42 mb-0-important">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
+                                <div class="col-lg-10 col-sm-10 mb-0-important">
+                                    <h5 class="card-title font-weight-600 text-dark-dk">Available Balance (Rs.)</h5>
+                                    <p class="card-text text-muted">Current Balance</p>
+                                    <p class="font-weight-600 text-dark-dk font-size-16">{{dashboard.balance}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="col-lg-6">
                     <div class="card">
-                        <div class="card-body">
-                            <apexchart type="donut" height="370" :options="donut.options" :series="donut.series"></apexchart>
+                        <div class="card-body" id="graph-body">
+                            <apexchart type="donut" :options="donut.options" :series="donut.series"></apexchart>
                         </div>
                     </div>
                 </div>
@@ -122,7 +125,15 @@
                     return {
                         options: {
                             chart: {
-                                id: 'graph-donut'
+                                id: 'graph-donut',
+                                height: 415
+                            },
+                            plotOptions: {
+                                pie: {
+                                    donut: {
+                                        size: '78%'
+                                    }
+                                }
                             },
                             labels: state.dashboard.dashboard_data.label,
                             title: {
@@ -131,7 +142,21 @@
                             },
                             legend: {
                                 position: 'bottom'
-                            }
+                            },
+                            responsive: [
+                                {
+                                    breakpoint: 375,
+                                    options: {
+                                        chart: {
+                                            width: 260,
+                                            height: 300
+                                        },
+                                        legend: {
+                                            position: "bottom"
+                                        }
+                                    }
+                                }
+                            ]
                         },
                         series: state.dashboard.dashboard_data.series
                     }
@@ -177,5 +202,25 @@
     .box-3{
         background: #716ACA;
         color: #FFFFFF;
+    }
+    .card-body{
+        padding: 10px !important;
+    }
+    .text-dark-dk {
+        color: #2f3342 !important;
+    }
+    .font-weight-600{
+        font-weight: 600;
+    }
+    .font-weight-500{
+        font-weight: 500;
+    }
+    .font-size-16{
+        font-size: 16px;
+    }
+    @media only screen and (max-width: 375px) {
+        #graph-body{
+            padding: 0 !important;
+        }
     }
 </style>
