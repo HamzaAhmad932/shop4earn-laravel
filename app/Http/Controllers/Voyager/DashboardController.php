@@ -58,7 +58,7 @@ class DashboardController extends Controller
         $withdrawn = 0;
         if(!empty($earning)){
             $balance = (floatval($earning->team_bonus) + floatval($earning->sales_bonus)) - floatval($earning->paid);
-            $total_earned = (floatval($earning->team_bonus) + floatval($earning->sales_bonus)).' ('.$sb.'+ '.$tb.')';
+            $total_earned = (floatval($earning->team_bonus) + floatval($earning->sales_bonus));
             $withdrawn = $earning->paid;
         }
 
@@ -72,12 +72,12 @@ class DashboardController extends Controller
         if(!empty($user->salesBonusDetail)){
             $last_sale_entry = $user->salesBonusDetail->sortByDesc('created_at')->take(2)->where('carry_forward', '!=', 0)->first();
             $cf_position = !empty($last_sale_entry) ? $last_sale_entry->position == 1 ? 'Left': 'Right' : '';
-            $cf .= ' ('.$cf_position.')';
         }
 
         return response()->json([
             'referral'=> $referrals,
             'cf'=> $cf,
+            'cf_pos'=> empty($cf_position) ? '' : '('.$cf_position.')',
             'sb'=> $sb,
             'tb'=> $tb,
             'rank'=> $rank,
