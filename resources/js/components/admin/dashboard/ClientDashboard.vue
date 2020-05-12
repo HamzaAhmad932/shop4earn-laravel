@@ -1,67 +1,66 @@
 <template>
-    <div>
-        <div class="page-content" v-if="dashboard">
-            <div class="card">
-                <div class="card-body">
+    <div v-if="dashboard">
+        <div class="container-fluid-header">
+            <div class="card min-height-150">
+                <div class="card-body" style="line-height: 35px; margin-top: 15px; padding: 20px !important;">
                     <div class="row">
-                        <div class="col-lg-6 mb-0-important">
+                        <div class="col-lg-4 col-sm-6 col-xs-6 mb-0-important">
                             <h4>Welcome {{dashboard.user.name}}</h4>
                         </div>
-                        <div class="col-lg-6 mb-0-important">
-                            <div class="row">
-                                <div class="col-lg-6 mb-0-important">
-                                    <strong>{{dashboard.rank}}</strong>
-                                    <p class="text-muted">Current Rank</p>
-                                </div>
-                                <div class="col-lg-6 mb-0-important" v-if="dashboard.upcoming_rank">
-                                    <div class="panel panel-primary"><div class="panel-body text-primary"><strong>Upcomming Rank : {{dashboard.upcoming_rank}} </strong></div></div>
-                                </div>
-                                <div class="col-lg-6 mb-0-important" v-else>
-                                    <div class="panel panel-info"><div class="panel-body text-info"><strong>Congratulation, You are at highest rank </strong></div></div>
-                                </div>
-                            </div>
+                        <div class="col-lg-4 col-sm-6 col-xs-6 mb-0-important text-right">
+                            <strong class="badge badge-success">{{dashboard.rank}}</strong>
+                            <p class="text-muted">Current Rank</p>
+
+                        </div>
+                        <div class="col-lg-4 col-sm-12 col-xs-12 mb-0-important" v-if="dashboard.upcoming_rank">
+                            <div class="panel panel-primary"><div class="panel-body text-primary"><strong>Upcomming Rank : {{dashboard.upcoming_rank}} </strong></div></div>
+                        </div>
+                        <div class="col-lg-4 col-sm-12 col-xs-12 mb-0-important" v-else>
+                            <div class="panel panel-info"><div class="panel-body text-info"><strong>Congratulation, You are at highest rank </strong></div></div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="page-content">
             <div class="row p-top-10">
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <div class="row p-lf-tp">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-12">
                             <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-600 text-dark-dk">Referral Downlines</h5>
-                                    <p class="card-text text-muted">Members referred by you</p>
-                                    <p class="font-weight-600 text-dark-dk font-size-16">{{dashboard.referral}}</p>
+                                <div class="card-body box-1">
+                                    <h1 class="card-title font-weight-300 mb-5-important">{{dashboard.referral}}</h1>
+                                    <p class="card-text">Referral Downlines</p>
+<!--                                    <p class="font-weight-600 text-dark-dk font-size-16"></p>-->
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title font-weight-600 text-dark-dk">Total Earned (Sales Bonus + Team Bonus)</h5>
-                                    <p class="card-text text-muted">Commissions and bonuses</p>
-                                    <p class="font-weight-600 text-dark-dk font-size-16">{{dashboard.total_earned}}</p>
+                                    <h1 class="card-title font-weight-300 mb-5-important">{{dashboard.total_earned}}</h1>
+                                    <p class="card-text">Total Earned (Rs.)</p>
+<!--                                    <p class="font-weight-600 text-dark-dk font-size-16"></p>-->
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row p-lf-tp">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title font-weight-600 text-dark-dk">Carry Forward</h5>
-                                    <p class="card-text text-muted">Points carried forward from a side</p>
-                                    <p class="font-weight-600 text-dark-dk font-size-16">{{dashboard.cf}}</p>
+                                    <h1 class="card-title font-weight-300 mb-5-important">{{dashboard.cf}}</h1>
+                                    <p class="card-text">Carry Forward {{dashboard.cf_pos}}</p>
+<!--                                    <p class="font-weight-600 text-dark-dk font-size-16"></p>-->
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-12">
                             <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-600 text-dark-dk">Commission Withdrawn (Rs.)</h5>
-                                    <p class="card-text text-muted">Withdrawn amount</p>
-                                    <p class="font-weight-600 text-dark-dk font-size-16">{{dashboard.withdrawn}}</p>
+                                <div class="card-body box-2">
+                                    <h1 class="card-title font-weight-300 mb-5-important">{{dashboard.withdrawn}}</h1>
+                                    <p class="card-text">Total Withdrawn (Rs.)</p>
+<!--                                    <p class="font-weight-600 text-dark-dk font-size-16"></p>-->
                                 </div>
                             </div>
                         </div>
@@ -70,20 +69,20 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-2 col-sm-2 icon-size-42 mb-0-important">
+                                <div class="col-lg-3 col-sm-3 col-xs-3 icon-size-42 mb-0-important">
                                     <i class="fas fa-wallet"></i>
                                 </div>
-                                <div class="col-lg-10 col-sm-10 mb-0-important">
-                                    <h5 class="card-title font-weight-600 text-dark-dk">Available Balance (Rs.)</h5>
-                                    <p class="card-text text-muted">Current Balance</p>
-                                    <p class="font-weight-600 text-dark-dk font-size-16">{{dashboard.balance}}</p>
+                                <div class="col-lg-9 col-sm-9 col-xs-9 mb-0-important text-center">
+                                    <h1 class="card-title font-weight-300 mb-5-important">{{dashboard.balance}}</h1>
+                                    <p class="card-text">Available Balance (Rs.)</p>
+<!--                                    <p class="font-weight-600 text-dark-dk font-size-16"></p>-->
                                 </div>
                             </div>
                         </div>
                     </div>
 
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                     <div class="card">
                         <div class="card-body" id="graph-body">
                             <apexchart type="donut" :options="donut.options" :series="donut.series"></apexchart>
@@ -126,7 +125,7 @@
                         options: {
                             chart: {
                                 id: 'graph-donut',
-                                height: 415
+                                height: 310
                             },
                             plotOptions: {
                                 pie: {
@@ -168,7 +167,10 @@
         },
     }
 </script>
-<style>
+<style scoped>
+    h1{
+        margin: 0 !important;
+    }
     .p-lf-tp{
         padding-left: 10px;
     }
@@ -190,21 +192,25 @@
 
     .icon-size-42{
         font-size: 42px;
+        color: #7266ba;
     }
     .box-1{
-        background: #008FFB;
-        color: #FFFFFF;
+        color: #f4f3f9;
+        background-color: #7266ba;
     }
     .box-2{
-        background: #00E396;
-        color: #FFFFFF;
+        color: #dcf2f8;
+        background-color: #23b7e5;
     }
     .box-3{
         background: #716ACA;
         color: #FFFFFF;
     }
     .card-body{
-        padding: 10px !important;
+        padding: 10px 0 10px 15px !important;
+    }
+    .card-text{
+        margin: 0 !important;
     }
     .text-dark-dk {
         color: #2f3342 !important;
@@ -212,11 +218,26 @@
     .font-weight-600{
         font-weight: 600;
     }
+    .font-weight-300{
+        font-weight: 300;
+    }
     .font-weight-500{
         font-weight: 500;
     }
     .font-size-16{
         font-size: 16px;
+    }
+    .container-fluid-header{
+        padding-right: 0;
+        padding-left: 0;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    .mb-5-important{
+        margin-bottom: 5px !important;
+    }
+    .min-height-150{
+        min-height: 150px;
     }
     @media only screen and (max-width: 375px) {
         #graph-body{
