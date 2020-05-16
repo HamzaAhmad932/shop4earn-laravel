@@ -3,11 +3,12 @@
 namespace App;
 
 use App\Category;
+use TCG\Voyager\Traits\Resizable;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-
+    use Resizable;
 
     public function category()
     {
