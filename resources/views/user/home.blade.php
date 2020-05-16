@@ -217,23 +217,24 @@
                                                         <div class="col-6 col-md-3">
                                                             <div class="product-default inner-quickview inner-icon">
                                                                 <figure>
-                                                                    <a href="#">
-                                                                        @if(!empty($product->productImages[0]))
-                                                                            <img src="{{asset('storage/'.$product->productImages[0]->url)}}">
+                                                                    <a href="{{route('shop.product', $product->id)}}">
+                                                                        @if(!empty($product->featured_img))
+                                                                            <img src="{{asset('storage/'.$product->featured_img)}}">
                                                                         @else
                                                                             <img src="{{asset('assets/images/no-image-png-2.png')}}">
                                                                         @endif
                                                                     </a>
+                                                                    <a href="{{route('shop.product', $product->id)}}" class="btn-quickview" title="Quick View">Quick View</a>
                                                                 </figure>
                                                                 <div class="product-details">
                                                                     <div class="category-wrap">
                                                                         <div class="category-list">
                                                                             <a href="{{route('shop.category', $offer->id)}}" class="product-category">{{$offer->category_name}}</a>
                                                                         </div>
-                                                                        <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a>
+                                                                        <a href="{{route('shop.product', $product->id)}}" class="btn-icon-wish"><i class="icon-heart"></i></a>
                                                                     </div>
                                                                     <h2 class="product-title">
-                                                                        <a href="#">{{$product->product_name}}</a>
+                                                                        <a href="{{route('shop.product', $product->id)}}">{{$product->product_name}}</a>
                                                                     </h2>
                                                                     <div class="price-box">
                                                                         <span class="product-price">Rs. {{$product->product_price}}</span>

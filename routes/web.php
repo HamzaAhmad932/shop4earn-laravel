@@ -11,10 +11,12 @@
 |
 */
 
-
+//Website Routes
 Route::get('/', 'HomeController@index');
 Route::get('/shop/category/{id?}', 'ProductController@index')->name('shop.category');
+Route::get('/product/{id?}', 'ProductController@productDetail')->name('shop.product');
 
+//Portal Routes
 Route::group(['prefix' => 'portal'], function () {
 
     Voyager::routes();
@@ -29,7 +31,7 @@ Route::group(['prefix' => 'portal'], function () {
     });
 });
 
-
+//API Routes
 Route::group(['prefix'=> 'v1'], function(){
 
     // New Customer Registration related Routes

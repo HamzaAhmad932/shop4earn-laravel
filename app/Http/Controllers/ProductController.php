@@ -10,18 +10,31 @@ class ProductController extends Controller
 {
     public function index($id=null){
 
+        $all_categories = Category::all();
+
         if(!empty($id)){
-            $category = Category::where('id', $id)->with(['products', 'products.productImages'])->first();
-            $all_categories = Category::all();
+            $category = Category::where('id', $id)->with(['products'])->first();
             $products = $category->products;
 
             return view('user.product-list', ['products'=> $products, 'all_categories'=>$all_categories]);
         }else{
 
-            $all_categories = Category::all();
-            $products = Product::with('productImages')->get();
+            $products = Product::all();
 
             return view('user.product-list', ['products'=> $products, 'all_categories'=>$all_categories]);
         }
+    }
+
+    public function productDetail(Request $request){
+
+        $products = Product::all();
+        $all_categories = Category::all();
+        $product = $products->where('id', $request->id)->first();
+
+        return view('user.product-detail', [
+            'product'=> $product,
+            'all_categories'=>$all_categories,
+            'products'=> $products
+        ]);
     }
 }
