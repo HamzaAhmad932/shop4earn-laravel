@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use Resizable;
-
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
     public function category()
     {
         return $this->belongsToMany(Category::class);
