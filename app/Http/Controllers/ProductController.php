@@ -16,12 +16,12 @@ class ProductController extends Controller
             $category = Category::where('id', $id)->with(['products'])->first();
             $products = $category->products;
 
-            return view('user.product-list', ['products'=> $products, 'all_categories'=>$all_categories]);
+            return view('user.product-list-2', ['products'=> $products, 'all_categories'=>$all_categories]);
         }else{
 
             $products = Product::all();
 
-            return view('user.product-list', ['products'=> $products, 'all_categories'=>$all_categories]);
+            return view('user.product-list-2', ['products'=> $products, 'all_categories'=>$all_categories]);
         }
     }
 
@@ -31,10 +31,14 @@ class ProductController extends Controller
         $all_categories = Category::all();
         $product = $products->where('id', $request->id)->first();
 
-        return view('user.product-detail', [
+        return view('user.product-detail-2', [
             'product'=> $product,
             'all_categories'=>$all_categories,
             'products'=> $products
         ]);
+    }
+
+    public function cart(Request $request){
+
     }
 }

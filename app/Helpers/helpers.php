@@ -66,3 +66,10 @@ if (!function_exists('get_collection_by_applying_filters')) {
         }
     }
 }
+
+if(!function_exists('urlopt')){
+
+    function urlopt($url){
+        return str_replace("\\", '/', $url);
+    }
+}

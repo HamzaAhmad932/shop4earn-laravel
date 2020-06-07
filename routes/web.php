@@ -15,6 +15,10 @@
 Route::get('/', 'HomeController@index');
 Route::get('/shop/category/{id?}', 'ProductController@index')->name('shop.category');
 Route::get('/product/{id?}', 'ProductController@productDetail')->name('shop.product');
+Route::get('/cart', 'CartController@index')->name('cart.show');
+
+//API routes
+Route::post('cart-add', 'CartController@addToCart')->name('cart.add');
 
 //Portal Routes
 Route::group(['prefix' => 'portal'], function () {
