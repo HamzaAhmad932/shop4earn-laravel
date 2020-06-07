@@ -15,7 +15,7 @@
                     <div class="canvas_close">
                         <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
                     </div>
-                    
+
                     <div class="header_right_info">
                         <ul>
                             <li class="search_box"><a href="javascript:void(0)"><i class="zmdi zmdi-search zmdi-hc-fw"></i></a>
