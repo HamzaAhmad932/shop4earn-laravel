@@ -10,7 +10,7 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="slider_area owl-carousel">
                         @foreach($slider as $s)
-                        <div class="single_slider d-flex align-items-center" data-bgimg="{{asset(urlopt($s->url))}}">
+                        <div class="single_slider d-flex align-items-center" data-bgimg="{{asset('storage/'.urlopt($s->url))}}">
                         </div>
                         @endforeach
                     </div>
