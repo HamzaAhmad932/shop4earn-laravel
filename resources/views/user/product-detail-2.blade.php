@@ -134,30 +134,101 @@
     <!--product details end-->
 
     <!--product info start-->
-    <div class="product_d_info mb-58">
+    @if(!empty($product->tab_1_title)
+        || !empty($product->tab_2_title)
+        || !empty($product->tab_3_title)
+        || !empty($product->tab_4_title)
+        || !empty($product->tab_5_title)
+        )
+        <div class="product_d_info mb-58">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="product_d_inner">
                         <div class="product_info_button">
                             <ul class="nav" role="tablist">
-                                <li >
-                                    <a class="active" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="false">Description</a>
-                                </li>
-                                <li>
-                                    <a data-toggle="tab" href="#sheet" role="tab" aria-controls="sheet" aria-selected="false">Specification</a>
-                                </li>
+                                @if(!empty($product->tab_1_title))
+                                    <li >
+                                        <a
+                                            class="active"
+                                            data-toggle="tab"
+                                            href="#tab_1"
+                                            role="tab"
+                                            aria-controls="info"
+                                            aria-selected="false"
+                                        >{{$product->tab_1_title}}</a>
+                                    </li>
+                                @endif
+                                @if(!empty($product->tab_2_title))
+                                    <li >
+                                        <a
+                                            data-toggle="tab"
+                                            href="#tab_2"
+                                            role="tab"
+                                            aria-controls="info"
+                                            aria-selected="false"
+                                        >{{$product->tab_2_title}}</a>
+                                    </li>
+                                @endif
+                                @if(!empty($product->tab_3_title))
+                                    <li >
+                                        <a
+                                            data-toggle="tab"
+                                            href="#tab_3"
+                                            role="tab"
+                                            aria-controls="info"
+                                            aria-selected="false"
+                                        >{{$product->tab_3_title}}</a>
+                                    </li>
+                                @endif
+                                @if(!empty($product->tab_4_title))
+                                    <li >
+                                        <a
+                                            data-toggle="tab"
+                                            href="#tab_4"
+                                            role="tab"
+                                            aria-controls="info"
+                                            aria-selected="false"
+                                        >{{$product->tab_4_title}}</a>
+                                    </li>
+                                @endif
+                                @if(!empty($product->tab_5_title))
+                                    <li >
+                                        <a
+                                            data-toggle="tab"
+                                            href="#tab_5"
+                                            role="tab"
+                                            aria-controls="info"
+                                            aria-selected="false"
+                                        >{{$product->tab_5_title}}</a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                         <div class="tab-content">
-                            <div class="tab-pane fade show active" id="info" role="tabpanel" >
+                            <div class="tab-pane fade show active" id="tab_1" role="tabpanel" >
                                 <div class="product_info_content">
-                                    {!! $product->description !!}
+                                    {!! $product->tab_1_content !!}
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="sheet" role="tabpanel" >
+                            <div class="tab-pane fade" id="tab_2" role="tabpanel" >
                                 <div class="product_info_content">
-                                    {!! $product->specification !!}
+                                    {!! $product->tab_2_content !!}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab_3" role="tabpanel" >
+                                <div class="product_info_content">
+                                    {!! $product->tab_3_content !!}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab_4" role="tabpanel" >
+                                <div class="product_info_content">
+                                    {!! $product->tab_4_content !!}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab_5" role="tabpanel" >
+                                <div class="product_info_content">
+                                    {!! $product->tab_5_content !!}
                                 </div>
                             </div>
                         </div>
@@ -166,6 +237,11 @@
             </div>
         </div>
     </div>
+    @else
+        <br>
+        <br>
+        <br>
+    @endif
     <!--product info end-->
 
     <!--product area start-->
