@@ -70,10 +70,10 @@
                                     </div>
                                     <div class="mini_cart_footer">
                                         <div class="cart_button">
-                                            <a href="cart.html">View cart</a>
+                                            <a href="#">View cart</a>
                                         </div>
                                         <div class="cart_button">
-                                            <a href="checkout.html"> Checkout</a>
+                                            <a href="#"> Checkout</a>
                                         </div>
 
                                     </div>
@@ -87,7 +87,8 @@
                         <ul class="offcanvas_main_menu">
                             <li><a href="#">Earn with Us</a></li>
                             <li><a href="#">about Us</a></li>
-                            <li><a href="#"> Contact Us</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="/portal">Login</a></li>
                         </ul>
                     </div>
 
