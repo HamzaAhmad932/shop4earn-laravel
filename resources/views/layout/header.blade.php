@@ -83,7 +83,7 @@
                         </ul>
                     </div>
 
-                    <div id="menu" class="text-left ">
+                    <div id="menu" class="text-left">
                         <ul class="offcanvas_main_menu">
                             <li><a href="#">Earn with Us</a></li>
                             <li><a href="#">about Us</a></li>
@@ -255,12 +255,17 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="main_menu menu_four menu_position float-left">
-                            <nav>
+                        <div class="main_menu menu_four menu_position">
+                            <nav class="float-left">
                                 <ul>
                                     <li><a href="#">Earn with Us</a></li>
                                     <li><a href="#">about Us</a></li>
-                                    <li><a href="#"> Contact Us</a></li>
+                                    <li><a href="#">Contact Us</a></li>
+                                </ul>
+                            </nav>
+                            <nav class="float-right">
+                                <ul>
+                                    <li><a href="/portal">Login</a></li>
                                 </ul>
                             </nav>
                         </div>
