@@ -52,6 +52,12 @@ class SalesBonusCalculateJob implements ShouldQueue
 
         foreach ($users as $user) {
 
+            //continue inactive customer
+            $customer = $user->customer;
+            if($customer->status == 0){
+                continue;
+            }
+
             self::$user_id = [$user->id];
             self::$childs = [];
 

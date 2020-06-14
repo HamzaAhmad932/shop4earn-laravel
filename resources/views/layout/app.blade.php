@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Shop4Earn - @yield('title')</title>
+    <title>Shop4Earn | @yield('title')</title>
     @include('layout.head')
     @stack('below_style')
 </head>

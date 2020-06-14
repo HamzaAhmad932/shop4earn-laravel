@@ -4,14 +4,14 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
-require('./registry');
 
 //window.Vue = require('vue');
-import store from "./components/admin/store/index";
+import Vue from 'vue';
+import store from "./store/index";
 
 Vue.config.devtools = true;
-
+require('./bootstrap');
+require('./registry');
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

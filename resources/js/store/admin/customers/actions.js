@@ -52,6 +52,7 @@ let actions = {
             data : {parent_id}
         }).then((resp) => {
             commit('SET_AVAILABLE_SPONSORS_AND_PRODUCTS', resp.data);
+            commit('SET_USER_ID_AND_USER_NAME', resp.data);
             commit('HIDE_LOADER', null, {root: true});
         }).catch((err) => {
             commit('HIDE_LOADER', null, {root: true});
