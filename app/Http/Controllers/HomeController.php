@@ -24,4 +24,9 @@ class HomeController extends Controller
             'our_products'=> $our_products
         ]);
     }
+
+    public function thanks(Request $request)
+    {
+        return view('user.thanks');
+    }
 }

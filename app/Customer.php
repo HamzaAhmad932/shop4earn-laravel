@@ -20,6 +20,7 @@ class Customer extends Model
         'rank_id',
         'position',
         'is_paired',
+        'temp_sponsor_id',
         'status',
     ];
 

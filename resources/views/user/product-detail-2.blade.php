@@ -11,7 +11,7 @@
                         <div id="img-1" class="zoomWrapper single-zoom">
                             <a href="#">
                                 @if(!empty($product->featured_img))
-                                    <img id="zoom1" src="/storage/{{urlopt($product->featured_img)}}" data-zoom-image="/storage/{{urlopt($product->featured_img)}}" alt="big-1">
+                                    <img id="zoom1" src="{{Voyager::image(urlopt($product->featured_img))}}" data-zoom-image="{{Voyager::image(urlopt($product->featured_img))}}" alt="big-1">
                                 @endif
                             </a>
                         </div>
@@ -19,36 +19,36 @@
                             <ul class="s-tab-zoom owl-carousel single-product-active" id="gallery_01">
                                 @if(!empty($product->featured_img))
                                     <li>
-                                        <a href="#" class="elevatezoom-gallery active" data-update="" data-image="/storage/{{urlopt($product->featured_img)}}" data-zoom-image="/storage/{{urlopt($product->featured_img)}}">
-                                            <img src="/storage/{{urlopt($product->featured_img)}}" alt="zo-th-1"/>
+                                        <a href="#" class="elevatezoom-gallery active" data-update="" data-image="{{Voyager::image(urlopt($product->featured_img))}}" data-zoom-image="{{Voyager::image(urlopt($product->featured_img))}}">
+                                            <img src="{{Voyager::image(urlopt($product->featured_img))}}" alt="zo-th-1"/>
                                         </a>
                                     </li>
                                 @endif
                                 @if(!empty($product->img_1))
                                     <li>
-                                        <a href="#" class="elevatezoom-gallery active" data-update="" data-image="/storage/{{urlopt($product->img_1)}}" data-zoom-image="/storage/{{urlopt($product->img_1)}}">
-                                            <img src="/storage/{{urlopt($product->img_1)}}" alt="zo-th-1"/>
+                                        <a href="#" class="elevatezoom-gallery active" data-update="" data-image="{{Voyager::image(urlopt($product->img_1))}}" data-zoom-image="{{Voyager::image(urlopt($product->img_1))}}">
+                                            <img src="{{Voyager::image(urlopt($product->img_1))}}" alt="zo-th-1"/>
                                         </a>
                                     </li>
                                 @endif
                                 @if(!empty($product->img_2))
                                     <li>
-                                        <a href="#" class="elevatezoom-gallery active" data-update="" data-image="/storage/{{urlopt($product->img_2)}}" data-zoom-image="/storage/{{urlopt($product->img_2)}}">
-                                            <img src="/storage/{{urlopt($product->img_2)}}" alt="zo-th-1"/>
+                                        <a href="#" class="elevatezoom-gallery active" data-update="" data-image="/storage/{{urlopt($product->img_2)}}" data-zoom-image="{{Voyager::image(urlopt($product->img_2))}}">
+                                            <img src="{{Voyager::image(urlopt($product->img_2))}}" alt="zo-th-1"/>
                                         </a>
                                     </li>
                                 @endif
                                 @if(!empty($product->img_3))
                                     <li>
-                                        <a href="#" class="elevatezoom-gallery active" data-update="" data-image="/storage/{{urlopt($product->img_3)}}" data-zoom-image="/storage/{{urlopt($product->img_3)}}">
-                                            <img src="/storage/{{urlopt($product->img_3)}}" alt="zo-th-1"/>
+                                        <a href="#" class="elevatezoom-gallery active" data-update="" data-image="{{Voyager::image(urlopt($product->img_3))}}" data-zoom-image="{{Voyager::image(urlopt($product->img_3))}}">
+                                            <img src="{{Voyager::image(urlopt($product->img_3))}}" alt="zo-th-1"/>
                                         </a>
                                     </li>
                                 @endif
                                 @if(!empty($product->img_4))
                                     <li>
-                                        <a href="#" class="elevatezoom-gallery active" data-update="" data-image="/storage/{{urlopt($product->img_4)}}" data-zoom-image="/storage/{{urlopt($product->img_4)}}">
-                                            <img src="/storage/{{urlopt($product->img_4)}}" alt="zo-th-1"/>
+                                        <a href="#" class="elevatezoom-gallery active" data-update="" data-image="{{Voyager::image(urlopt($product->img_4))}}" data-zoom-image="{{Voyager::image(urlopt($product->img_4))}}">
+                                            <img src="{{Voyager::image(urlopt($product->img_4))}}" alt="zo-th-1"/>
                                         </a>
                                     </li>
                                 @endif
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="product_d_right">
-                        <form action="#">
+                        <form action="{{route('cart.add')}}" method="POST">
 
                             <h1>{{$product->product_name}}</h1>
                             <div class="product_nav">
@@ -98,7 +98,9 @@
 {{--                            </div>--}}
                             <div class="product_variant quantity">
                                 <label>quantity</label>
-                                <input min="1" max="100" value="1" type="number">
+                                <input min="1" max="100" value="1" type="number" name="qty">
+                                <input type="hidden" name="product_id" value="{{$product->id}}">
+                                {{ csrf_field() }}
                                 <button class="button" type="submit">add to cart</button>
 
                             </div>
@@ -263,14 +265,14 @@
                                 <div class="product_thumb">
                                     <a class="primary_img" href="{{route('shop.product', $product->id)}}">
                                         @if(!empty($product->featured_img))
-                                            <img src="{{asset('storage/'.$product->featured_img)}}" alt="">
+                                            <img src="{{Voyager::image($product->featured_img)}}" alt="">
                                         @else
                                             <img src="{{asset('assets/images/no-image-png-2.png')}}" alt="">
                                         @endif
                                     </a>
                                     <a class="secondary_img" href="{{route('shop.product', $product->id)}}">
                                         @if(!empty($product->img_1))
-                                            <img src="{{asset('storage/'.$product->img_1)}}" alt="">
+                                            <img src="{{Voyager::image($product->img_1)}}" alt="">
                                         @else
                                             <img src="{{asset('assets/images/no-image-png-2.png')}}" alt="">
                                         @endif

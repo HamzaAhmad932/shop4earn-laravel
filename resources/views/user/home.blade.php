@@ -10,7 +10,7 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="slider_area owl-carousel">
                         @foreach($slider as $s)
-                        <div class="single_slider d-flex align-items-center" data-bgimg="{{asset('storage/'.urlopt($s->url))}}">
+                        <div class="single_slider d-flex align-items-center" data-bgimg="{{Voyager::image(urlopt($s->url))}}">
                         </div>
                         @endforeach
                     </div>
@@ -37,14 +37,14 @@
                         <div class="product_thumb">
                             <a class="primary_img" href="{{route('shop.product', $product->id)}}">
                                 @if(!empty($product->featured_img))
-                                    <img src="{{asset('storage/'.$product->featured_img)}}" alt="">
+                                    <img src="{{Voyager::image($product->featured_img)}}" alt="">
                                 @else
                                     <img src="{{asset('assets/images/no-image-png-2.png')}}" alt="">
                                 @endif
                             </a>
                             <a class="secondary_img" href="{{route('shop.product', $product->id)}}">
                                 @if(!empty($product->img_1))
-                                    <img src="{{asset('storage/'.$product->img_1)}}" alt="">
+                                    <img src="{{Voyager::image($product->img_1)}}" alt="">
                                 @else
                                     <img src="{{asset('assets/images/no-image-png-2.png')}}" alt="">
                                 @endif
@@ -95,7 +95,7 @@
                     <figure class="single_banner">
                         <div class="banner_thumb">
                             @if(!empty($banners[0]))
-                                <img src="{{asset('storage/'.$banners[0]->url)}}" alt="">
+                                <img src="{{Voyager::image($banners[0]->url)}}" alt="">
                             @else
                                 Banner 1 not attached
                             @endif
@@ -106,7 +106,7 @@
                     <figure class="single_banner">
                         <div class="banner_thumb">
                             @if(!empty($banners[1]))
-                                <img src="{{asset('storage/'.$banners[1]->url)}}" alt="">
+                                <img src="{{Voyager::image($banners[1]->url)}}" alt="">
                             @else
                                 Banner 2 not attached
                             @endif
@@ -130,14 +130,14 @@
                                 <div class="product_thumb">
                                     <a class="primary_img" href="{{route('shop.product', $product->id)}}">
                                         @if(!empty($product->featured_img))
-                                            <img src="{{asset('storage/'.$product->featured_img)}}" alt="">
+                                            <img src="{{Voyager::image($product->featured_img)}}" alt="">
                                         @else
                                             <img src="{{asset('assets/images/no-image-png-2.png')}}" alt="">
                                         @endif
                                     </a>
                                     <a class="secondary_img" href="{{route('shop.product', $product->id)}}">
                                         @if(!empty($product->img_1))
-                                            <img src="{{asset('storage/'.$product->img_1)}}" alt="">
+                                            <img src="{{Voyager::image($product->img_1)}}" alt="">
                                         @else
                                             <img src="{{asset('assets/images/no-image-png-2.png')}}" alt="">
                                         @endif
@@ -190,7 +190,7 @@
                         <div class="banner_thumb">
                             <a href="#">
                                 @if(!empty($banners[2]))
-                                    <img src="{{asset('storage/'.$banners[2]->url)}}" alt="">
+                                    <img src="{{Voyager::image($banners[2]->url)}}" alt="">
                                 @else
                                     Banner 3 not attached
                                 @endif

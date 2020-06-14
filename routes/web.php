@@ -16,6 +16,8 @@ Route::get('/', 'HomeController@index');
 Route::get('/shop/category/{id?}', 'ProductController@index')->name('shop.category');
 Route::get('/product/{id?}', 'ProductController@productDetail')->name('shop.product');
 Route::get('/cart', 'CartController@index')->name('cart.show');
+Route::get('/checkout', 'CheckoutController@index')->name('checkout');
+Route::get('/thanks', 'HomeController@thanks')->name('thanks');
 
 //API routes
 Route::post('cart-add', 'CartController@addToCart')->name('cart.add');
@@ -47,6 +49,10 @@ Route::group(['prefix'=> 'v1'], function(){
     Route::post('add-payout-request', 'Voyager\PayoutRequestController@addPayoutRequest');
     Route::post('update-payout-request-status', 'Voyager\PayoutRequestController@updatePayoutRequestStatus');
     Route::get('get-dashboard-data', 'Voyager\DashboardController@dashboardData');
+    Route::get('get-shopping-cart-content', 'CartController@getShoppingCartContent');
+    Route::post('update-shopping-cart-content', 'CartController@updateShoppingCartContent');
+    Route::post('delete-shopping-cart-item', 'CartController@deleteShoppingCartItem');
+    Route::post('checkout', 'CheckoutController@checkout');
 });
 
 Route::get('test-team-bonus', 'Admin\CustomerController@testTeamBonus');

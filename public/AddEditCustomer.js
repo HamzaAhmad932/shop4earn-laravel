@@ -236,7 +236,7 @@ var render = function() {
                     }),
                     _vm._v(" "),
                     _vm.add_customer.error_status.sponsor_id
-                      ? _c("div", { staticClass: "invalid-feedback" }, [
+                      ? _c("div", { staticClass: "invalid-feedback-2" }, [
                           _vm._v(
                             _vm._s(_vm.add_customer.error_message.sponsor_id)
                           )
