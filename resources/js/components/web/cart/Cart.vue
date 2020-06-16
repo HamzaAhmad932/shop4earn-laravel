@@ -72,7 +72,7 @@
                                             <p>Total</p>
                                             <p class="cart_amount">Rs.{{totals.total}}</p>
                                         </div>
-                                        <div class="checkout_btn">
+                                        <div class="checkout_btn" v-if="cart_content.length != 0">
                                             <a href="/checkout">Proceed to Checkout</a>
                                         </div>
                                     </div>

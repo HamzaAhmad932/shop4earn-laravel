@@ -6,7 +6,9 @@ use App\User;
 use App\Rank;
 use App\Customer;
 use Carbon\Carbon;
+use App\CustomSetting;
 use TCG\Voyager\Facades\Voyager;
+use App\Http\Traits\CustomerTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,7 @@ use App\Http\Resources\CustomerDashboardResource;
 
 class DashboardController extends Controller
 {
+    use CustomerTrait;
     public static $childs = [];
     public static $user_id = [1];
     public static $customers = [];
@@ -119,5 +122,35 @@ class DashboardController extends Controller
         }
 
         return self::$childs;
+    }
+
+    public function activateCustomer(Request $request)
+    {
+
+        $customer = Customer::find($request->customer_id);
+        $sponsor_id = $customer->temp_sponsor_id;
+
+        $sponsor_present = !empty($customer->temp_sponsor_id);
+
+        if($sponsor_present)
+        {
+            $parent_id = $this->getTreeNodeFromManualPosition($customer->temp_sponsor_id, $customer->position);
+        }else{
+
+            $sponsor_id = CustomSetting::find(1)->default_sponsor_id;
+            $parent_id = $this->getTreeNodeFromManualPosition($sponsor_id, $customer->position);
+        }
+
+        $customer->update([
+            'parent_id'=> $parent_id,
+            'sponsor_id'=>$sponsor_id,
+            'is_paired'=> 0,
+            'status'=> Customer::STATUS_ACTIVE
+        ]);
+
+        $this->updateSponsorRank($sponsor_id);
+        $this->giveTeamBonus($customer);
+
+        return redirect()->back();
     }
 }

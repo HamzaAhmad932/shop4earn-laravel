@@ -26,56 +26,51 @@
                                     </form>
                                 </div>
                             </li>
-                            <li class="header-wishlist"><a href="wishlist.html"><i class="zmdi zmdi-favorite-outline"></i> <span class="item_count">3</span></a></li>
-                            <li class="mini_cart_wrapper"><a href="javascript:void(0)"><i class="zmdi zmdi-shopping-cart zmdi-hc-fw"></i> <span class="item_count">2</span></a>
+{{--                            <li class="header-wishlist"><a href="wishlist.html"><i class="zmdi zmdi-favorite-outline"></i> <span class="item_count">3</span></a></li>--}}
+                            <li class="mini_cart_wrapper"><a href="javascript:void(0)"><i class="zmdi zmdi-shopping-cart zmdi-hc-fw"></i> <span class="item_count">{{Cart::instance('shopping')->count()}}</span></a>
                                 <!--mini cart-->
                                 <div class="mini_cart">
                                     <div class="cart_gallery">
-                                        <div class="cart_item">
-                                            <div class="cart_img">
-                                                <a href="#"><img src="{{asset('assets/img/s-product/product.jpg')}}" alt=""></a>
+                                        @forelse(Cart::instance('shopping')->content() as $item)
+                                            <div class="cart_item">
+                                                <div class="cart_img">
+                                                    <a href="{{route('shop.product', $item->id)}}"><img src="{{$item->options->image_path}}" alt=""></a>
+                                                </div>
+                                                <div class="cart_info">
+                                                    <a href="{{route('shop.product', $item->id)}}">{{$item->name}}</a>
+                                                    <p><span> {{$item->price}} </span> X {{$item->qty}}</p>
+                                                </div>
+                                                {{--                                                    <div class="cart_remove">--}}
+                                                {{--                                                        <a href="#"><i class="ion-android-close"></i></a>--}}
+                                                {{--                                                    </div>--}}
                                             </div>
-                                            <div class="cart_info">
-                                                <a href="#">Quisque In Arcu</a>
-                                                <p><span> $65.00 </span> X 1</p>
+                                        @empty
+                                            <div class="cart_item">
+                                                <p>Cart is empty!</p>
                                             </div>
-                                            <div class="cart_remove">
-                                                <a href="#"><i class="ion-android-close"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="cart_item">
-                                            <div class="cart_img">
-                                                <a href="#"><img src="{{asset('assets/img/s-product/product2.jpg')}}" alt=""></a>
-                                            </div>
-                                            <div class="cart_info">
-                                                <a href="#">Donec Ac Tempus</a>
-                                                <p><span> $60.00 </span> X 1</p>
-                                            </div>
-                                            <div class="cart_remove">
-                                                <a href="#"><i class="ion-android-close"></i></a>
-                                            </div>
-                                        </div>
+                                        @endforelse
                                     </div>
                                     <div class="mini_cart_table">
                                         <div class="cart_table_border">
                                             <div class="cart_total">
                                                 <span>Sub total:</span>
-                                                <span class="price">$125.00</span>
+                                                <span class="price">Rs.{{Cart::instance('shopping')->subtotal()}}</span>
                                             </div>
                                             <div class="cart_total mt-10">
                                                 <span>total:</span>
-                                                <span class="price">$125.00</span>
+                                                <span class="price">Rs.{{Cart::instance('shopping')->total()}}</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="mini_cart_footer">
                                         <div class="cart_button">
-                                            <a href="#">View cart</a>
+                                            <a href="{{route('cart.show')}}">View cart</a>
                                         </div>
-                                        <div class="cart_button">
-                                            <a href="#"> Checkout</a>
-                                        </div>
-
+                                        @if(Cart::instance('shopping')->count() > 0)
+                                            <div class="cart_button">
+                                                <a href="{{route('checkout')}}"> Checkout</a>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                                 <!--mini cart end-->
@@ -126,21 +121,9 @@
                                     <div class="hover_category">
                                         <select class="select_option" name="select" id="categori">
                                             <option selected value="1">All Categories</option>
-                                            <option value="2">Accessories</option>
-                                            <option value="3">Accessories & More</option>
-                                            <option value="4">Butters & Eggs</option>
-                                            <option value="5">Camera & Video </option>
-                                            <option value="6">Mornitors</option>
-                                            <option value="7">Tablets</option>
-                                            <option value="8">Laptops</option>
-                                            <option value="9">Handbags</option>
-                                            <option value="10">Headphone & Speaker</option>
-                                            <option value="11">Herbs & botanicals</option>
-                                            <option value="12">Vegetables</option>
-                                            <option value="13">Shop</option>
-                                            <option value="14">Laptops & Desktops</option>
-                                            <option value="15">Watchs</option>
-                                            <option value="16">Electronic</option>
+                                            @foreach($navbar as $nav)
+                                                <option value="{{$nav->id}}">{{$nav->category_name}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="search_box_three">
@@ -151,55 +134,51 @@
                             </div>
                             <div class="header_right_info right_info_three">
                                 <ul>
-                                    <li class="header-wishlist"><a href="wishlist.html"><i class="zmdi zmdi-favorite-outline"></i> <span class="item_count">3</span></a></li>
-                                    <li class="mini_cart_wrapper"><a href="javascript:void(0)"><i class="zmdi zmdi-shopping-cart zmdi-hc-fw"></i> <span class="item_count">2</span> $0.00 <i class="zmdi zmdi-chevron-down zmdi-hc-fw"></i></a>
+{{--                                    <li class="header-wishlist"><a href="wishlist.html"><i class="zmdi zmdi-favorite-outline"></i> <span class="item_count">3</span></a></li>--}}
+                                    <li class="mini_cart_wrapper"><a href="javascript:void(0)"><i class="zmdi zmdi-shopping-cart zmdi-hc-fw"></i> <span class="item_count">{{Cart::instance('shopping')->count()}}</span> Rs.{{Cart::instance('shopping')->total()}} <i class="zmdi zmdi-chevron-down zmdi-hc-fw"></i></a>
                                         <!--mini cart-->
                                         <div class="mini_cart mini_cart_four">
                                             <div class="cart_gallery">
+                                                @forelse(Cart::instance('shopping')->content() as $item)
                                                 <div class="cart_item">
                                                     <div class="cart_img">
-                                                        <a href="#"><img src="{{asset('assets/img/s-product/product.jpg')}}" alt=""></a>
+                                                        <a href="{{route('shop.product', $item->id)}}"><img src="{{$item->options->image_path}}" alt=""></a>
                                                     </div>
                                                     <div class="cart_info">
-                                                        <a href="#">Quisque In Arcu</a>
-                                                        <p><span> $65.00 </span> X 1</p>
+                                                        <a href="{{route('shop.product', $item->id)}}">{{$item->name}}</a>
+                                                        <p><span> {{$item->price}} </span> X {{$item->qty}}</p>
                                                     </div>
-                                                    <div class="cart_remove">
-                                                        <a href="#"><i class="ion-android-close"></i></a>
-                                                    </div>
+{{--                                                    <div class="cart_remove">--}}
+{{--                                                        <a href="#"><i class="ion-android-close"></i></a>--}}
+{{--                                                    </div>--}}
                                                 </div>
-                                                <div class="cart_item">
-                                                    <div class="cart_img">
-                                                        <a href="#"><img src="{{asset('assets/img/s-product/product2.jpg')}}" alt=""></a>
+                                                @empty
+                                                    <div class="cart_item">
+                                                        <p>Cart is empty!</p>
                                                     </div>
-                                                    <div class="cart_info">
-                                                        <a href="#">Donec Ac Tempus</a>
-                                                        <p><span> $60.00 </span> X 1</p>
-                                                    </div>
-                                                    <div class="cart_remove">
-                                                        <a href="#"><i class="ion-android-close"></i></a>
-                                                    </div>
-                                                </div>
+                                                @endforelse
                                             </div>
                                             <div class="mini_cart_table">
                                                 <div class="cart_table_border">
                                                     <div class="cart_total">
                                                         <span>Sub total:</span>
-                                                        <span class="price">$125.00</span>
+                                                        <span class="price">Rs.{{Cart::instance('shopping')->subtotal()}}</span>
                                                     </div>
                                                     <div class="cart_total mt-10">
                                                         <span>total:</span>
-                                                        <span class="price">$125.00</span>
+                                                        <span class="price">Rs.{{Cart::instance('shopping')->total()}}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="mini_cart_footer">
                                                 <div class="cart_button">
-                                                    <a href="cart.html">View cart</a>
+                                                    <a href="{{route('cart.show')}}">View cart</a>
                                                 </div>
-                                                <div class="cart_button">
-                                                    <a href="checkout.html"> Checkout</a>
-                                                </div>
+                                                @if(Cart::instance('shopping')->count() > 0)
+                                                    <div class="cart_button">
+                                                        <a href="{{route('checkout')}}"> Checkout</a>
+                                                    </div>
+                                                @endif
 
                                             </div>
                                         </div>
