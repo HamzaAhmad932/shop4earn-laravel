@@ -52,6 +52,7 @@ Route::group(['prefix'=> 'v1'], function(){
     Route::get('get-shopping-cart-content', 'CartController@getShoppingCartContent');
     Route::post('update-shopping-cart-content', 'CartController@updateShoppingCartContent');
     Route::post('delete-shopping-cart-item', 'CartController@deleteShoppingCartItem');
+    Route::post('/activate', 'Voyager\DashboardController@activateCustomer')->name('activate_user');
     Route::post('checkout', 'CheckoutController@checkout');
 });
 

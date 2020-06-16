@@ -495,7 +495,13 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(2)
+                    _vm.cart_content.length != 0
+                      ? _c("div", { staticClass: "checkout_btn" }, [
+                          _c("a", { attrs: { href: "/checkout" } }, [
+                            _vm._v("Proceed to Checkout")
+                          ])
+                        ])
+                      : _vm._e()
                   ])
                 ])
               ])
@@ -533,14 +539,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "cart_submit" }, [
       _c("a", { attrs: { href: "/" } }, [_vm._v("Continue shopping...")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "checkout_btn" }, [
-      _c("a", { attrs: { href: "/checkout" } }, [_vm._v("Proceed to Checkout")])
     ])
   }
 ]
