@@ -30,7 +30,10 @@ class DashboardController extends Controller
         $user_role = Auth::user()->role_id;
 
         if($user_role != User::CUSTOMER_ROLE){
-            return Voyager::view('voyager::index');
+
+            $view = 'vendor.voyager.dashboard.admin';
+            return view($view);
+            //return Voyager::view('voyager::index');
         }else{
             $view = 'vendor.voyager.dashboard.customer';
             return view($view);
@@ -42,7 +45,58 @@ class DashboardController extends Controller
         $customer = Auth::user();
         if($customer->role_id == User::CUSTOMER_ROLE){
             return $this->customerDashboardData($customer);
+        } else {
+            return $this->adminDashboardData($customer);
         }
+    }
+
+    public function adminDashboardData($user){
+
+        $earning = $user->earning;
+        $customer = $user->customer;
+        $referrals = $user->customer->sponsors->count();
+        $cf = !empty($earning) ? $earning->carry_forward : 0;
+        $sb = !empty($earning) ? $earning->sales_bonus : 0;
+        $tb = !empty($earning) ? $earning->team_bonus : 0;
+        $rank = !empty($customer) ? $customer->rank->rank_name : 'Member';
+        $u_rank = Rank::where('id', $customer->rank->id + 1)->first();
+        $upcoming_rank = !empty($u_rank) ? $u_rank->rank_name : false;
+        $balance = 0;
+        $total_earned = 0;
+        $withdrawn = 0;
+        if(!empty($earning)){
+            $balance = (floatval($earning->team_bonus) + floatval($earning->sales_bonus)) - floatval($earning->paid);
+            $total_earned = (floatval($earning->team_bonus) + floatval($earning->sales_bonus));
+            $withdrawn = $earning->paid;
+        }
+
+        self::$user_id = [$user->id];
+        self::$childs = [];
+        $left_childs = $this->getAllChilds(Customer::POSITION_LEFT);
+        self::$childs = [];
+        self::$user_id = [$user->id];
+        $right_childs = $this->getAllChilds(Customer::POSITION_RIGHT);
+
+        if(!empty($user->salesBonusDetail)){
+            $last_sale_entry = $user->salesBonusDetail->sortByDesc('created_at')->take(2)->where('carry_forward', '!=', 0)->first();
+            $cf_position = !empty($last_sale_entry) ? $last_sale_entry->position == 1 ? 'Left': 'Right' : '';
+        }
+
+        return response()->json([
+            'referral'=> $referrals,
+            'cf'=> $cf,
+            'cf_pos'=> empty($cf_position) ? '' : '('.$cf_position.')',
+            'sb'=> $sb,
+            'tb'=> $tb,
+            'rank'=> $rank,
+            'upcoming_rank'=> $upcoming_rank,
+            'balance'=> $balance,
+            'total_earned'=> $total_earned,
+            'user'=> $user,
+            'withdrawn'=> $withdrawn,
+            'label'=> ['Left-'.count($left_childs), 'Right-'.count($right_childs)],
+            'series'=> [count($left_childs), count($right_childs)]
+        ]);
     }
 
     public function customerDashboardData($user){
