@@ -21,9 +21,9 @@ class SalesBonusCalculateJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 
-    public static $childs = [];
-    public static $user_id = [1];
-    public static $customers = [];
+    protected static $childs = [];
+    protected static $user_id = [1];
+    protected static $customers = [];
 
 
     /**
@@ -43,12 +43,23 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::debug('job dispatched');
         $users = User::select('id')->where('role_id', 3)->with(['customer', 'salesBonusDetail'])->get();
 
         $now = now()->toDateTimeString();
         $update_is_paired_ids = [];
 
         foreach ($users as $user) {
+
+            self::$user_id = NULL;
+            self::$childs = NULL;
+            self::$customers = NULL;
+
+            //continue inactive customer
+            $customer = $user->customer;
+            if($customer->status == 0){
+                continue;
+            }
 
             self::$user_id = [$user->id];
             self::$childs = [];
@@ -63,7 +74,8 @@ class SalesBonusCalculateJob implements ShouldQueue
             self::$user_id = [$user->id];
 
             $right_childs = implode(',', $this->getAllChilds(Customer::POSITION_RIGHT));
-//            dump([$left_childs, $right_childs]);
+
+            //dd([$left_childs, $right_childs]);
 
             $left_childs_bv = 0;
             $right_childs_bv = 0;
@@ -78,9 +90,19 @@ class SalesBonusCalculateJob implements ShouldQueue
                 $right_childs_bv += $sale[0]->total_bv ?? 0;
             }
 
+            if(empty($left_childs) && empty($right_childs)) {
+                continue;
+            }
 
-            $update_is_paired_ids = array_merge(array_merge(explode(',', $left_childs), explode(',', $right_childs)), $update_is_paired_ids);
 
+            $update_is_paired_ids = array_filter(array_merge(
+                array_merge(
+                    explode(',', $left_childs),
+                    explode(',', $right_childs)
+                ), $update_is_paired_ids));
+
+            //dd($update_is_paired_ids);
+            //dump([$left_childs_bv, $right_childs_bv]);
             $left_childs_bv += $left_last_earning->carry_forward ?? 0;
             $right_childs_bv += $right_last_earning->carry_forward ?? 0;
 
@@ -98,7 +120,7 @@ class SalesBonusCalculateJob implements ShouldQueue
                 continue;
             }
 
-//            dd([$user, $left_childs_bv, $right_childs_bv, $left_childs, $right_childs]);
+            //dd([$user, $left_childs_bv, $right_childs_bv, $left_childs, $right_childs]);
 
             $left_points = ($left_childs_bv / 100) * $user->customer->criteria->percentage;
             $right_points = ($right_childs_bv / 100) * $user->customer->criteria->percentage;
@@ -158,8 +180,8 @@ class SalesBonusCalculateJob implements ShouldQueue
                 ];
 
             }
-            dump(['right_child_bv'=>$right_childs_bv, 'left_child_bv'=> $left_childs_bv]);
-            dump([$left_points, $right_points, !empty($carry_forward) ? $carry_forward : 'cf=0', !empty($sales_bonus_detail) ? $sales_bonus_detail : 'sales_detail=[]', $user->id]);
+            //dump(['right_child_bv'=>$right_childs_bv, 'left_child_bv'=> $left_childs_bv]);
+            //dump([$left_points, $right_points, !empty($carry_forward) ? $carry_forward : 'cf=0', !empty($sales_bonus_detail) ? $sales_bonus_detail : 'sales_detail=[]', $user->id]);
 
 //            if(($left_points > 0) || ($right_points > 0)){
 
@@ -190,12 +212,18 @@ class SalesBonusCalculateJob implements ShouldQueue
 
                     SalesBonusDetail::insert($sales_bonus_detail);
                     $this->updateEarning($user->id, $left_points, 0);
+                    unset($sales_bonus_detail);
                 }
 //            }
         }
         if(!empty($update_is_paired_ids)){
             Customer::whereIn('user_id', $update_is_paired_ids)->update(['is_paired'=> 1]);
         }
+
+        unset($update_is_paired_ids);
+        self::$user_id = NULL;
+        self::$childs = NULL;
+        self::$customers = NULL;
     }
 
 
@@ -209,8 +237,9 @@ class SalesBonusCalculateJob implements ShouldQueue
 
      public function getAllChilds($position, $iteration = 0) {
 
-        if (empty(self::$customers))
+        if (empty(self::$customers)) {
             self::$customers = Customer::all();
+        }
 
         $leaves = self::$customers->whereIn('parent_id', self::$user_id);
 
@@ -247,6 +276,7 @@ class SalesBonusCalculateJob implements ShouldQueue
          $earnings = Earning::firstOrNew(['user_id' => $user_id]);
          $earnings->sales_bonus += $bv;
          $earnings->carry_forward = $carry_forward;
+         $earnings->earned = (float) $earnings->team_bonus + (float) $earnings->sales_bonus;
          $earnings->save();
 
          return $earnings;

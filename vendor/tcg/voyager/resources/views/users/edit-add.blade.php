@@ -52,6 +52,17 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="mobile">Mobile</label>
+                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Enter mobile number"
+                                       value="{{ old('mobile', $dataTypeContent->mobile ?? '') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="mobile">City</label>
+                                <input type="text" class="form-control" id="city" name="city" placeholder="City"
+                                       value="{{ old('city', $dataTypeContent->city ?? '') }}">
+                            </div>
+
+                            <div class="form-group">
                                 <label for="password">{{ __('voyager::generic.password') }}</label>
                                 @if(isset($dataTypeContent->password))
                                     <br>
@@ -60,26 +71,32 @@
                                 <input type="password" class="form-control" id="password" name="password" value="" autocomplete="new-password">
                             </div>
 
-                            @can('editRoles', $dataTypeContent)
-                                <div class="form-group">
-                                    <label for="default_role">{{ __('voyager::profile.role_default') }}</label>
-                                    @php
-                                        $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
+                            <div class="form-group" style="display: none;">
+                                <label for="role_id">Role</label>
+                                <input type="text" class="form-control" id="role_id" name="role_id"
+                                       value="{{ old('role_id', $dataTypeContent->role_id ?? '') }}">
+                            </div>
 
-                                        $row     = $dataTypeRows->where('field', 'user_belongsto_role_relationship')->first();
-                                        $options = $row->details;
-                                    @endphp
-                                    @include('voyager::formfields.relationship')
-                                </div>
-                                <div class="form-group">
-                                    <label for="additional_roles">{{ __('voyager::profile.roles_additional') }}</label>
-                                    @php
-                                        $row     = $dataTypeRows->where('field', 'user_belongstomany_role_relationship')->first();
-                                        $options = $row->details;
-                                    @endphp
-                                    @include('voyager::formfields.relationship')
-                                </div>
-                            @endcan
+{{--                            @can('editRoles', $dataTypeContent)--}}
+{{--                                <div class="form-group">--}}
+{{--                                    <label for="default_role">{{ __('voyager::profile.role_default') }}</label>--}}
+{{--                                    @php--}}
+{{--                                        $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};--}}
+
+{{--                                        $row     = $dataTypeRows->where('field', 'user_belongsto_role_relationship')->first();--}}
+{{--                                        $options = $row->details;--}}
+{{--                                    @endphp--}}
+{{--                                    @include('voyager::formfields.relationship')--}}
+{{--                                </div>--}}
+{{--                                <div class="form-group">--}}
+{{--                                    <label for="additional_roles">{{ __('voyager::profile.roles_additional') }}</label>--}}
+{{--                                    @php--}}
+{{--                                        $row     = $dataTypeRows->where('field', 'user_belongstomany_role_relationship')->first();--}}
+{{--                                        $options = $row->details;--}}
+{{--                                    @endphp--}}
+{{--                                    @include('voyager::formfields.relationship')--}}
+{{--                                </div>--}}
+{{--                            @endcan--}}
                             @php
                             if (isset($dataTypeContent->locale)) {
                                 $selected_locale = $dataTypeContent->locale;

@@ -1,8 +1,7 @@
-
+import Vue from 'vue';
 import { VTooltip, VPopover, VClosePopover } from 'v-tooltip';
 import vSelect from 'vue-select';
 import BlockUI from 'vue-blockui';
-
 
 Vue.component('v-select', vSelect);
 Vue.use(BlockUI);
@@ -22,5 +21,14 @@ Vue.component('v-popover', VPopover);
 
 
 
-Vue.component('add-edit-customer', require('./components/admin/customers/AddEditCustomer.vue').default);
-Vue.component('genealogy-tree', require('./components/admin/genealogy-tree/GenealogyTree.vue').default);
+Vue.component('add-edit-customer', ()=> import('./components/admin/customers/AddEditCustomer.vue' /* webpackChunkName: "AddEditCustomer" */));
+Vue.component('genealogy-tree', ()=> import('./components/admin/genealogy-tree/GenealogyTree.vue' /* webpackChunkName: "GenealogyTree" */));
+Vue.component('payout-requests', ()=> import('./components/admin/request-payout/PayoutRequests.vue' /* webpackChunkName: "AddPayoutRequest" */));
+Vue.component('payout-requests-admin', ()=> import('./components/admin/request-payout/PayoutRequestsAdmin.vue' /* webpackChunkName: "AddPayoutRequest" */));
+Vue.component('add-payout-request', ()=> import('./components/admin/request-payout/AddPayoutRequests.vue' /* webpackChunkName: "AddPayoutRequest" */));
+Vue.component('payout-request-list', ()=> import('./components/admin/request-payout/PayoutRequestList' /* webpackChunkName: "AddPayoutRequest" */));
+Vue.component('payout-request-list-admin', ()=> import('./components/admin/request-payout/PayoutRequestListAdmin' /* webpackChunkName: "AddPayoutRequest" */));
+Vue.component('admin-dashboard', ()=> import('./components/admin/dashboard/AdminDashboard' /* webpackChunkName: "AdminDashboard" */));
+Vue.component('client-dashboard', ()=> import('./components/admin/dashboard/ClientDashboard' /* webpackChunkName: "AdminDashboard" */));
+Vue.component('cart', ()=> import('./components/web/cart/Cart' /* webpackChunkName: "web" */));
+Vue.component('checkout', ()=> import('./components/web/checkout/Checkout' /* webpackChunkName: "web" */));

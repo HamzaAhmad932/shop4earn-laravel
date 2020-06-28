@@ -15,10 +15,18 @@ class HomeController extends Controller
 
         $slider = Slider::where('type', 1)->get();
         $banners = Slider::where('type', 2)->get();
+        $our_products = Product::with('categories')->take(20)->get();
+
         return view('user.home', [
             'slider'=>$slider,
             'banners'=>$banners,
-            'special_offers'=> $special_offers
+            'special_offers'=> $special_offers,
+            'our_products'=> $our_products
         ]);
+    }
+
+    public function thanks(Request $request)
+    {
+        return view('user.thanks');
     }
 }

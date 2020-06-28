@@ -165,7 +165,12 @@ trait CustomerTrait
     public function giveTeamBonus(Customer $customer)
     {
         $compensation = Compensation::all();
-        $team_bonus_points = $customer->salesDetail->sum('tb');
+
+        $sale_detail = $customer->salesDetail;
+        $team_bonus_points = 0;
+        foreach ($sale_detail as $sale){
+            $team_bonus_points += floatval($sale->tb) * intval($sale->quantity);
+        }
         $this->teamBonusDeliver($customer, $team_bonus_points, $compensation);
     }
 
@@ -205,6 +210,7 @@ trait CustomerTrait
 
             $earnings = Earning::firstOrNew(['user_id' => $sponsor->user_id]);
             $earnings->team_bonus += $team_bonus;
+            $earnings->earned = (float) $earnings->sales_bonus + (float) $earnings->team_bonus;
             $earnings->save();
 
             $level++;

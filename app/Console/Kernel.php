@@ -45,8 +45,8 @@ class Kernel extends ConsoleKernel
 
     private function salesBonusCalculate(Schedule $schedule) {
         $schedule->job(SalesBonusCalculateJob::class)
-            ->dailyAt('00:02')
-            //->everyMinute()
+            ->cron('0 19 * * *')
+            //->everyFiveMinutes()
             ->name('sale_bonus_calculate')
             ->withoutOverlapping();
     }

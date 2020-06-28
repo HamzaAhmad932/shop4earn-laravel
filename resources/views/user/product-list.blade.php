@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Home')
+@section('title', 'Product List')
 
 @section('page_content')
 
@@ -56,9 +56,9 @@
                             <div class="col-6 col-md-4 col-xl-3">
                                 <div class="product-default inner-quickview inner-icon">
                                     <figure>
-                                        <a href="#">
-                                            @if(!empty($product->productImages[0]))
-                                                <img src="{{asset('storage/'.$product->productImages[0]->url)}}">
+                                        <a href="{{route('shop.product', $product->id)}}">
+                                            @if(!empty($product->featured_img))
+                                                <img src="{{asset('storage/'.$product->featured_img)}}">
                                             @else
                                                 <img src="{{asset('assets/images/no-image-png-2.png')}}">
                                             @endif
@@ -66,17 +66,17 @@
                                         <div class="btn-icon-group">
                                             <button class="btn-icon btn-add-cart" data-toggle="modal" data-target="#addCartModal"><i class="icon-bag"></i></button>
                                         </div>
-                                        <a href="#" class="btn-quickview" title="Quick View">Quick View</a>
+                                        <a href="{{route('shop.product', $product->id)}}" class="btn-quickview" title="Quick View">Quick View</a>
                                     </figure>
                                     <div class="product-details">
                                         <div class="category-wrap">
                                             <div class="category-list">
     {{--                                            <a href="category.html" class="product-category">category</a>--}}
                                             </div>
-                                            <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a>
+                                            <a href="{{route('shop.product', $product->id)}}" class="btn-icon-wish"><i class="icon-heart"></i></a>
                                         </div>
                                         <h2 class="product-title">
-                                            <a href="product.html">{{$product->product_name}}</a>
+                                            <a href="{{route('shop.product', $product->id)}}">{{$product->product_name}}</a>
                                         </h2>
                                         <div class="ratings-container">
                                             <div class="product-ratings">

@@ -20,11 +20,16 @@ class Customer extends Model
         'rank_id',
         'position',
         'is_paired',
+        'temp_sponsor_id',
         'status',
     ];
 
     public function sponsor() {
         return $this->belongsTo(Customer::class,    'sponsor_id', 'user_id');
+    }
+
+    public function childs() {
+        return $this->hasMany(Customer::class,    'parent_id', 'user_id');
     }
 
     public function user() {

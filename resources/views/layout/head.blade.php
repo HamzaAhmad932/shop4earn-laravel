@@ -1,10 +1,9 @@
 
 <!-- Favicon -->
-<link rel="icon" type="image/x-icon" href="{{asset('assets/images/icons/favicon.ico')}}">
+<link rel="icon" type="image/x-icon" href="{{asset('assets/img/favicon.ico')}}">
 <!-- Plugins CSS File -->
-<link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/plugins.css')}}">
 
 <!-- Main CSS File -->
-<link rel="stylesheet" href="{{asset('assets/css/style.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/fontawesome-free/css/all.min.css')}}">
-<link rel="stylesheet" href="{{asset('css/custom.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+<script src="{{asset('assets/js/plugins.js')}}"></script>
