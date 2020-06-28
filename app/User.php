@@ -49,6 +49,10 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasMany(Customer::class,    'sponsor_id', 'id');
     }
 
+    public function child_sponsor() {
+        return $this->hasMany(Customer::class,    'parent_id', 'id');
+    }
+
     public function earning(){
         return $this->hasOne(Earning::class);
     }

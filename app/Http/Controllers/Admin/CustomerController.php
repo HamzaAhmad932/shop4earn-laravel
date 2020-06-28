@@ -8,6 +8,7 @@ use App\Product;
 use App\Customer;
 use Carbon\Carbon;
 use App\SaleDetail;
+use App\CustomSetting;
 use App\DefaultSponsor;
 use App\Http\Traits\CustomerTrait;
 use Illuminate\Support\Facades\DB;
@@ -65,12 +66,12 @@ class CustomerController extends Controller
             }
         }else{
             if(!$request->is_manual) {
-                $parent_id = DefaultSponsor::find(1)->user_id;
+                $parent_id = CustomSetting::find(1)->default_sponsor_id;
             }else{
                 if($request->parent_id != '') {
                     $parent_id = $request->parent_id;
                 }else{
-                    $parent_id = DefaultSponsor::find(1)->user_id;
+                    $parent_id = CustomSetting::find(1)->default_sponsor_id;
                 }
             }
         }
@@ -184,7 +185,7 @@ class CustomerController extends Controller
     public function testTeamBonus(){
 
         $sponsor_id = 3;
-        $this->giveTeamBonus(50);
+        $this->giveTeamBonus(Customer::find(15));
 
     }
 

@@ -8,7 +8,7 @@
                             <div class="col-md-6 mb-3">
                                 <label>Sponsor <span class="text-muted">(Optional)</span></label>
                                 <v-select :options="sponsors" :reduce="sponsors => sponsors.code" label="label" v-model="add_customer.sponsor_id"></v-select>
-                                <div class="invalid-feedback" v-if="add_customer.error_status.sponsor_id">{{add_customer.error_message.sponsor_id}}</div>
+                                <div class="invalid-feedback-2" v-if="add_customer.error_status.sponsor_id">{{add_customer.error_message.sponsor_id}}</div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Position</label>

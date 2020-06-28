@@ -1,4 +1,10 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/AddEditCustomer.js": "/AddEditCustomer.js",
+    "/AddPayoutRequest.js": "/AddPayoutRequest.js",
+    "/AdminDashboard.js": "/AdminDashboard.js",
+    "/GenealogyTree.js": "/GenealogyTree.js",
+    "/vendors~AdminDashboard.js": "/vendors~AdminDashboard.js",
+    "/web.js": "/web.js"
 }
