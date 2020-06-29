@@ -207,16 +207,20 @@ trait CustomerTrait
             }
 
             $team_bonus = ($total_points / 100) * $percentage;
-
             $earnings = Earning::firstOrNew(['user_id' => $sponsor->user_id]);
-            $earnings->team_bonus += $team_bonus;
+            $earnings->team_bonus = (float) $earnings->team_bonus + $team_bonus;
             $earnings->earned = (float) $earnings->sales_bonus + (float) $earnings->team_bonus;
             $earnings->save();
 
             $level++;
             return $this->teamBonusDeliver($sponsor, $total_points, $commission_compensation, $level);
         }catch (\Exception $e){
-            Log::error($e->getMessage(), ['File: '=>__FILE__, 'Team Bonus Level: '=>$level, 'User: '=>$sponsor]);
+            Log::error($e->getMessage(), [
+                'File: '=>__FILE__,
+                'Team Bonus Level: '=>$level,
+                'User: '=>$sponsor,
+                'Stack-Trace'=> $e->getTraceAsString()
+            ]);
         }
     }
 

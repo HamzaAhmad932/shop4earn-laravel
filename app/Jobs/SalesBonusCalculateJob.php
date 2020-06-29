@@ -274,7 +274,7 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
      private function updateEarning($user_id, $bv, $carry_forward) {
          $earnings = Earning::firstOrNew(['user_id' => $user_id]);
-         $earnings->sales_bonus += $bv;
+         $earnings->sales_bonus = (float) $earnings->sales_bonus + (float) $bv;
          $earnings->carry_forward = $carry_forward;
          $earnings->earned = (float) $earnings->team_bonus + (float) $earnings->sales_bonus;
          $earnings->save();
