@@ -209,7 +209,7 @@ trait CustomerTrait
             $team_bonus = ($total_points / 100) * $percentage;
 
             $earnings = Earning::firstOrNew(['user_id' => $sponsor->user_id]);
-            $earnings->team_bonus += $team_bonus;
+            $earnings->team_bonus = (float) $earnings->team_bonus + $team_bonus;
             $earnings->earned = (float) $earnings->sales_bonus + (float) $earnings->team_bonus;
             $earnings->save();
 
