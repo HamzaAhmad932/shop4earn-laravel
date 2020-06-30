@@ -150,6 +150,7 @@ class DashboardController extends Controller
 
         $this->updateSponsorRank($sponsor_id);
         $this->giveTeamBonus($customer);
+        $this->giveSalebonus($customer->parent_id);
 
         return redirect()->back();
     }

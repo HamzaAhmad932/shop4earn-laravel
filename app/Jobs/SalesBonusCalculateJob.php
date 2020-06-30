@@ -43,7 +43,6 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::debug('job dispatched');
         $users = User::select('id')->where('role_id', 3)->with(['customer', 'salesBonusDetail'])->get();
 
         $now = now()->toDateTimeString();

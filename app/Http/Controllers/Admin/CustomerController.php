@@ -22,8 +22,6 @@ class CustomerController extends Controller
 {
     use CustomerTrait;
 
-    public $upline = [];
-
     public function saveCustomer(CustomerRequest $request){
 
         try {
@@ -33,6 +31,7 @@ class CustomerController extends Controller
             if (! empty($customer)){
                 $lease_sale = $this->createSaleDetail($request, $customer);
                 $this->giveTeamBonus($customer);
+                $this->giveSalebonus($customer->parent_id);
             }
             else{
                 return self::apiErrorResponse('Fail to save Customer', 500);
@@ -190,31 +189,10 @@ class CustomerController extends Controller
 
     public function rankupdate(){
 
-        $parent_id = 68;
-        $this->upline = [];
-        $this->getUpline($parent_id);
-        dd($this->upline);
+        $parent_id = 1118;
+        $upline = $this->getUplineIDs($parent_id);
+        dd($upline);
 
-    }
-
-    public function getUplineIDs(int $parent_id){
-
-        $this->upline = [];
-        $this->getUpline($parent_id);
-        return $this->upline;
-    }
-
-    private function getUpline($parent_id){
-
-        array_push($this->upline, $parent_id);
-        $parent = Customer::where('user_id', $parent_id)->first();
-        if(!empty($parent)){
-
-            if($parent->parent_id == 2){
-                return false;
-            }
-            return $this->getUpline($parent->parent_id);
-        }
     }
 }
 
