@@ -27,7 +27,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $this->salesBonusCalculate($schedule);
+        //$this->salesBonusCalculate($schedule);
+        $schedule->command('queue:work');
 
     }
 

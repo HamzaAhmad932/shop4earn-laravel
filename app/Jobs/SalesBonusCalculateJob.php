@@ -24,6 +24,8 @@ class SalesBonusCalculateJob implements ShouldQueue
     protected static $childs = [];
     protected static $user_id = [1];
     protected static $customers = [];
+    protected static $upline = [];
+    protected $parent_id;
 
 
     /**
@@ -31,9 +33,9 @@ class SalesBonusCalculateJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(int $parent_id)
     {
-        //Log::notice(__CLASS__ . 'Dispatched');
+        $this->parent_id = $parent_id;
     }
 
     /**
@@ -43,7 +45,14 @@ class SalesBonusCalculateJob implements ShouldQueue
      */
     public function handle()
     {
-        $users = User::select('id')->where('role_id', 3)->with(['customer', 'salesBonusDetail'])->get();
+        ini_set('max_execution_time', 0);
+        $upline_user_ids = $this->getUplineIDs($this->parent_id);
+
+        $users = User::select('id')
+            ->where('role_id', 3)
+            ->whereIn('id', $upline_user_ids)
+            ->with(['customer', 'salesBonusDetail'])
+            ->get();
 
         $now = now()->toDateTimeString();
         $update_is_paired_ids = [];
@@ -312,5 +321,28 @@ class SalesBonusCalculateJob implements ShouldQueue
          $this->updateEarning($user_id, 0, $bv);
          //Log::notice('no weaker side found for user id#' .$user_id);
      }
+
+    public function getUplineIDs(int $parent_id){
+
+        self::$upline = [];
+        $this->getUpline($parent_id);
+        return self::$upline;
+    }
+
+    private function getUpline($parent_id){
+
+        array_push(self::$upline, $parent_id);
+        if (empty(self::$customers)) {
+            self::$customers = Customer::all();
+        }
+        $parent = self::$customers->where('user_id', $parent_id)->first();
+        if(!empty($parent)){
+
+            if($parent->parent_id == 2){
+                return false;
+            }
+            return $this->getUpline($parent->parent_id);
+        }
+    }
 
 }
