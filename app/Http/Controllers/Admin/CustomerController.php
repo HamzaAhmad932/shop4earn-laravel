@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Jobs\SalesBonusCalculateJob;
 use App\Http\Requests\CustomerRequest;
 
 class CustomerController extends Controller
@@ -189,9 +190,9 @@ class CustomerController extends Controller
 
     public function rankupdate(){
 
-        $parent_id = 1118;
+        $parent_id = 1105;
         $upline = $this->getUplineIDs($parent_id);
-        dd($upline);
+        SalesBonusCalculateJob::dispatchNow($parent_id);
 
     }
 }

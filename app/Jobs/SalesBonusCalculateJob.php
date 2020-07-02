@@ -26,6 +26,7 @@ class SalesBonusCalculateJob implements ShouldQueue
     protected static $customers = [];
     protected static $upline = [];
     protected $parent_id;
+    public $tries = 5;
 
 
     /**
@@ -59,13 +60,10 @@ class SalesBonusCalculateJob implements ShouldQueue
 
         foreach ($users as $user) {
 
-            self::$user_id = NULL;
-            self::$childs = NULL;
-            self::$customers = NULL;
-
             //continue inactive customer
             $customer = $user->customer;
             if($customer->status == 0){
+                //dump(['continue 1', $user->id]);
                 continue;
             }
 
@@ -99,6 +97,7 @@ class SalesBonusCalculateJob implements ShouldQueue
             }
 
             if(empty($left_childs) && empty($right_childs)) {
+                //dump(['continue 2', $user->id]);
                 continue;
             }
 
@@ -229,9 +228,6 @@ class SalesBonusCalculateJob implements ShouldQueue
         }
 
         unset($update_is_paired_ids);
-        self::$user_id = NULL;
-        self::$childs = NULL;
-        self::$customers = NULL;
     }
 
 
@@ -343,6 +339,11 @@ class SalesBonusCalculateJob implements ShouldQueue
             }
             return $this->getUpline($parent->parent_id);
         }
+    }
+
+    public function fail($exception = null)
+    {
+        Log::debug($exception, ['File'=> __FILE__]);
     }
 
 }
