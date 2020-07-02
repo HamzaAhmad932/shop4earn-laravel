@@ -16,13 +16,12 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Jobs\SalesBonusCalculateJob;
 use App\Http\Requests\CustomerRequest;
 
 class CustomerController extends Controller
 {
     use CustomerTrait;
-
-    public $upline = [];
 
     public function saveCustomer(CustomerRequest $request){
 
@@ -33,6 +32,7 @@ class CustomerController extends Controller
             if (! empty($customer)){
                 $lease_sale = $this->createSaleDetail($request, $customer);
                 $this->giveTeamBonus($customer);
+                $this->giveSalebonus($customer->parent_id);
             }
             else{
                 return self::apiErrorResponse('Fail to save Customer', 500);
@@ -184,38 +184,16 @@ class CustomerController extends Controller
 
     public function testTeamBonus(){
 
-        $sponsor_id = 3;
-        $this->giveTeamBonus(Customer::find(15));
+        $this->giveTeamBonus(Customer::find(1103));
 
     }
 
     public function rankupdate(){
 
-        $parent_id = 68;
-        $this->upline = [];
-        $this->getUpline($parent_id);
-        dd($this->upline);
+        $parent_id = 1105;
+        $upline = $this->getUplineIDs($parent_id);
+        SalesBonusCalculateJob::dispatchNow($parent_id);
 
-    }
-
-    public function getUplineIDs(int $parent_id){
-
-        $this->upline = [];
-        $this->getUpline($parent_id);
-        return $this->upline;
-    }
-
-    private function getUpline($parent_id){
-
-        array_push($this->upline, $parent_id);
-        $parent = Customer::where('user_id', $parent_id)->first();
-        if(!empty($parent)){
-
-            if($parent->parent_id == 2){
-                return false;
-            }
-            return $this->getUpline($parent->parent_id);
-        }
     }
 }
 
