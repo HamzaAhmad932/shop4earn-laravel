@@ -85,13 +85,13 @@ class CustomerController extends Controller
             );
         }
 
-        dd([
-            'sponsor_present'=> $sponsor_present,
-            'is_manual'=>$request->is_manual,
-            'generated_parent_id'=> $parent_id,
-            'sponsor_id'=>$sponsor_id
-
-        ]);
+//        dd([
+//            'sponsor_present'=> $sponsor_present,
+//            'is_manual'=>$request->is_manual,
+//            'generated_parent_id'=> $parent_id,
+//            'sponsor_id'=>$sponsor_id
+//
+//        ]);
 
         $user = User::create([
             'name' => $request->name,
