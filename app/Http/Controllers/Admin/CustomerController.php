@@ -54,27 +54,44 @@ class CustomerController extends Controller
     public function createCustomer(CustomerRequest $request)
     {
         $sponsor_present = !empty($request->sponsor_id);
-        if($sponsor_present){
-            if(!$request->is_manual){
-                $parent_id = $this->getTreeNodeFromManualPosition($request->sponsor_id, $request->position);
+        $parent_id = null;
+        $sponsor_id = null;
+        if($request->is_manual){
+            if($sponsor_present){
+                $sponsor_id = $request->sponsor_id;
             }else{
-                if($request->parent_id != '') {
-                    $parent_id = $request->parent_id;
-                }else{
-                    $parent_id = $this->getTreeNodeFromManualPosition($request->sponsor_id, $request->position);
-                }
+                $sponsor_id = CustomSetting::find(1)->default_sponsor_id;
             }
+            if(!empty($request->parent_id)) {
+                $parent_id = $request->parent_id;
+            }else{
+                $parent_id = $this->getTreeNodeFromManualPosition(
+                    $sponsor_id,
+                    $request->position
+                );
+            }
+
         }else{
-            if(!$request->is_manual) {
-                $parent_id = CustomSetting::find(1)->default_sponsor_id;
+
+            if($sponsor_present){
+                $sponsor_id = $request->sponsor_id;
             }else{
-                if($request->parent_id != '') {
-                    $parent_id = $request->parent_id;
-                }else{
-                    $parent_id = CustomSetting::find(1)->default_sponsor_id;
-                }
+                $sponsor_id = CustomSetting::find(1)->default_sponsor_id;
             }
+
+            $parent_id = $this->getTreeNodeFromManualPosition(
+                $sponsor_id,
+                $request->position
+            );
         }
+
+        dd([
+            'sponsor_present'=> $sponsor_present,
+            'is_manual'=>$request->is_manual,
+            'generated_parent_id'=> $parent_id,
+            'sponsor_id'=>$sponsor_id
+
+        ]);
 
         $user = User::create([
             'name' => $request->name,
@@ -88,7 +105,7 @@ class CustomerController extends Controller
         $customer =  Customer::create([
             'user_id' => $user->id,
             'parent_id' => $parent_id,
-            'sponsor_id' => $request->sponsor_id,
+            'sponsor_id' => $sponsor_id,
             'rank_id' => 1, //zero level by default
             'position' => $request->position,
             'is_paired' => 0,
