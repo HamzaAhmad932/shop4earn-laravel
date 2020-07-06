@@ -17,9 +17,9 @@ use App\Http\Resources\CustomerDashboardResource;
 class DashboardController extends Controller
 {
     use CustomerTrait;
-    public static $childs = [];
-    public static $user_id = [1];
-    public static $customers = [];
+    public static $childs_1 = [];
+    public static $user_id_1 = [1];
+    public static $customers_1 = [];
 
     public function index(){
 
@@ -65,11 +65,11 @@ class DashboardController extends Controller
             $withdrawn = $earning->paid;
         }
 
-        self::$user_id = [$user->id];
-        self::$childs = [];
+        self::$user_id_1 = [$user->id];
+        self::$childs_1 = [];
         $left_childs = $this->getAllChilds(Customer::POSITION_LEFT);
-        self::$childs = [];
-        self::$user_id = [$user->id];
+        self::$childs_1 = [];
+        self::$user_id_1 = [$user->id];
         $right_childs = $this->getAllChilds(Customer::POSITION_RIGHT);
 
         if(!empty($user->salesBonusDetail)){
@@ -97,15 +97,15 @@ class DashboardController extends Controller
 
     public function getAllChilds($position, $iteration = 0) {
 
-        if (empty(self::$customers)) {
-            self::$customers = Customer::all();
+        if (empty(self::$customers_1)) {
+            self::$customers_1 = Customer::all();
         }
 
-        $leaves = self::$customers->whereIn('parent_id', self::$user_id);
+        $leaves = self::$customers_1->whereIn('parent_id', self::$user_id_1);
 
 
         if ($iteration == 0) {
-            $neglect_child = self::$customers->whereIn('parent_id', self::$user_id)->where('position', '!=', $position)->first();
+            $neglect_child = self::$customers_1->whereIn('parent_id', self::$user_id_1)->where('position', '!=', $position)->first();
 
             if (! empty($neglect_child))
                 $leaves = $leaves->where('user_id', '!=', $neglect_child->user_id);
@@ -116,12 +116,12 @@ class DashboardController extends Controller
         $leaves = $leaves->pluck('user_id')->toArray();
 
         if (!empty($leaves)) {
-            self::$user_id = $leaves;
-            self::$childs = array_merge(self::$childs, $leaves);
+            self::$user_id_1 = $leaves;
+            self::$childs_1 = array_merge(self::$childs_1, $leaves);
             $this->getAllChilds($position, $iteration);
         }
 
-        return self::$childs;
+        return self::$childs_1;
     }
 
     public function activateCustomer(Request $request)
@@ -150,6 +150,7 @@ class DashboardController extends Controller
 
         $this->updateSponsorRank($sponsor_id);
         $this->giveTeamBonus($customer);
+        $this->giveSalebonus($customer->parent_id);
 
         return redirect()->back();
     }

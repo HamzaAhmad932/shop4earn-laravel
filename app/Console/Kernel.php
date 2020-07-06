@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         //$this->salesBonusCalculate($schedule);
+        $schedule->command('queue:listen --timeout=0');
 
     }
 
@@ -45,8 +46,7 @@ class Kernel extends ConsoleKernel
 
     private function salesBonusCalculate(Schedule $schedule) {
         $schedule->job(SalesBonusCalculateJob::class)
-            ->cron('0 19 * * *')
-            //->everyFiveMinutes()
+            ->everyTenMinutes()
             ->name('sale_bonus_calculate')
             ->withoutOverlapping();
     }
