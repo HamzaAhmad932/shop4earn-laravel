@@ -1,8 +1,10 @@
 let state = {
-    dashboard_data: {
+    customer_dashboard: {
         user: {
             name: ''
-        }
+        },
+        label: [],
+        series: []
     },
     admin_dashboard: {
         user: {

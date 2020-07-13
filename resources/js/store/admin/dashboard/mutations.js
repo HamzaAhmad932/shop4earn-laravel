@@ -1,7 +1,7 @@
 let mutations = {
 
     SET_DASHBOARD_CLIENT_DATA(state, payload){
-        return state.dashboard_data = {...state.dashboard_data, ...payload};
+        return state.customer_dashboard = {...state.customer_dashboard, ...payload};
     },
 
     SET_DASHBOARD_ADMIN_DATA(state, payload){

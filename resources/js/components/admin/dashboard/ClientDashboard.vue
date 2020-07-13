@@ -118,7 +118,7 @@
                     return state.loader;
                 },
                 dashboard: function(state){
-                    return state.dashboard.dashboard_data;
+                    return state.dashboard.customer_dashboard;
                 },
                 donut: (state) =>{
                     return {
@@ -134,7 +134,7 @@
                                     }
                                 }
                             },
-                            labels: state.dashboard.dashboard_data.label,
+                            labels: state.dashboard.customer_dashboard.label,
                             title: {
                                 text: "Down-line Members",
                                 align: 'center'
@@ -157,7 +157,7 @@
                                 }
                             ]
                         },
-                        series: state.dashboard.dashboard_data.series
+                        series: state.dashboard.customer_dashboard.series
                     }
                 },
             })
