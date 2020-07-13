@@ -277,7 +277,7 @@
         },
         methods: {
             ...mapActions([
-                'fetchDashboardCustomerData'
+                'fetchDashboardData'
             ])
         },
         computed: {
@@ -329,7 +329,7 @@
             })
         },
         mounted() {
-            this.fetchDashboardCustomerData();
+            this.fetchDashboardData();
         },
     }
 </script>

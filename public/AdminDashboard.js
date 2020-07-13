@@ -291,7 +291,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {};
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['fetchDashboardCustomerData'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['fetchDashboardData'])),
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])({
     loader: function loader(state) {
       return state.loader;
@@ -336,7 +336,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   })),
   mounted: function mounted() {
-    this.fetchDashboardCustomerData();
+    this.fetchDashboardData();
   }
 });
 
@@ -471,7 +471,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.loader;
     },
     dashboard: function dashboard(state) {
-      return state.dashboard.dashboard_data;
+      return state.dashboard.customer_dashboard;
     },
     donut: function donut(state) {
       return {
@@ -487,7 +487,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               }
             }
           },
-          labels: state.dashboard.dashboard_data.label,
+          labels: state.dashboard.customer_dashboard.label,
           title: {
             text: "Down-line Members",
             align: 'center'
@@ -508,7 +508,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
           }]
         },
-        series: state.dashboard.dashboard_data.series
+        series: state.dashboard.customer_dashboard.series
       };
     }
   })),

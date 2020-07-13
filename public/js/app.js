@@ -56786,8 +56786,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var actions = {
-  fetchDashboardCustomerData: function () {
-    var _fetchDashboardCustomerData = _asyncToGenerator(
+  fetchDashboardData: function () {
+    var _fetchDashboardData = _asyncToGenerator(
     /*#__PURE__*/
     _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref) {
       var commit;
@@ -56828,11 +56828,11 @@ var actions = {
       }, _callee);
     }));
 
-    function fetchDashboardCustomerData(_x) {
-      return _fetchDashboardCustomerData.apply(this, arguments);
+    function fetchDashboardData(_x) {
+      return _fetchDashboardData.apply(this, arguments);
     }
 
-    return fetchDashboardCustomerData;
+    return fetchDashboardData;
   }()
 };
 /* harmony default export */ __webpack_exports__["default"] = (actions);
@@ -56896,7 +56896,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var mutations = {
   SET_DASHBOARD_CLIENT_DATA: function SET_DASHBOARD_CLIENT_DATA(state, payload) {
-    return state.dashboard_data = _objectSpread({}, state.dashboard_data, {}, payload);
+    return state.customer_dashboard = _objectSpread({}, state.customer_dashboard, {}, payload);
   },
   SET_DASHBOARD_ADMIN_DATA: function SET_DASHBOARD_ADMIN_DATA(state, payload) {
     return state.admin_dashboard = _objectSpread({}, state.admin_dashboard, {}, payload);
@@ -56916,10 +56916,12 @@ var mutations = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var state = {
-  dashboard_data: {
+  customer_dashboard: {
     user: {
       name: ''
-    }
+    },
+    label: [],
+    series: []
   },
   admin_dashboard: {
     user: {

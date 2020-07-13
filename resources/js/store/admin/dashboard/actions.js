@@ -1,6 +1,6 @@
 let actions = {
 
-    fetchDashboardCustomerData: async ({commit}) => {
+    fetchDashboardData: async ({commit}) => {
         commit('SHOW_LOADER', null, {root: true});
 
         await axios({
