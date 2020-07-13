@@ -16,13 +16,12 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Jobs\SalesBonusCalculateJob;
 use App\Http\Requests\CustomerRequest;
 
 class CustomerController extends Controller
 {
     use CustomerTrait;
-
-    public $upline = [];
 
     public function saveCustomer(CustomerRequest $request){
 
@@ -33,6 +32,7 @@ class CustomerController extends Controller
             if (! empty($customer)){
                 $lease_sale = $this->createSaleDetail($request, $customer);
                 $this->giveTeamBonus($customer);
+                $this->giveSalebonus($customer->parent_id);
             }
             else{
                 return self::apiErrorResponse('Fail to save Customer', 500);
@@ -54,27 +54,44 @@ class CustomerController extends Controller
     public function createCustomer(CustomerRequest $request)
     {
         $sponsor_present = !empty($request->sponsor_id);
-        if($sponsor_present){
-            if(!$request->is_manual){
-                $parent_id = $this->getTreeNodeFromManualPosition($request->sponsor_id, $request->position);
+        $parent_id = null;
+        $sponsor_id = null;
+        if($request->is_manual){
+            if($sponsor_present){
+                $sponsor_id = $request->sponsor_id;
             }else{
-                if($request->parent_id != '') {
-                    $parent_id = $request->parent_id;
-                }else{
-                    $parent_id = $this->getTreeNodeFromManualPosition($request->sponsor_id, $request->position);
-                }
+                $sponsor_id = CustomSetting::find(1)->default_sponsor_id;
             }
+            if(!empty($request->parent_id)) {
+                $parent_id = $request->parent_id;
+            }else{
+                $parent_id = $this->getTreeNodeFromManualPosition(
+                    $sponsor_id,
+                    $request->position
+                );
+            }
+
         }else{
-            if(!$request->is_manual) {
-                $parent_id = CustomSetting::find(1)->default_sponsor_id;
+
+            if($sponsor_present){
+                $sponsor_id = $request->sponsor_id;
             }else{
-                if($request->parent_id != '') {
-                    $parent_id = $request->parent_id;
-                }else{
-                    $parent_id = CustomSetting::find(1)->default_sponsor_id;
-                }
+                $sponsor_id = CustomSetting::find(1)->default_sponsor_id;
             }
+
+            $parent_id = $this->getTreeNodeFromManualPosition(
+                $sponsor_id,
+                $request->position
+            );
         }
+
+//        dd([
+//            'sponsor_present'=> $sponsor_present,
+//            'is_manual'=>$request->is_manual,
+//            'generated_parent_id'=> $parent_id,
+//            'sponsor_id'=>$sponsor_id
+//
+//        ]);
 
         $user = User::create([
             'name' => $request->name,
@@ -88,7 +105,7 @@ class CustomerController extends Controller
         $customer =  Customer::create([
             'user_id' => $user->id,
             'parent_id' => $parent_id,
-            'sponsor_id' => $request->sponsor_id,
+            'sponsor_id' => $sponsor_id,
             'rank_id' => 1, //zero level by default
             'position' => $request->position,
             'is_paired' => 0,
@@ -184,38 +201,16 @@ class CustomerController extends Controller
 
     public function testTeamBonus(){
 
-        $sponsor_id = 3;
-        $this->giveTeamBonus(Customer::find(15));
+        $this->giveTeamBonus(Customer::find(1103));
 
     }
 
     public function rankupdate(){
 
-        $parent_id = 68;
-        $this->upline = [];
-        $this->getUpline($parent_id);
-        dd($this->upline);
+        $parent_id = 1105;
+        $upline = $this->getUplineIDs($parent_id);
+        SalesBonusCalculateJob::dispatchNow($parent_id);
 
-    }
-
-    public function getUplineIDs(int $parent_id){
-
-        $this->upline = [];
-        $this->getUpline($parent_id);
-        return $this->upline;
-    }
-
-    private function getUpline($parent_id){
-
-        array_push($this->upline, $parent_id);
-        $parent = Customer::where('user_id', $parent_id)->first();
-        if(!empty($parent)){
-
-            if($parent->parent_id == 2){
-                return false;
-            }
-            return $this->getUpline($parent->parent_id);
-        }
     }
 }
 
