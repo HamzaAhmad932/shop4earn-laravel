@@ -114,6 +114,174 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -123,55 +291,52 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {};
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['fetchDashboardData'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['fetchDashboardCustomerData'])),
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])({
     loader: function loader(state) {
       return state.loader;
     },
     dashboard: function dashboard(state) {
-      return state.dashboard.dashboard_data;
+      return state.dashboard.admin_dashboard;
     },
-    donut: function donut(state) {
+    line: function line(state) {
       return {
         options: {
           chart: {
-            id: 'graph-donut',
-            height: 310
+            id: 'graph-line'
           },
-          plotOptions: {
-            pie: {
-              donut: {
-                size: '78%'
-              }
-            }
-          },
-          labels: state.dashboard.dashboard_data.label,
           title: {
-            text: "Down-line Members",
-            align: 'center'
+            text: 'Sale Over Date',
+            align: 'left'
           },
-          legend: {
-            position: 'bottom'
+          stroke: {
+            curve: 'smooth'
           },
-          responsive: [{
-            breakpoint: 375,
-            options: {
-              chart: {
-                width: 260,
-                height: 300
-              },
-              legend: {
-                position: "bottom"
-              }
-            }
-          }]
+          xaxis: {
+            categories: state.dashboard.admin_dashboard.line_graph.label
+          }
         },
-        series: state.dashboard.dashboard_data.series
+        responsive: [{
+          breakpoint: 375,
+          options: {
+            chart: {
+              width: 260,
+              height: 300
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }],
+        series: [{
+          name: 'Sale',
+          data: state.dashboard.admin_dashboard.line_graph.series
+        }]
       };
     }
   })),
   mounted: function mounted() {
-    this.fetchDashboardData();
+    this.fetchDashboardCustomerData();
   }
 });
 
@@ -366,7 +531,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\nh1[data-v-c0b92e6a]{\n    margin: 0 !important;\n}\n.p-lf-tp[data-v-c0b92e6a]{\n    padding-left: 10px;\n}\n.p-top-10[data-v-c0b92e6a]{\n    padding-top: 10px;\n}\n.min-width-100[data-v-c0b92e6a]{\n    min-width: 100%;\n}\n.alert-custom-1[data-v-c0b92e6a]{\n    background-color: #ffffff;\n    /*border-color: ;*/\n}\n.mb-0-important[data-v-c0b92e6a]{\n    margin-bottom: 0 !important;\n}\n.icon-size-42[data-v-c0b92e6a]{\n    font-size: 42px;\n    color: #7266ba;\n}\n.box-1[data-v-c0b92e6a]{\n    color: #f4f3f9;\n    background-color: #7266ba;\n}\n.box-2[data-v-c0b92e6a]{\n    color: #dcf2f8;\n    background-color: #23b7e5;\n}\n.box-3[data-v-c0b92e6a]{\n    background: #716ACA;\n    color: #FFFFFF;\n}\n.card-body[data-v-c0b92e6a]{\n    padding: 10px 0 10px 15px !important;\n}\n.card-text[data-v-c0b92e6a]{\n    margin: 0 !important;\n}\n.text-dark-dk[data-v-c0b92e6a] {\n    color: #2f3342 !important;\n}\n.font-weight-600[data-v-c0b92e6a]{\n    font-weight: 600;\n}\n.font-weight-300[data-v-c0b92e6a]{\n    font-weight: 300;\n}\n.font-weight-500[data-v-c0b92e6a]{\n    font-weight: 500;\n}\n.font-size-16[data-v-c0b92e6a]{\n    font-size: 16px;\n}\n.container-fluid-header[data-v-c0b92e6a]{\n    padding-right: 0;\n    padding-left: 0;\n    margin-right: auto;\n    margin-left: auto;\n}\n.mb-5-important[data-v-c0b92e6a]{\n    margin-bottom: 5px !important;\n}\n.min-height-150[data-v-c0b92e6a]{\n    min-height: 150px;\n}\n@media only screen and (max-width: 375px) {\n#graph-body[data-v-c0b92e6a]{\n        padding: 0 !important;\n}\n}\n", ""]);
+exports.push([module.i, "\nh1[data-v-c0b92e6a]{\n    margin: 0 !important;\n}\n.p-lf-tp[data-v-c0b92e6a]{\n    padding-left: 10px;\n}\n.p-top-10[data-v-c0b92e6a]{\n    padding-top: 10px;\n}\n.min-width-100[data-v-c0b92e6a]{\n    min-width: 100%;\n}\n.alert-custom-1[data-v-c0b92e6a]{\n    background-color: #ffffff;\n    /*border-color: ;*/\n}\n.mb-0-important[data-v-c0b92e6a]{\n    margin-bottom: 0 !important;\n}\n.w-100[data-v-c0b92e6a]{\n    width: 100px !important;\n    height: 43px !important;\n}\n.icon-size-42[data-v-c0b92e6a]{\n    font-size: 42px;\n    color: #7266ba;\n}\n.flex[data-v-c0b92e6a]{\n    border: none !important;\n}\n.tab-content > div[data-v-c0b92e6a] {\n    padding: 0 !important;\n}\n.box-1[data-v-c0b92e6a]{\n    color: #f4f3f9;\n    background-color: #7266ba;\n}\n.box-2[data-v-c0b92e6a]{\n    color: #dcf2f8;\n    background-color: #23b7e5;\n}\n.box-3[data-v-c0b92e6a]{\n    background: #716ACA;\n    color: #FFFFFF;\n}\n.card-body[data-v-c0b92e6a]{\n    padding: 10px 0 10px 15px !important;\n}\n.card-text[data-v-c0b92e6a]{\n    margin: 0 !important;\n}\n.text-dark-dk[data-v-c0b92e6a] {\n    color: #2f3342 !important;\n}\n.font-weight-600[data-v-c0b92e6a]{\n    font-weight: 600;\n}\n.font-weight-300[data-v-c0b92e6a]{\n    font-weight: 300;\n}\n.font-weight-500[data-v-c0b92e6a]{\n    font-weight: 500;\n}\n.font-size-16[data-v-c0b92e6a]{\n    font-size: 16px;\n}\n.container-fluid-header[data-v-c0b92e6a]{\n    padding-right: 0;\n    padding-left: 0;\n    margin-right: auto;\n    margin-left: auto;\n}\n.mb-5-important[data-v-c0b92e6a]{\n    margin-bottom: 5px !important;\n}\n.min-height-150[data-v-c0b92e6a]{\n    min-height: 150px;\n}\n.voyager .nav-tabs>li.active>a[data-v-c0b92e6a]:hover {\n    background-color: #62a8ea;\n}\n@media only screen and (max-width: 375px) {\n#graph-body[data-v-c0b92e6a]{\n        padding: 0 !important;\n}\n}\nbody[data-v-c0b92e6a] {\n    margin: 0;\n}\na[data-v-c0b92e6a] {\n    color: #448bff;\n    text-decoration: none;\n    background-color: transparent\n}\na[data-v-c0b92e6a]:hover {\n    color: #005ef7;\n    text-decoration: underline\n}\na[data-v-c0b92e6a]:not([href]):not([tabindex]) {\n    color: inherit;\n    text-decoration: none\n}\na[data-v-c0b92e6a]:not([href]):not([tabindex]):focus,\na[data-v-c0b92e6a]:not([href]):not([tabindex]):hover {\n    color: inherit;\n    text-decoration: none\n}\na[data-v-c0b92e6a]:not([href]):not([tabindex]):focus {\n    outline: 0\n}\n@media (min-width:576px) {\n.col-sm[data-v-c0b92e6a] {\n        flex-basis: 0;\n        flex-grow: 1;\n        max-width: 100%\n}\n.col-sm-auto[data-v-c0b92e6a] {\n        flex: 0 0 auto;\n        width: auto;\n        max-width: 100%\n}\n.col-sm-1[data-v-c0b92e6a] {\n        flex: 0 0 8.3333333333%;\n        max-width: 8.3333333333%\n}\n.col-sm-2[data-v-c0b92e6a] {\n        flex: 0 0 16.6666666667%;\n        max-width: 16.6666666667%\n}\n.col-sm-3[data-v-c0b92e6a] {\n        flex: 0 0 25%;\n        max-width: 25%\n}\n.col-sm-4[data-v-c0b92e6a] {\n        flex: 0 0 33.3333333333%;\n        max-width: 33.3333333333%\n}\n.col-sm-5[data-v-c0b92e6a] {\n        flex: 0 0 41.6666666667%;\n        max-width: 41.6666666667%\n}\n.col-sm-6[data-v-c0b92e6a] {\n        flex: 0 0 50%;\n        max-width: 50%\n}\n.col-sm-7[data-v-c0b92e6a] {\n        flex: 0 0 58.3333333333%;\n        max-width: 58.3333333333%\n}\n.col-sm-8[data-v-c0b92e6a] {\n        flex: 0 0 66.6666666667%;\n        max-width: 66.6666666667%\n}\n.col-sm-9[data-v-c0b92e6a] {\n        flex: 0 0 75%;\n        max-width: 75%\n}\n.col-sm-10[data-v-c0b92e6a] {\n        flex: 0 0 83.3333333333%;\n        max-width: 83.3333333333%\n}\n.col-sm-11[data-v-c0b92e6a] {\n        flex: 0 0 91.6666666667%;\n        max-width: 91.6666666667%\n}\n.col-sm-12[data-v-c0b92e6a] {\n        flex: 0 0 100%;\n        max-width: 100%\n}\n.order-sm-first[data-v-c0b92e6a] {\n        order: -1\n}\n.order-sm-last[data-v-c0b92e6a] {\n        order: 13\n}\n.order-sm-0[data-v-c0b92e6a] {\n        order: 0\n}\n.order-sm-1[data-v-c0b92e6a] {\n        order: 1\n}\n.order-sm-2[data-v-c0b92e6a] {\n        order: 2\n}\n.order-sm-3[data-v-c0b92e6a] {\n        order: 3\n}\n.order-sm-4[data-v-c0b92e6a] {\n        order: 4\n}\n.order-sm-5[data-v-c0b92e6a] {\n        order: 5\n}\n.order-sm-6[data-v-c0b92e6a] {\n        order: 6\n}\n.order-sm-7[data-v-c0b92e6a] {\n        order: 7\n}\n.order-sm-8[data-v-c0b92e6a] {\n        order: 8\n}\n.order-sm-9[data-v-c0b92e6a] {\n        order: 9\n}\n.order-sm-10[data-v-c0b92e6a] {\n        order: 10\n}\n.order-sm-11[data-v-c0b92e6a] {\n        order: 11\n}\n.order-sm-12[data-v-c0b92e6a] {\n        order: 12\n}\n.offset-sm-0[data-v-c0b92e6a] {\n        margin-left: 0\n}\n.offset-sm-1[data-v-c0b92e6a] {\n        margin-left: 8.3333333333%\n}\n.offset-sm-2[data-v-c0b92e6a] {\n        margin-left: 16.6666666667%\n}\n.offset-sm-3[data-v-c0b92e6a] {\n        margin-left: 25%\n}\n.offset-sm-4[data-v-c0b92e6a] {\n        margin-left: 33.3333333333%\n}\n.offset-sm-5[data-v-c0b92e6a] {\n        margin-left: 41.6666666667%\n}\n.offset-sm-6[data-v-c0b92e6a] {\n        margin-left: 50%\n}\n.offset-sm-7[data-v-c0b92e6a] {\n        margin-left: 58.3333333333%\n}\n.offset-sm-8[data-v-c0b92e6a] {\n        margin-left: 66.6666666667%\n}\n.offset-sm-9[data-v-c0b92e6a] {\n        margin-left: 75%\n}\n.offset-sm-10[data-v-c0b92e6a] {\n        margin-left: 83.3333333333%\n}\n.offset-sm-11[data-v-c0b92e6a] {\n        margin-left: 91.6666666667%\n}\n}\n.text-muted[data-v-c0b92e6a] {\n    color: #99a0ac !important\n}\n.block[data-v-c0b92e6a],\n.card[data-v-c0b92e6a] {\n    background: #fff;\n    border-width: 0;\n    border-radius: .25rem;\n    box-shadow: 0 1px 3px rgba(0, 0, 0, .05);\n    /*margin-bottom: 1.5rem*/\n}\n.avatar[data-v-c0b92e6a] {\n    position: relative;\n    line-height: 1;\n    border-radius: 500px;\n    white-space: nowrap;\n    font-weight: 700;\n    border-radius: 100%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-shrink: 0;\n    border-radius: 500px;\n    box-shadow: 0 5px 10px 0 rgba(50, 50, 50, .15)\n}\n.avatar img[data-v-c0b92e6a] {\n    border-radius: inherit;\n    width: 100%\n}\n.gd-primary[data-v-c0b92e6a] {\n    color: #fff;\n    border: none;\n    background: #448bff linear-gradient(45deg, #448bff, #44e9ff)\n}\n.gd-success[data-v-c0b92e6a] {\n    color: #fff;\n    border: none;\n    background: #31c971 linear-gradient(45deg, #31c971, #3dc931)\n}\n.gd-info[data-v-c0b92e6a] {\n    color: #fff;\n    border: none;\n    background: #14bae4 linear-gradient(45deg, #14bae4, #14e4a6)\n}\n.gd-warning[data-v-c0b92e6a] {\n    color: #fff;\n    border: none;\n    background: #f4c414 linear-gradient(45deg, #f4c414, #f45414)\n}\n@media (min-width:992px) {\n.page-container[data-v-c0b92e6a] {\n        max-width: 1140px;\n        margin: 0 auto\n}\n.page-sidenav[data-v-c0b92e6a] {\n        display: block !important\n}\n}\n.list[data-v-c0b92e6a] {\n    padding-left: 0;\n    padding-right: 0\n}\n.list-item[data-v-c0b92e6a] {\n    position: relative;\n    display: flex;\n    flex-direction: column;\n    min-width: 0;\n    word-wrap: break-word\n}\n.list-row .list-item[data-v-c0b92e6a] {\n    flex-direction: row;\n    align-items: center;\n    padding: .75rem .625rem\n}\n.list-row .list-item>*[data-v-c0b92e6a] {\n    padding-left: .625rem;\n    padding-right: .625rem\n}\n.no-wrap[data-v-c0b92e6a] {\n    white-space: nowrap\n}\n.text-color[data-v-c0b92e6a] {\n    color: #5e676f\n}\n.text-gd[data-v-c0b92e6a] {\n    -webkit-background-clip: text;\n    -moz-background-clip: text;\n    background-clip: text;\n    -webkit-text-fill-color: transparent;\n    -moz-text-fill-color: transparent;\n    text-fill-color: transparent\n}\n.text-sm[data-v-c0b92e6a] {\n    font-size: .825rem\n}\n.h-1x[data-v-c0b92e6a] {\n    height: 1.25rem;\n    overflow: hidden;\n    display: -webkit-box;\n    -webkit-line-clamp: 1;\n    -webkit-box-orient: vertical\n}\n.w-48[data-v-c0b92e6a] {\n    width: 48px !important;\n    height: 48px !important\n}\na[data-v-c0b92e6a]:link {\n    text-decoration: none\n}\n", ""]);
 
 // exports
 
@@ -555,7 +720,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "page-content" }, [
             _c("div", { staticClass: "row p-top-10" }, [
-              _c("div", { staticClass: "col-lg-5" }, [
+              _c("div", { staticClass: "col-lg-6" }, [
                 _c("div", { staticClass: "row p-lf-tp" }, [
                   _c(
                     "div",
@@ -569,11 +734,15 @@ var render = function() {
                               staticClass:
                                 "card-title font-weight-300 mb-5-important"
                             },
-                            [_vm._v(_vm._s(_vm.dashboard.referral))]
+                            [
+                              _vm._v(
+                                _vm._s(_vm.dashboard.total_network_members)
+                              )
+                            ]
                           ),
                           _vm._v(" "),
                           _c("p", { staticClass: "card-text" }, [
-                            _vm._v("Referral Downlines")
+                            _vm._v("Network Members")
                           ])
                         ])
                       ])
@@ -592,11 +761,11 @@ var render = function() {
                               staticClass:
                                 "card-title font-weight-300 mb-5-important"
                             },
-                            [_vm._v(_vm._s(_vm.dashboard.total_earned))]
+                            [_vm._v(_vm._s(_vm.dashboard.total_paid_amount))]
                           ),
                           _vm._v(" "),
                           _c("p", { staticClass: "card-text" }, [
-                            _vm._v("Total Earned (Rs.)")
+                            _vm._v("Total Paid (Rs.)")
                           ])
                         ])
                       ])
@@ -617,13 +786,15 @@ var render = function() {
                               staticClass:
                                 "card-title font-weight-300 mb-5-important"
                             },
-                            [_vm._v(_vm._s(_vm.dashboard.cf))]
+                            [
+                              _vm._v(
+                                _vm._s(_vm.dashboard.total_approved_customers)
+                              )
+                            ]
                           ),
                           _vm._v(" "),
                           _c("p", { staticClass: "card-text" }, [
-                            _vm._v(
-                              "Carry Forward " + _vm._s(_vm.dashboard.cf_pos)
-                            )
+                            _vm._v("Approved Members")
                           ])
                         ])
                       ])
@@ -642,11 +813,59 @@ var render = function() {
                               staticClass:
                                 "card-title font-weight-300 mb-5-important"
                             },
-                            [_vm._v(_vm._s(_vm.dashboard.withdrawn))]
+                            [_vm._v(_vm._s(_vm.dashboard.total_sale))]
                           ),
                           _vm._v(" "),
                           _c("p", { staticClass: "card-text" }, [
-                            _vm._v("Total Withdrawn (Rs.)")
+                            _vm._v("Total Sale (Rs.)")
+                          ])
+                        ])
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row p-lf-tp" }, [
+                  _c(
+                    "div",
+                    { staticClass: "col-lg-6 col-xs-6 col-md-6 col-sm-12" },
+                    [
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body box-3" }, [
+                          _c(
+                            "h1",
+                            {
+                              staticClass:
+                                "card-title font-weight-300 mb-5-important"
+                            },
+                            [_vm._v(_vm._s(_vm.dashboard.today_joined))]
+                          ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text" }, [
+                            _vm._v("Today Joined")
+                          ])
+                        ])
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-lg-6 col-xs-6 col-md-6 col-sm-12" },
+                    [
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _c(
+                            "h1",
+                            {
+                              staticClass:
+                                "card-title font-weight-300 mb-5-important"
+                            },
+                            [_vm._v(_vm._s(_vm.dashboard.donations))]
+                          ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text" }, [
+                            _vm._v("Total Donations (Rs.)")
                           ])
                         ])
                       ])
@@ -672,11 +891,11 @@ var render = function() {
                               staticClass:
                                 "card-title font-weight-300 mb-5-important"
                             },
-                            [_vm._v(_vm._s(_vm.dashboard.balance))]
+                            [_vm._v(_vm._s(_vm.dashboard.profit))]
                           ),
                           _vm._v(" "),
                           _c("p", { staticClass: "card-text" }, [
-                            _vm._v("Available Balance (Rs.)")
+                            _vm._v("Profit (Rs.)")
                           ])
                         ]
                       )
@@ -685,22 +904,245 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-lg-7" }, [
+              _c(
+                "div",
+                { staticClass: "col-lg-6" },
+                [
+                  _c("apexchart", {
+                    attrs: {
+                      type: "line",
+                      options: _vm.line.options,
+                      series: _vm.line.series
+                    }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _vm._m(2),
+            _vm._v(" "),
+            _c("div", { staticClass: "row p-top-10" }, [
+              _c("div", { staticClass: "col-lg-6" }, [
                 _c("div", { staticClass: "card" }, [
                   _c(
                     "div",
                     { staticClass: "card-body", attrs: { id: "graph-body" } },
                     [
-                      _c("apexchart", {
-                        attrs: {
-                          type: "donut",
-                          options: _vm.donut.options,
-                          series: _vm.donut.series
-                        }
-                      })
-                    ],
-                    1
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "tab-content" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "tab-pane fade in active",
+                            attrs: { id: "home" }
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "page-content page-container" },
+                              [
+                                _c("div", { staticClass: "padding" }, [
+                                  _c("table", { staticClass: "table" }, [
+                                    _vm._m(4),
+                                    _vm._v(" "),
+                                    _c(
+                                      "tbody",
+                                      _vm._l(
+                                        _vm.dashboard.withdrawal_requests,
+                                        function(req) {
+                                          return _c("tr", [
+                                            _c("td", [
+                                              _vm._v(_vm._s(req.name))
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _vm._v(_vm._s(req.payable_amount))
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _vm._v(_vm._s(req.created_at))
+                                            ]),
+                                            _vm._v(" "),
+                                            _vm._m(5, true)
+                                          ])
+                                        }
+                                      ),
+                                      0
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm._m(6)
+                                ])
+                              ]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(7)
+                      ])
+                    ]
                   )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-6" }, [
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "card-body" }, [
+                    _vm._m(8),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "tab-content" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade in active",
+                          attrs: { id: "top_earners" }
+                        },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "page-content page-container" },
+                            [
+                              _c("div", { staticClass: "padding" }, [
+                                _c(
+                                  "div",
+                                  { staticClass: "list list-row block" },
+                                  _vm._l(_vm.dashboard.top_users, function(
+                                    usr
+                                  ) {
+                                    return _c(
+                                      "div",
+                                      { staticClass: "list-item" },
+                                      [
+                                        _c("div", [
+                                          _c(
+                                            "a",
+                                            {
+                                              attrs: {
+                                                href: "#",
+                                                "data-abc": "true"
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "w-48 avatar gd-primary"
+                                                },
+                                                [
+                                                  _c("img", {
+                                                    attrs: {
+                                                      src: usr.avatar,
+                                                      alt: "."
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("div", { staticClass: "flex" }, [
+                                          _c(
+                                            "a",
+                                            {
+                                              staticClass:
+                                                "item-author text-color",
+                                              attrs: { href: "#" }
+                                            },
+                                            [_vm._v(_vm._s(usr.name))]
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("div", { staticClass: "no-wrap" }, [
+                                          _c(
+                                            "strong",
+                                            {
+                                              staticClass: "badge badge-success"
+                                            },
+                                            [_vm._v(_vm._s(usr.earned))]
+                                          )
+                                        ])
+                                      ]
+                                    )
+                                  }),
+                                  0
+                                )
+                              ])
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade",
+                          attrs: { id: "rank_overview" }
+                        },
+                        [
+                          _c("h4", [_vm._v("Rank Overview")]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "page-content page-container" },
+                            [
+                              _c("div", { staticClass: "padding" }, [
+                                _c(
+                                  "div",
+                                  { staticClass: "list list-row block" },
+                                  _vm._l(_vm.dashboard.rank_overview, function(
+                                    ro
+                                  ) {
+                                    return _c(
+                                      "div",
+                                      { staticClass: "list-item" },
+                                      [
+                                        _c("div", [
+                                          _c(
+                                            "a",
+                                            {
+                                              attrs: {
+                                                href: "#",
+                                                "data-abc": "true"
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass: "w-100 avatar",
+                                                  class: ro.class_name
+                                                },
+                                                [_vm._v(_vm._s(ro.rank_name))]
+                                              )
+                                            ]
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("div", { staticClass: "no-wrap" }, [
+                                          _c(
+                                            "strong",
+                                            {
+                                              staticClass: "badge badge-success"
+                                            },
+                                            [_vm._v(_vm._s(ro.members))]
+                                          )
+                                        ])
+                                      ]
+                                    )
+                                  }),
+                                  0
+                                )
+                              ])
+                            ]
+                          )
+                        ]
+                      )
+                    ])
+                  ])
                 ])
               ])
             ])
@@ -736,6 +1178,196 @@ var staticRenderFns = [
       { staticClass: "col-lg-3 col-sm-3 col-xs-3 icon-size-42 mb-0-important" },
       [_c("i", { staticClass: "fas fa-wallet" })]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          { staticClass: "col-lg-6", staticStyle: { margin: "0 !important" } },
+          [_c("h3", [_vm._v("Commission & withdrawals")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-lg-6", staticStyle: { margin: "0 !important" } },
+          [_c("h3", [_vm._v("Members Information")])]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "nav nav-tabs" }, [
+      _c("li", { staticClass: "active" }, [
+        _c("a", { attrs: { "data-toggle": "tab", href: "#home" } }, [
+          _vm._v("Withdrawal Requests")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("User")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Payable Amount")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Date")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Status")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("span", { staticClass: "badge badge-warning" }, [_vm._v("Pending")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center" }, [
+      _c("a", { attrs: { href: "/portal/payout-requests" } }, [
+        _vm._v("View all")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "tab-pane fade", attrs: { id: "menu1" } }, [
+      _c("h4", [_vm._v("Rank Overview")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "page-content page-container" }, [
+        _c("div", { staticClass: "padding" }, [
+          _c("div", { staticClass: "list list-row block" }, [
+            _c(
+              "div",
+              { staticClass: "list-item", attrs: { "data-id": "19" } },
+              [
+                _c("div", [
+                  _c("a", { attrs: { href: "#", "data-abc": "true" } }, [
+                    _c("span", { staticClass: "w-100 avatar gd-warning" }, [
+                      _vm._v("Diamond")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "no-wrap" }, [
+                  _c("strong", { staticClass: "badge badge-success" }, [
+                    _vm._v("5")
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "list-item", attrs: { "data-id": "7" } }, [
+              _c("div", [
+                _c("a", { attrs: { href: "#", "data-abc": "true" } }, [
+                  _c("span", { staticClass: "w-100 avatar gd-warning" }, [
+                    _vm._v("Gold")
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "no-wrap" }, [
+                _c("strong", { staticClass: "badge badge-success" }, [
+                  _vm._v("19")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "list-item", attrs: { "data-id": "17" } },
+              [
+                _c("div", [
+                  _c("a", { attrs: { href: "#", "data-abc": "true" } }, [
+                    _c("span", { staticClass: "w-100 avatar gd-primary" }, [
+                      _vm._v("Silver")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "no-wrap" }, [
+                  _c("strong", { staticClass: "badge badge-success" }, [
+                    _vm._v("89")
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "list-item", attrs: { "data-id": "16" } },
+              [
+                _c("div", [
+                  _c("a", { attrs: { href: "#", "data-abc": "true" } }, [
+                    _c("span", { staticClass: "w-100 avatar gd-info" }, [
+                      _vm._v("Standard")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "no-wrap" }, [
+                  _c("strong", { staticClass: "badge badge-success" }, [
+                    _vm._v("23")
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "list-item", attrs: { "data-id": "4" } }, [
+              _c("div", [
+                _c("a", { attrs: { href: "#", "data-abc": "true" } }, [
+                  _c("span", { staticClass: "w-100 avatar gd-success" }, [
+                    _vm._v("Basic")
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "no-wrap" }, [
+                _c("strong", { staticClass: "badge badge-success" }, [
+                  _vm._v("34")
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "nav nav-tabs" }, [
+      _c("li", { staticClass: "active" }, [
+        _c("a", { attrs: { "data-toggle": "tab", href: "#top_earners" } }, [
+          _vm._v("Top Earners")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", [
+        _c("a", { attrs: { "data-toggle": "tab", href: "#rank_overview" } }, [
+          _vm._v("Rank Overview")
+        ])
+      ])
+    ])
   }
 ]
 render._withStripped = true

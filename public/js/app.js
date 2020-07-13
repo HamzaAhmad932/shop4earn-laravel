@@ -56786,8 +56786,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var actions = {
-  fetchDashboardData: function () {
-    var _fetchDashboardData = _asyncToGenerator(
+  fetchDashboardCustomerData: function () {
+    var _fetchDashboardCustomerData = _asyncToGenerator(
     /*#__PURE__*/
     _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref) {
       var commit;
@@ -56804,7 +56804,12 @@ var actions = {
                 url: '/v1/get-dashboard-data',
                 method: 'GET'
               }).then(function (resp) {
-                commit('SET_DASHBOARD_DATA', resp.data);
+                if (resp.data.is_customer) {
+                  commit('SET_DASHBOARD_CLIENT_DATA', resp.data);
+                } else {
+                  commit('SET_DASHBOARD_ADMIN_DATA', resp.data);
+                }
+
                 commit('HIDE_LOADER', null, {
                   root: true
                 });
@@ -56823,11 +56828,11 @@ var actions = {
       }, _callee);
     }));
 
-    function fetchDashboardData(_x) {
-      return _fetchDashboardData.apply(this, arguments);
+    function fetchDashboardCustomerData(_x) {
+      return _fetchDashboardCustomerData.apply(this, arguments);
     }
 
-    return fetchDashboardData;
+    return fetchDashboardCustomerData;
   }()
 };
 /* harmony default export */ __webpack_exports__["default"] = (actions);
@@ -56890,8 +56895,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var mutations = {
-  SET_DASHBOARD_DATA: function SET_DASHBOARD_DATA(state, payload) {
+  SET_DASHBOARD_CLIENT_DATA: function SET_DASHBOARD_CLIENT_DATA(state, payload) {
     return state.dashboard_data = _objectSpread({}, state.dashboard_data, {}, payload);
+  },
+  SET_DASHBOARD_ADMIN_DATA: function SET_DASHBOARD_ADMIN_DATA(state, payload) {
+    return state.admin_dashboard = _objectSpread({}, state.admin_dashboard, {}, payload);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (mutations);
@@ -56912,6 +56920,26 @@ var state = {
     user: {
       name: ''
     }
+  },
+  admin_dashboard: {
+    user: {
+      name: ''
+    },
+    line_graph: {
+      label: [],
+      series: []
+    },
+    rank: 'Admin',
+    total_network_members: '',
+    total_paid_amount: '',
+    today_joined: '',
+    total_approved_customers: '',
+    total_sale: '',
+    profit: '',
+    donations: '',
+    withdrawal_requests: [],
+    rank_overview: [],
+    top_users: []
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (state);

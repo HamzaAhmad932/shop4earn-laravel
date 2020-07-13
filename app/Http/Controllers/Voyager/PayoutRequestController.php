@@ -161,7 +161,7 @@ class PayoutRequestController extends Controller
 
                 if($status == PayoutRequest::PAID_STATUS){
                     $earning = Earning::where('user_id', $p_request->user_id)->first();
-                    $earning->paid += $p_request->amount;
+                    $earning->paid = (float) $earning->paid + (float) $p_request->amount;
                     $earning->save();
 
                     //add Payout date

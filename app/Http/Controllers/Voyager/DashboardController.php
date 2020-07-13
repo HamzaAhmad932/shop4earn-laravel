@@ -6,9 +6,12 @@ use App\User;
 use App\Rank;
 use App\Customer;
 use Carbon\Carbon;
+use App\SaleDetail;
 use App\CustomSetting;
+use App\PayoutRequest;
 use TCG\Voyager\Facades\Voyager;
 use App\Http\Traits\CustomerTrait;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,50 +55,62 @@ class DashboardController extends Controller
 
     public function adminDashboardData($user){
 
-        $earning = $user->earning;
-        $customer = $user->customer;
-        $referrals = $user->customer->sponsors->count();
-        $cf = !empty($earning) ? $earning->carry_forward : 0;
-        $sb = !empty($earning) ? $earning->sales_bonus : 0;
-        $tb = !empty($earning) ? $earning->team_bonus : 0;
-        $rank = !empty($customer) ? $customer->rank->rank_name : 'Member';
-        $u_rank = Rank::where('id', $customer->rank->id + 1)->first();
-        $upcoming_rank = !empty($u_rank) ? $u_rank->rank_name : false;
-        $balance = 0;
-        $total_earned = 0;
-        $withdrawn = 0;
-        if(!empty($earning)){
-            $balance = (floatval($earning->team_bonus) + floatval($earning->sales_bonus)) - floatval($earning->paid);
-            $total_earned = (floatval($earning->team_bonus) + floatval($earning->sales_bonus));
-            $withdrawn = $earning->paid;
-        }
+        $members = Customer::all();
+        $current_date = Carbon::now('Asia/Karachi')->toDateString();
+        $previous_month = Carbon::now()->subDays(15);
 
-        self::$user_id = [$user->id];
-        self::$childs = [];
-        $left_childs = $this->getAllChilds(Customer::POSITION_LEFT);
-        self::$childs = [];
-        self::$user_id = [$user->id];
-        $right_childs = $this->getAllChilds(Customer::POSITION_RIGHT);
+        $approved_members = $members->where('status', Customer::STATUS_ACTIVE);
+        $total_paid_amount = PayoutRequest::where('status', PayoutRequest::PAID_STATUS)->sum('payable_amount');
+        $today_joined = Customer::where('created_at', $current_date)->count();
+        $total_amount = DB::select('select sum((sd.product_price * sd.quantity - sd.discount)) as actual_sale_price, sum(((sd.product_price * sd.quantity) - (p.purchase_cost * sd.quantity)) - sd.discount) as profit_amount from sale_details sd JOIN products p on(sd.product_id = p.id);')[0];
+        $admin_amount = DB::select('select sum(admin_charges) as admin_charges, sum(donation) as donations from payout_requests where status = 1;')[0];
+        $rank_overview = DB::select("
+                                        select
+                                            c.rank_id,
+                                            r.rank_name,
+                                            COUNT(*) as members,
+                                            CASE
+                                                WHEN c.rank_id = 1 THEN 'gd-success'
+                                                WHEN c.rank_id = 2 THEN 'gd-success'
+                                                WHEN c.rank_id = 3 THEN 'gd-info'
+                                                WHEN c.rank_id = 4 THEN 'gd-primary'
+                                                WHEN c.rank_id = 5 THEN 'gd-warning'
+                                                WHEN c.rank_id = 6 THEN 'gd-warning'
+                                             END
+                                             as class_name
+                                        from
+                                        customers c join ranks r on(c.rank_id = r.id) GROUP BY c.rank_id;
+        ");
+        $withdraw_requests = DB::select('SELECT pr.user_id, u.name, pr.payable_amount, pr.created_at FROM payout_requests pr JOIN users u on (pr.user_id = u.id) where pr.status = 0 order by pr.created_at desc limit 10;');
+        $users = collect(DB::select('select e.user_id, CAST(e.earned as DECIMAL) as earned, u.avatar, u.name from earnings e join users u on(e.user_id = u.id) order by 2 desc limit 5;'));
+        $line = collect(DB::select("select CEIL(sum(product_price)) as sale_amount, date(created_at) as created_at, DATE_FORMAT(date(created_at), '%e %b') as created_At from sale_details where created_at between '".date($previous_month->toDateString())."' and '".date(Carbon::today()->addDay(1)->toDateString())."' GROUP by 2, 3 order by 2, 3 desc;"));
 
-        if(!empty($user->salesBonusDetail)){
-            $last_sale_entry = $user->salesBonusDetail->sortByDesc('created_at')->take(2)->where('carry_forward', '!=', 0)->first();
-            $cf_position = !empty($last_sale_entry) ? $last_sale_entry->position == 1 ? 'Left': 'Right' : '';
-        }
+        $users->transform(function ($user){
+            return [
+                'user_id'=> $user->user_id,
+                'earned'=> 'Rs.'.number_format($user->earned, 0),
+                'avatar'=> Voyager::image($user->avatar),
+                'name'=> $user->name
+            ];
+        });
 
         return response()->json([
-            'referral'=> $referrals,
-            'cf'=> $cf,
-            'cf_pos'=> empty($cf_position) ? '' : '('.$cf_position.')',
-            'sb'=> $sb,
-            'tb'=> $tb,
-            'rank'=> $rank,
-            'upcoming_rank'=> $upcoming_rank,
-            'balance'=> $balance,
-            'total_earned'=> $total_earned,
             'user'=> $user,
-            'withdrawn'=> $withdrawn,
-            'label'=> ['Left-'.count($left_childs), 'Right-'.count($right_childs)],
-            'series'=> [count($left_childs), count($right_childs)]
+            'total_network_members'=> $members->count(),
+            'total_approved_customers'=> $approved_members->count(),
+            'total_paid_amount'=> number_format($total_paid_amount, 0),
+            'today_joined'=> $today_joined,
+            'total_sale'=> number_format($total_amount->actual_sale_price, 0),
+            'profit'=> number_format($total_amount->profit_amount, 0),
+            'admin_amount'=> number_format($admin_amount->admin_charges, 0),
+            'donations'=> number_format($admin_amount->donations, 0),
+            'top_users'=> $users,
+            'rank_overview'=> $rank_overview,
+            'withdrawal_requests'=> $withdraw_requests,
+            'line_graph'=>[
+                'label'=> $line->pluck('created_At'),
+                'series'=> $line->pluck('sale_amount')
+            ]
         ]);
     }
 
@@ -133,18 +148,19 @@ class DashboardController extends Controller
 
         return response()->json([
             'referral'=> $referrals,
-            'cf'=> $cf,
+            'cf'=> number_format($cf, 0),
             'cf_pos'=> empty($cf_position) ? '' : '('.$cf_position.')',
-            'sb'=> $sb,
-            'tb'=> $tb,
+            'sb'=> number_format($sb, 0),
+            'tb'=> number_format($tb, 0),
             'rank'=> $rank,
             'upcoming_rank'=> $upcoming_rank,
-            'balance'=> $balance,
-            'total_earned'=> $total_earned,
+            'balance'=> number_format($balance, 0),
+            'total_earned'=> number_format($total_earned, 0),
             'user'=> $user,
-            'withdrawn'=> $withdrawn,
+            'withdrawn'=> number_format($withdrawn, 0),
             'label'=> ['Left-'.count($left_childs), 'Right-'.count($right_childs)],
-            'series'=> [count($left_childs), count($right_childs)]
+            'series'=> [count($left_childs), count($right_childs)],
+            'is_customer'=> true
         ]);
 
     }
