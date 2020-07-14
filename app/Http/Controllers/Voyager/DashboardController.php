@@ -56,12 +56,12 @@ class DashboardController extends Controller
     public function adminDashboardData($user){
 
         $members = Customer::all();
-        $current_date = Carbon::now('Asia/Karachi')->toDateString();
+        $current_date = now('Asia/Karachi')->startOfDay()->timezone('GMT')->toDateTime();
         $previous_month = Carbon::now()->subDays(15);
 
         $approved_members = $members->where('status', Customer::STATUS_ACTIVE);
         $total_paid_amount = PayoutRequest::where('status', PayoutRequest::PAID_STATUS)->sum('payable_amount');
-        $today_joined = Customer::where('created_at', $current_date)->count();
+        $today_joined = Customer::where('created_at','>', $current_date)->count();
         $total_amount = DB::select('select sum((sd.product_price * sd.quantity - sd.discount)) as actual_sale_price, sum(((sd.product_price * sd.quantity) - (p.purchase_cost * sd.quantity)) - sd.discount) as profit_amount from sale_details sd JOIN products p on(sd.product_id = p.id);')[0];
         $admin_amount = DB::select('select sum(admin_charges) as admin_charges, sum(donation) as donations from payout_requests where status = 1;')[0];
         $rank_overview = DB::select("
@@ -83,7 +83,7 @@ class DashboardController extends Controller
         ");
         $withdraw_requests = DB::select('SELECT pr.user_id, u.name, pr.payable_amount, pr.created_at FROM payout_requests pr JOIN users u on (pr.user_id = u.id) where pr.status = 0 order by pr.created_at desc limit 10;');
         $users = collect(DB::select('select e.user_id, CAST(e.earned as DECIMAL) as earned, u.avatar, u.name from earnings e join users u on(e.user_id = u.id) order by 2 desc limit 5;'));
-        $line = collect(DB::select("select CEIL(sum(product_price)) as sale_amount, date(created_at) as created_at, DATE_FORMAT(date(created_at), '%e %b') as created_At from sale_details where created_at between '".date($previous_month->toDateString())."' and '".date(Carbon::today()->addDay(1)->toDateString())."' GROUP by 2, 3 order by 2, 3 desc;"));
+        $line = collect(DB::select("select CEIL(sum(product_price * quantity)) as sale_amount, date(created_at) as created_at, DATE_FORMAT(date(created_at), '%e %b') as created_At from sale_details where created_at between '".date($previous_month->toDateString())."' and '".date(Carbon::today()->addDay(1)->toDateString())."' GROUP by 2, 3 order by 2, 3 desc;"));
 
         $users->transform(function ($user){
             return [
