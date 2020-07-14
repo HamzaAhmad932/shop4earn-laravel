@@ -768,7 +768,8 @@
 
     .w-48 {
         width: 48px !important;
-        height: 48px !important
+        height: 48px !important;
+        overflow: hidden;
     }
 
     a:link {
