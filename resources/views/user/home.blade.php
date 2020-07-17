@@ -20,13 +20,78 @@
     </section>
     <!--slider area end-->
 
+    <!--our services area-->
+    <div class="our_services mb-15">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="services_title">
+                        <h2>OUR PRODUCTS</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--our services area end-->
+
+    <!--services section area-->
+    <div class="unlimited_services">
+        <div class="container">
+            @foreach($our_products as $k=> $product)
+                <div class="row align-items-center mb-15">
+                    <div class="col-lg-6 col-md-12">
+                        @if($k % 2 == 0)
+                            <div class="unlimited_services_content">
+                                <h1><a href="{{route('shop.product', $product->id)}}">{{$product->product_name}}</a></h1>
+                                <h4><span class="current_price">Rs. {{$product->product_price}}</span></h4>
+                                <p>{{$product->short_description}}</p>
+                                <div class="view__work">
+                                    <a href="{{route('shop.product', $product->id)}}">MORE INFO  <i class="fa fa-angle-right"></i></a>
+                                </div>
+                            </div>
+                        @else
+                            <div class="services_section_thumb">
+                                @if(!empty($product->featured_img))
+                                    <img src="{{Voyager::image($product->featured_img)}}" alt="">
+                                @else
+                                    <img src="{{asset('assets/images/no-image-png-2.png')}}" alt="">
+                                @endif
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        @if($k % 2 != 0)
+                            <div class="unlimited_services_content">
+                                <h1><a href="{{route('shop.product', $product->id)}}">{{$product->product_name}}</a></h1>
+                                <h4><span class="current_price">Rs. {{$product->product_price}}</span></h4>
+                                <p>{{$product->short_description}}</p>
+                                <div class="view__work">
+                                    <a href="{{route('shop.product', $product->id)}}">MORE INFO  <i class="fa fa-angle-right"></i></a>
+                                </div>
+                            </div>
+                        @else
+                            <div class="services_section_thumb">
+                                @if(!empty($product->featured_img))
+                                    <img src="{{Voyager::image($product->featured_img)}}" alt="">
+                                @else
+                                    <img src="{{asset('assets/images/no-image-png-2.png')}}" alt="">
+                                @endif
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    <!--services section end-->
+
     <!--product area start-->
     <div class="product_area product_style4 color_three mb-70">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="section_title section_title_style4">
-                        <h2>Our Products</h2>
+                        <h2>TOP Products</h2>
                     </div>
                 </div>
             </div>
