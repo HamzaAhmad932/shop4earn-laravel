@@ -207,9 +207,10 @@ class CustomerController extends Controller
 
     public function rankupdate(){
 
-        $parent_id = 1105;
-        $upline = $this->getUplineIDs($parent_id);
-        SalesBonusCalculateJob::dispatchNow($parent_id);
+        //$parent_id = 1105;
+        //$upline = $this->getUplineIDs($parent_id);
+        //SalesBonusCalculateJob::dispatchNow($parent_id);
+        $this->updateSponsorRank(1131);
 
     }
 }
