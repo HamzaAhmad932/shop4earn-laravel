@@ -57,7 +57,7 @@ trait CustomerTrait
 
         return $this->findRightPosition($sponsor->user_id);
     }
-    public function findBasicCountInLeg(int $user_id, int $rank_count = 0){
+    public function findBasicCountInLeg(int $user_id, int $basic_rank_count = 0, $total_child=0){
 
         $children = Customer::where([
             ['parent_id', '=', $user_id],
@@ -65,13 +65,14 @@ trait CustomerTrait
         ])->get();
 
         foreach ($children as $child){
+            $total_child++;
             if ($child->rank_id == Rank::BASIC){
-                $rank_count ++;
+                $basic_rank_count++;
             }
-            return $this->findBasicCountInLeg($child->user_id, $rank_count);
+            return $this->findBasicCountInLeg($child->user_id, $basic_rank_count, $total_child);
         }
 
-        return $rank_count;
+        return ['basic_count'=>$basic_rank_count, 'total_child'=> $total_child];
     }
 
     public function updateSponsorRank(int $sponsor_id){
@@ -107,18 +108,31 @@ trait CustomerTrait
             ['status', '=', Customer::STATUS_ACTIVE]
         ])->first();
 
-        $left_basic_count = !empty($left->user_id) ? $this->findBasicCountInLeg($left->user_id) : 0;
-        $right_basic_count = !empty($right->user_id) ? $this->findBasicCountInLeg($right->user_id) : 0;
+        $l_rank_counter = 0;
+        $r_rank_counter = 0;
 
+        if(!empty($left->user_id) && $left->rank_id == Rank::BASIC){
+            $l_rank_counter = 1;
+        }
+
+        if(!empty($right->user_id) && $right->rank_id == Rank::BASIC){
+            $r_rank_counter = 1;
+        }
+
+        $left_data = !empty($left->user_id) ? $this->findBasicCountInLeg($left->user_id, $l_rank_counter) : ['basic_count'=> 0, 'total_child'=> 0];
+        $right_data = !empty($right->user_id) ? $this->findBasicCountInLeg($right->user_id, $r_rank_counter) : ['basic_count'=> 0, 'total_child'=> 0];
+
+        $left_basic_count = $left_data['basic_count'];
+        $right_basic_count = $right_data['basic_count'];
 
         $basic_level_members_in_weaker_leg = 0;
 
-        if($left_basic_count < $right_basic_count){
+        if($left_data['total_child'] < $right_data['total_child']){
 
             $basic_level_members_in_weaker_leg = $left_basic_count;
         }
 
-        if($right_basic_count < $left_basic_count){
+        if($right_data['total_child'] < $left_data['total_child']){
 
             $basic_level_members_in_weaker_leg = $right_basic_count;
         }
@@ -139,7 +153,7 @@ trait CustomerTrait
         $diamond = $ranks->where('id', Rank::DIAMOND)->first();
         $user_rank = Rank::ZERO;
 
-        //dd(['direct'=>$direct_sponsor_count, 'left'=>$left, 'right'=>$right, 'basic_in_weaker'=>$basic_level_members_in_weaker_leg]);
+//        dd(['direct'=>$direct_sponsor_count, 'left'=>$left, 'right'=>$right, 'basic_in_weaker'=>$basic_level_members_in_weaker_leg]);
 
         $customer = Customer::where('user_id', $sponsor_id)->first();
 

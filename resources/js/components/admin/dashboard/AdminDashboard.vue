@@ -106,13 +106,50 @@
                     <apexchart type="line" :options="line.options" :series="line.series"></apexchart>
                 </div>
             </div>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-6" style="margin: 0 !important;">
-                        <h3>Commission & withdrawals</h3>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row p-lf-tp">
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1 class="card-title font-weight-300 mb-5-important">{{dashboard.total_sharing}}</h1>
+                                    <p class="card-text">Sharing Amount (Rs.)</p>
+                                    <!--                                    <p class="font-weight-600 text-dark-dk font-size-16"></p>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1 class="card-title font-weight-300 mb-5-important">{{dashboard.sharing_consumed}}</h1>
+                                    <p class="card-text">Sharing Consumed (Rs.)</p>
+                                    <!--                                    <p class="font-weight-600 text-dark-dk font-size-16"></p>-->
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-6" style="margin: 0 !important;">
-                        <h3>Members Information</h3>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row p-lf-tp">
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1 class="card-title font-weight-300 mb-5-important">{{dashboard.sharing_amount_balance}}</h1>
+                                    <p class="card-text">Sharing Balance</p>
+                                    <!--                                    <p class="font-weight-600 text-dark-dk font-size-16"></p>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xs-6 col-md-6 col-sm-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1 class="card-title font-weight-300 mb-5-important">-- --</h1>
+                                    <p class="card-text">-- --</p>
+                                    <!--                                    <p class="font-weight-600 text-dark-dk font-size-16"></p>-->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -120,6 +157,9 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body" id="graph-body">
+                            <div class="card-header">
+                                <h3>Commission & withdrawals</h3>
+                            </div>
                             <ul class="nav nav-tabs">
                                 <li class="active"><a data-toggle="tab" href="#home">Withdrawal Requests</a></li>
 <!--                                <li><a data-toggle="tab" href="#menu1">Rank Overview</a></li>-->
@@ -209,6 +249,9 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
+                            <div class="card-header">
+                                <h3>Members Information</h3>
+                            </div>
                             <ul class="nav nav-tabs">
                                 <li class="active"><a data-toggle="tab" href="#top_earners">Top Earners</a></li>
                                 <li><a data-toggle="tab" href="#rank_overview">Rank Overview</a></li>

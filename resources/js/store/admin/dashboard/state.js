@@ -25,6 +25,9 @@ let state = {
         withdrawal_requests: [],
         rank_overview: [],
         top_users: [],
+        sharing_consumed: '',
+        total_sharing: '',
+        sharing_amount_balance: '',
     }
 };
 

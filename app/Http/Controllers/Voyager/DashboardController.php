@@ -84,6 +84,8 @@ class DashboardController extends Controller
         $withdraw_requests = DB::select('SELECT pr.user_id, u.name, pr.payable_amount, pr.created_at FROM payout_requests pr JOIN users u on (pr.user_id = u.id) where pr.status = 0 order by pr.created_at desc limit 10;');
         $users = collect(DB::select('select e.user_id, CAST(e.earned as DECIMAL) as earned, u.avatar, u.name from earnings e join users u on(e.user_id = u.id) order by 2 desc limit 5;'));
         $line = collect(DB::select("select CEIL(sum(product_price * quantity)) as sale_amount, date(created_at) as created_at, DATE_FORMAT(date(created_at), '%e %b') as created_At from sale_details where created_at between '".date($previous_month->toDateString())."' and '".date(Carbon::today()->addDay(1)->toDateString())."' GROUP by 2, 3 order by 2, 3 desc;"));
+        $consumed_sharing = collect(DB::select('SELECT sum(team_bonus + sales_bonus) as total_sharing_consumed FROM earnings'))[0];
+        $sharing = collect(DB::select('SELECT sum(bv + tb) as total_sharing from sale_details;'))[0];
 
         $users->transform(function ($user){
             return [
@@ -110,7 +112,10 @@ class DashboardController extends Controller
             'line_graph'=>[
                 'label'=> $line->pluck('created_At'),
                 'series'=> $line->pluck('sale_amount')
-            ]
+            ],
+            'sharing_consumed'=> number_format($consumed_sharing->total_sharing_consumed, 0),
+            'total_sharing'=> number_format($sharing->total_sharing, 0),
+            'sharing_amount_balance'=> number_format(intval($sharing->total_sharing) - intval($consumed_sharing->total_sharing_consumed), 0)
         ]);
     }
 
