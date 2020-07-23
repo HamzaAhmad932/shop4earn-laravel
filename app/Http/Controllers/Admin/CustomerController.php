@@ -23,7 +23,7 @@ class CustomerController extends Controller
 {
     use CustomerTrait;
 
-    public function saveCustomer(CustomerRequest $request){
+    public function saveCustomerData(CustomerRequest $request){
 
         try {
 

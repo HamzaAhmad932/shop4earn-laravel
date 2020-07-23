@@ -41,7 +41,7 @@ Route::group(['prefix' => 'portal'], function () {
 Route::group(['prefix'=> 'v1'], function(){
 
     // New Customer Registration related Routes
-    Route::post('save-customer', 'Admin\CustomerController@saveCustomer')->name('save_customer');
+    Route::post('save-customer', 'Admin\CustomerController@saveCustomerData')->name('save_customer');
     Route::post('get-available-sponsors-and-products', 'Admin\CustomerController@getAvailableSponsorsAndProducts')->name('get_available_sponsors_and_products');
     Route::post('get-genealogy-tree', 'Admin\GenealogyController@getGenealogyTree');
     Route::post('fetch-all-payout-requests', 'Voyager\PayoutRequestController@fetchAllPayoutRequests');
