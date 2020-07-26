@@ -282,10 +282,19 @@ class SalesBonusCalculateJob implements ShouldQueue
 //            }
         }
 
-        // Capping condition
-        if(round($total_sales_bonus_to_be_deliver) > round($total_product_bv)){
-            $percentage = ($total_sales_bonus_to_be_deliver/$total_product_bv)*100;
-            $capped = true;
+//        dump([
+//                'sales_detail'=>$bulk_sales_bonus_detail,
+//                'earning_info'=>$earning_info,
+//                'total_bv'=>$total_sales_bonus_to_be_deliver,
+//                'product_bv'=>$total_product_bv,
+//                //'percentage'=> $percentage
+//            ]);
+
+        if(!empty($bulk_sales_bonus_detail)) {
+            // Capping condition
+            if (round($total_sales_bonus_to_be_deliver) > round($total_product_bv)) {
+                $percentage = ($total_sales_bonus_to_be_deliver / $total_product_bv) * 100;
+                $capped = true;
 
 //            dump([
 //                'sales_detail'=>$bulk_sales_bonus_detail,
@@ -295,17 +304,19 @@ class SalesBonusCalculateJob implements ShouldQueue
 //                'percentage'=> $percentage
 //            ]);
 
-            goto recalculate_sales_bonus;
+                goto recalculate_sales_bonus;
 
-        }
-        else{
+            } else {
 
-            $bulk_sales_bonus_detail = call_user_func_array('array_merge', $bulk_sales_bonus_detail);
-            SalesBonusDetail::insert($bulk_sales_bonus_detail);
+                dd($bulk_sales_bonus_detail);
 
-            foreach($earning_info as $k => $earning){
+                $bulk_sales_bonus_detail = call_user_func_array('array_merge', $bulk_sales_bonus_detail);
+                SalesBonusDetail::insert($bulk_sales_bonus_detail);
 
-                $this->updateEarning($earning['user_id'], $earning['bv'], $earning['cf']);
+                foreach ($earning_info as $k => $earning) {
+
+                    $this->updateEarning($earning['user_id'], $earning['bv'], $earning['cf']);
+                }
             }
         }
 
