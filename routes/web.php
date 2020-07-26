@@ -59,7 +59,14 @@ Route::group(['prefix'=> 'v1'], function(){
 Route::get('test-team-bonus', 'Admin\CustomerController@testTeamBonus');
 Route::get('rank-update', 'Admin\CustomerController@rankupdate');
 
-Route::get('/sales-bonus-job', function () {
-    App\Jobs\SalesBonusCalculateJob::dispatch();
-    echo "Job Dispatched";
+Route::get('/give-sales-bonus/{id}', function ($id) {
+    $customer = \App\Customer::where('user_id', $id)->first();
+    if(!empty($customer)) {
+        App\Jobs\SalesBonusCalculateJob::dispatchNow($customer);
+        echo "Done";
+        echo "<br>";
+        echo "Sales bonus deliver to upline for Customer id: " . $id;
+    }else{
+        echo "Customer not found.";
+    }
 });

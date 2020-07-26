@@ -291,9 +291,9 @@ trait CustomerTrait
         return $this->deliverTeamBonus($sponsor_ids, $commission_compensation, $sponsor, $level);
     }
 
-    public function giveSalebonus(int $parent_id){
+    public function giveSalebonus(Customer $customer){
 
-        SalesBonusCalculateJob::dispatch($parent_id);
+        SalesBonusCalculateJob::dispatch($customer);
     }
 
     public function giveSalebonus_old(int $parent_id)

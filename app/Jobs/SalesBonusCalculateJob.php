@@ -25,18 +25,18 @@ class SalesBonusCalculateJob implements ShouldQueue
     protected static $user_id = [1];
     protected static $customers = [];
     protected static $upline = [];
-    protected $parent_id;
+    protected $customer;
     public $tries = 5;
 
 
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param Customer $customer
      */
-    public function __construct(int $parent_id)
+    public function __construct(Customer $customer)
     {
-        $this->parent_id = $parent_id;
+        $this->customer = $customer;
     }
 
     /**
@@ -47,7 +47,7 @@ class SalesBonusCalculateJob implements ShouldQueue
     public function handle()
     {
         ini_set('max_execution_time', 0);
-        $upline_user_ids = $this->getUplineIDs($this->parent_id);
+        $upline_user_ids = $this->getUplineIDs($this->customer->parent_id);
 
         $users = User::select('id')
             ->where('role_id', 3)
@@ -56,7 +56,19 @@ class SalesBonusCalculateJob implements ShouldQueue
             ->get();
 
         $now = now()->toDateTimeString();
-        $update_is_paired_ids = [];
+        $percentage = 100;
+        $capped = false;
+
+        //Recalculate trigger
+        recalculate_sales_bonus:
+
+        // this variable store sales bonus detail in bulk
+        // and insert all entries at once in sales detail table
+        $bulk_sales_bonus_detail = [];
+        // this variable store information of earning of a user
+        $earning_info = [];
+        $total_product_bv = 0;
+        $total_sales_bonus_to_be_deliver = 0;
 
         foreach ($users as $user) {
 
@@ -73,27 +85,33 @@ class SalesBonusCalculateJob implements ShouldQueue
             $right_last_earning = $user->salesBonusDetail->where('position', Customer::POSITION_RIGHT)->last();
             $left_last_earning = $user->salesBonusDetail->where('position', Customer::POSITION_LEFT)->last();
 
-
-            $left_childs = implode(',', $this->getAllChilds(Customer::POSITION_LEFT));
-
+            $left_childs = [];
+            $right_childs = [];
+            if($this->customer->position == Customer::POSITION_LEFT){
+                $left_childs = [$this->customer->user_id];
+            }
             self::$childs = [];
             self::$user_id = [$user->id];
 
-            $right_childs = implode(',', $this->getAllChilds(Customer::POSITION_RIGHT));
+            if($this->customer->position == Customer::POSITION_RIGHT){
+                $right_childs = [$this->customer->user_id];
+            }
 
-            //dd([$left_childs, $right_childs]);
+            $c_user_id = $this->customer->user_id;
 
             $left_childs_bv = 0;
             $right_childs_bv = 0;
 
             if (!empty($left_childs)) {
-                $sale = DB::select(DB::raw("select sum((quantity*bv)-discount) as total_bv from sale_details where user_id IN($left_childs)"));
+                $sale = DB::select(DB::raw("select sum((quantity*bv)-discount) as total_bv from sale_details where user_id = ". $c_user_id));
                 $left_childs_bv += $sale[0]->total_bv ?? 0;
+                $total_product_bv = $left_childs_bv;
             }
 
             if (!empty($right_childs)) {
-                $sale = DB::select(DB::raw("select sum((quantity*bv)-discount) as total_bv from sale_details where user_id IN ($right_childs)"));
+                $sale = DB::select(DB::raw("select sum((quantity*bv)-discount) as total_bv from sale_details where user_id = ". $c_user_id));
                 $right_childs_bv += $sale[0]->total_bv ?? 0;
+                $total_product_bv = $right_childs_bv;
             }
 
             if(empty($left_childs) && empty($right_childs)) {
@@ -102,11 +120,11 @@ class SalesBonusCalculateJob implements ShouldQueue
             }
 
 
-            $update_is_paired_ids = array_filter(array_merge(
-                array_merge(
-                    explode(',', $left_childs),
-                    explode(',', $right_childs)
-                ), $update_is_paired_ids));
+//            $update_is_paired_ids = array_filter(array_merge(
+//                array_merge(
+//                    explode(',', $left_childs),
+//                    explode(',', $right_childs)
+//                ), $update_is_paired_ids));
 
             //dd($update_is_paired_ids);
             //dump([$left_childs_bv, $right_childs_bv]);
@@ -120,17 +138,21 @@ class SalesBonusCalculateJob implements ShouldQueue
             if(empty($left_childs_bv) && empty($right_childs_bv)) {
                 continue;
             } elseif (empty($right_childs_bv) && !empty($left_childs_bv)) {
-                $this->noWeakerSideFound(Customer::POSITION_LEFT, $left_childs_bv, $user->id);
+                $this->noWeakerSideFound(Customer::POSITION_LEFT, $left_childs_bv, $user->id, $capped, $percentage);
                 continue;
             } elseif (!empty($right_childs_bv) && empty($left_childs_bv)) {
-                $this->noWeakerSideFound(Customer::POSITION_RIGHT, $right_childs_bv, $user->id);
+                $this->noWeakerSideFound(Customer::POSITION_RIGHT, $right_childs_bv, $user->id, $capped, $percentage);
                 continue;
             }
 
             //dd([$user, $left_childs_bv, $right_childs_bv, $left_childs, $right_childs]);
 
-            $left_points = ($left_childs_bv / 100) * $user->customer->criteria->percentage;
-            $right_points = ($right_childs_bv / 100) * $user->customer->criteria->percentage;
+            $left_points = ($left_childs_bv / $percentage) * $user->customer->criteria->percentage;
+            $right_points = ($right_childs_bv / $percentage) * $user->customer->criteria->percentage;
+
+            if(empty($left_points) && empty($right_points)){
+                continue;
+            }
 
             //dd([$user, $left_childs_bv, $right_childs_bv, $left_childs, $right_childs, $left_points, $right_points]);
 
@@ -140,6 +162,7 @@ class SalesBonusCalculateJob implements ShouldQueue
             if (round($left_childs_bv) < round($right_childs_bv)) { // Left Weaker
 
                 $carry_forward = $right_childs_bv - $left_childs_bv;
+                $total_sales_bonus_to_be_deliver = $total_sales_bonus_to_be_deliver + $left_points;
 
                 $sales_bonus_detail = [
                     [
@@ -147,6 +170,8 @@ class SalesBonusCalculateJob implements ShouldQueue
                         'sales_bonus' => $left_points,
                         'carry_forward' => 0,
                         'position' => Customer::POSITION_LEFT,
+                        'capped'=> $capped,
+                        'dividing_percentage'=> $percentage,
                         'created_at' => $now,
                         'updated_at' => $now,
                     ],
@@ -155,6 +180,8 @@ class SalesBonusCalculateJob implements ShouldQueue
                         'sales_bonus' => 0,
                         'carry_forward' => $carry_forward,
                         'position' => Customer::POSITION_RIGHT,
+                        'capped'=> $capped,
+                        'dividing_percentage'=> $percentage,
                         'created_at' => $now,
                         'updated_at' => $now,
 
@@ -166,6 +193,7 @@ class SalesBonusCalculateJob implements ShouldQueue
             if (round($right_childs_bv) < round($left_childs_bv)) { //Right Weaker
 
                 $carry_forward = $left_childs_bv - $right_childs_bv;
+                $total_sales_bonus_to_be_deliver = $total_sales_bonus_to_be_deliver + $right_points;
 
                 $sales_bonus_detail = [
                     [
@@ -173,6 +201,8 @@ class SalesBonusCalculateJob implements ShouldQueue
                         'sales_bonus' => $right_points,
                         'carry_forward' => 0,
                         'position' => Customer::POSITION_RIGHT,
+                        'capped'=> $capped,
+                        'dividing_percentage'=> $percentage,
                         'created_at' => $now,
                         'updated_at' => $now,
                     ],
@@ -181,6 +211,8 @@ class SalesBonusCalculateJob implements ShouldQueue
                         'sales_bonus' => 0,
                         'carry_forward' => $carry_forward,
                         'position' => Customer::POSITION_LEFT,
+                        'capped'=> $capped,
+                        'dividing_percentage'=> $percentage,
                         'created_at' => $now,
                         'updated_at' => $now,
                     ]
@@ -193,9 +225,24 @@ class SalesBonusCalculateJob implements ShouldQueue
 //            if(($left_points > 0) || ($right_points > 0)){
 
                 if(!empty($sales_bonus_detail)) {
-                    SalesBonusDetail::insert($sales_bonus_detail);
-                    $this->updateEarning($user->id, ($left_points < $right_points ? $left_points : $right_points), !empty($carry_forward) ? $carry_forward : 0);
+                    //SalesBonusDetail::insert($sales_bonus_detail);
+//                    $this->updateEarning(
+//                        $user->id,
+//                        $left_points < $right_points ? $left_points : $right_points,
+//                        !empty($carry_forward) ? $carry_forward : 0
+//                    );
+
+                    $e_info = [
+                        'user_id'=>$user->id,
+                        'bv'=> ($left_points < $right_points ? $left_points : $right_points),
+                        'cf'=> !empty($carry_forward) ? $carry_forward : 0
+                    ];
+
+                    array_push($bulk_sales_bonus_detail, $sales_bonus_detail);
+                    array_push($earning_info, $e_info);
                 }else{
+
+                    $total_sales_bonus_to_be_deliver = $total_sales_bonus_to_be_deliver + $left_points;
                     //points are equal
                     $sales_bonus_detail = array(
                         [
@@ -203,6 +250,8 @@ class SalesBonusCalculateJob implements ShouldQueue
                             'sales_bonus' => $left_points,
                             'carry_forward' => 0,
                             'position' => Customer::POSITION_LEFT,
+                            'capped'=> $capped,
+                            'dividing_percentage'=> $percentage,
                             'created_at' => $now,
                             'updated_at' => $now,
                         ],
@@ -211,23 +260,56 @@ class SalesBonusCalculateJob implements ShouldQueue
                             'sales_bonus' => 0,
                             'carry_forward' => 0,
                             'position' => Customer::POSITION_RIGHT,
+                            'capped'=> $capped,
+                            'dividing_percentage'=> $percentage,
                             'created_at' => $now,
                             'updated_at' => $now,
 
                         ]
                     );
 
-                    SalesBonusDetail::insert($sales_bonus_detail);
-                    $this->updateEarning($user->id, $left_points, 0);
-                    unset($sales_bonus_detail);
+                    //SalesBonusDetail::insert($sales_bonus_detail);
+                    $e_info = [
+                        'user_id'=>$user->id,
+                        'bv'=> $left_points,
+                        'cf'=> 0
+                    ];
+
+                    array_push($bulk_sales_bonus_detail, $sales_bonus_detail);
+                    array_push($earning_info, $e_info);
+                    //$this->updateEarning($user->id, $left_points, 0);
                 }
 //            }
         }
-        if(!empty($update_is_paired_ids)){
-            Customer::whereIn('user_id', $update_is_paired_ids)->update(['is_paired'=> 1]);
+
+        // Capping condition
+        if(round($total_sales_bonus_to_be_deliver) > round($total_product_bv)){
+            $percentage = ($total_sales_bonus_to_be_deliver/$total_product_bv)*100;
+            $capped = true;
+
+//            dump([
+//                'sales_detail'=>$bulk_sales_bonus_detail,
+//                'earning_info'=>$earning_info,
+//                'total_bv'=>$total_sales_bonus_to_be_deliver,
+//                'product_bv'=>$total_product_bv,
+//                'percentage'=> $percentage
+//            ]);
+
+            goto recalculate_sales_bonus;
+
+        }
+        else{
+
+            $bulk_sales_bonus_detail = call_user_func_array('array_merge', $bulk_sales_bonus_detail);
+            SalesBonusDetail::insert($bulk_sales_bonus_detail);
+
+            foreach($earning_info as $k => $earning){
+
+                $this->updateEarning($earning['user_id'], $earning['bv'], $earning['cf']);
+            }
         }
 
-        unset($update_is_paired_ids);
+        $this->customer->update(['is_paired'=> 1]);
     }
 
 
@@ -292,7 +374,7 @@ class SalesBonusCalculateJob implements ShouldQueue
      * @param $bv
      * @param $user_id
      */
-     private function noWeakerSideFound($position, $bv, $user_id) {
+     private function noWeakerSideFound($position, $bv, $user_id, $capped, $percentage) {
          // use this bv as carry forward because binary tree, second leg not found.
          $now = now()->toDateTimeString();
          SalesBonusDetail::insert(array(
@@ -301,6 +383,8 @@ class SalesBonusCalculateJob implements ShouldQueue
                  'sales_bonus' => 0,
                  'carry_forward' => $bv,
                  'position' => $position,
+                 'capped'=> $capped,
+                 'dividing_percentage'=> $percentage,
                  'created_at' => $now,
                  'updated_at' => $now,
              ],
@@ -309,6 +393,8 @@ class SalesBonusCalculateJob implements ShouldQueue
                  'sales_bonus' => 0,
                  'carry_forward' => 0,
                  'position' => $position == Customer::POSITION_RIGHT ? Customer::POSITION_LEFT : Customer::POSITION_RIGHT,
+                 'capped'=> $capped,
+                 'dividing_percentage'=> $percentage,
                  'created_at' => $now,
                  'updated_at' => $now,
 
