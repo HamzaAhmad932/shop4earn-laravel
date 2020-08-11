@@ -1804,7 +1804,7 @@ var render = function() {
                           attrs: { id: "graph-body" }
                         },
                         [
-                          _c("h2", [_vm._v("Team Bonus Reward")]),
+                          _c("h2", [_vm._v("Team Bonus Rewards")]),
                           _vm._v(" "),
                           _c("br"),
                           _vm._v(" "),

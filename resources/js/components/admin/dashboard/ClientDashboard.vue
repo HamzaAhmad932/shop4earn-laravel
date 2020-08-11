@@ -95,7 +95,7 @@
                 <div class="col-lg-5" v-if="dashboard.reward_list != null">
                     <div class="card">
                         <div class="card-body" id="graph-body">
-                            <h2>Team Bonus Reward</h2>
+                            <h2>Team Bonus Rewards</h2>
                             <br>
                             <div v-for="rl in dashboard.reward_list">
                                 Reward Amount: {{rl.reward_amount}}, Target Amount: {{rl.target_amount}}

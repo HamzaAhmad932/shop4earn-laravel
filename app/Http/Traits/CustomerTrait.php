@@ -213,7 +213,7 @@ trait CustomerTrait
                     // Updating Earning entries after reward given
                     $earning->update([
                         'team_bonus' => (float)$earning->team_bonus + (float)$reward->reward_amount,
-                        'earned' => (float)$earning->sales_bonus + (float)$earning->team_bonus,
+                        'earned' => (float)$earning->sales_bonus + (float)$earning->team_bonus + (float)$reward->reward_amount,
                     ]);
 
                     // User Reward Pivot table entry
@@ -237,7 +237,7 @@ trait CustomerTrait
             $team_bonus_points += floatval($sale->tb) * intval($sale->quantity);
         }
         $this->teamBonusDeliver($customer, $team_bonus_points, $compensation);
-        $this->giveTeamBonusReward($customer);
+        $this->giveTeamBonusReward($customer->sponsor);
     }
 
     public function teamBonusDeliver($user, $total_points, $commission_compensation, $level = 1){

@@ -59,6 +59,10 @@ Route::group(['prefix'=> 'v1'], function(){
 Route::get('test-team-bonus', 'Admin\CustomerController@testTeamBonus');
 Route::get('rank-update', 'Admin\CustomerController@rankupdate');
 Route::get('reward/{id}', 'Admin\CustomerController@giveReward');
+Route::get('general-test', function (){
+    $customer = \App\Customer::find(1150);
+    dd([$customer, $customer->sponsor]);
+});
 
 Route::get('/give-sales-bonus/{id}', function ($id) {
     $customer = \App\Customer::where('user_id', $id)->first();

@@ -154,19 +154,26 @@ class DashboardController extends Controller
 
         $tb_amount = (int) $tb;
         $upcoming_tb_reward = Reward::teamBonusReward()->where('tier_amount','>', $tb_amount)->first();
-        $reward_list = [];
+        $reward_list = collect();
+
         if(!$user->user_rewards->isEmpty())
         {
-            $reward_list = $user->user_rewards->push($upcoming_tb_reward);
+            if(!empty($upcoming_tb_reward)) {
+                $reward_list = $user->user_rewards->push($upcoming_tb_reward);
+            }else{
+                $reward_list = $user->user_rewards;
+            }
         }else
         {
-            $reward_list = $upcoming_tb_reward;
+            if(!empty($upcoming_tb_reward)) {
+                $reward_list = $reward_list->push($upcoming_tb_reward);
+            }
         }
 
         if($reward_list) {
             $reward_list->transform(function ($rl) use ($tb_amount) {
 
-                $p = ($tb_amount / $rl->tier_amount) * 100;
+                $p = number_format(($tb_amount / $rl->tier_amount) * 100, 0);
                 $per = $p < 100 ? $p : 100;
                 return [
                     'title' => $rl->title,
