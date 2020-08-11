@@ -28,6 +28,7 @@ let state = {
         sharing_consumed: '',
         total_sharing: '',
         sharing_amount_balance: '',
+        reward_list: []
     }
 };
 

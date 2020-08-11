@@ -56944,7 +56944,8 @@ var state = {
     top_users: [],
     sharing_consumed: '',
     total_sharing: '',
-    sharing_amount_balance: ''
+    sharing_amount_balance: '',
+    reward_list: []
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (state);

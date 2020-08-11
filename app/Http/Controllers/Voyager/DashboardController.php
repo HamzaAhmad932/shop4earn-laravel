@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Voyager;
 
 use App\User;
 use App\Rank;
+use App\Reward;
 use App\Customer;
 use Carbon\Carbon;
 use App\SaleDetail;
@@ -151,6 +152,31 @@ class DashboardController extends Controller
             $cf_position = !empty($last_sale_entry) ? $last_sale_entry->position == 1 ? 'Left': 'Right' : '';
         }
 
+        $tb_amount = (int) $tb;
+        $upcoming_tb_reward = Reward::teamBonusReward()->where('tier_amount','>', $tb_amount)->first();
+        $reward_list = [];
+        if(!$user->user_rewards->isEmpty())
+        {
+            $reward_list = $user->user_rewards->push($upcoming_tb_reward);
+        }else
+        {
+            $reward_list = $upcoming_tb_reward;
+        }
+
+        if($reward_list) {
+            $reward_list->transform(function ($rl) use ($tb_amount) {
+
+                $p = ($tb_amount / $rl->tier_amount) * 100;
+                $per = $p < 100 ? $p : 100;
+                return [
+                    'title' => $rl->title,
+                    'reward_amount' => $rl->reward_amount,
+                    'target_amount' => $rl->tier_amount,
+                    'percentage' => $per
+                ];
+            });
+        }
+
         return response()->json([
             'referral'=> $referrals,
             'cf'=> number_format($cf, 0),
@@ -165,7 +191,8 @@ class DashboardController extends Controller
             'withdrawn'=> number_format($withdrawn, 0),
             'label'=> ['Left-'.count($left_childs), 'Right-'.count($right_childs)],
             'series'=> [count($left_childs), count($right_childs)],
-            'is_customer'=> true
+            'is_customer'=> true,
+            'reward_list'=> $reward_list
         ]);
 
     }

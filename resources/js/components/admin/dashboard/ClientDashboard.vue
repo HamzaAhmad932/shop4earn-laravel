@@ -90,6 +90,26 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row" >
+                <div class="col-lg-5" v-if="dashboard.reward_list != null">
+                    <div class="card">
+                        <div class="card-body" id="graph-body">
+                            <h2>Team Bonus Reward</h2>
+                            <br>
+                            <div v-for="rl in dashboard.reward_list">
+                                Reward Amount: {{rl.reward_amount}}, Target Amount: {{rl.target_amount}}
+                                <div class="progress" >
+                                    <div class="progress-bar progress-bar-success" role="progressbar" :aria-valuenow="rl.percentage" aria-valuemin="0" aria-valuemax="100" :style="'width:'+rl.percentage+'%'">
+                                        {{rl.title}}-{{rl.percentage + '%'}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
         <BlockUI :html="loader.html" :message="loader.msg" v-if="loader.block === true"></BlockUI>
     </div>

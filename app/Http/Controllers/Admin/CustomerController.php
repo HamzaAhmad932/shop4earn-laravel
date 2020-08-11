@@ -213,5 +213,14 @@ class CustomerController extends Controller
         $this->updateSponsorRank(1131);
 
     }
+
+    public function giveReward($id){
+
+        $customer = Customer::findOrFail($id);
+
+        $this->giveTeamBonusReward($customer);
+
+        return "Reward delivered.";
+    }
 }
 

@@ -58,6 +58,8 @@ return array(
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Providers\\ViewServiceProvider' => $baseDir . '/app/Providers/ViewServiceProvider.php',
     'App\\Rank' => $baseDir . '/app/Rank.php',
+    'App\\RewardType' => $baseDir . '/app/RewardType.php',
+    'App\\Rewards' => $baseDir . '/app/Rewards.php',
     'App\\SaleDetail' => $baseDir . '/app/SaleDetail.php',
     'App\\SalesBonusDetail' => $baseDir . '/app/SalesBonusDetail.php',
     'App\\Slider' => $baseDir . '/app/Slider.php',

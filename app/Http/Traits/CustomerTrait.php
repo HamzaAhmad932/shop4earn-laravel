@@ -6,9 +6,12 @@ namespace App\Http\Traits;
 
 use App\Rank;
 use App\User;
+use App\Reward;
 use App\Earning;
 use App\Customer;
 use App\SaleDetail;
+use App\RewardType;
+use App\UserReward;
 use App\Compensation;
 use App\SalesBonusDetail;
 use Illuminate\Support\Facades\DB;
@@ -185,6 +188,44 @@ trait CustomerTrait
         }
     }
 
+    public function giveTeamBonusReward(Customer $customer){
+
+        $user = $customer->user;
+        $earning = $customer->earning;
+        $rewards_given = $user->user_rewards;
+        $rewards = Reward::whereNotIn('id', $rewards_given->pluck('id'))->where('reward_type_id', RewardType::TEAM_BONUS_REWARD_TYPE)->get();
+
+        foreach ($rewards as $reward){
+
+            /*
+            |--------------------------------------------------------------------------
+            | Reward Tier Amount Condition
+            |--------------------------------------------------------------------------
+            |
+            |   The condition below check that a particular user achieve enough team bonus
+            |   amount that it is now able to get reward according to the tier amount
+            |   that is achieved.
+            |
+            */
+
+            if( (float) $earning->team_bonus >= (float) $reward->tier_amount)
+            {
+                // Updating Earning entries after reward given
+                $earning->update([
+                    'team_bonus'=> (float) $earning->team_bonus + (float) $reward->reward_amount,
+                    'earned'=> (float) $earning->sales_bonus + (float) $earning->team_bonus,
+                ]);
+
+                // User Reward Pivot table entry
+                UserReward::create([
+                    'user_id'=> $user->id,
+                    'reward_id'=> $reward->id,
+                ]);
+            }
+
+        }
+    }
+
     public function giveTeamBonus(Customer $customer)
     {
         $compensation = Compensation::all();
@@ -195,6 +236,7 @@ trait CustomerTrait
             $team_bonus_points += floatval($sale->tb) * intval($sale->quantity);
         }
         $this->teamBonusDeliver($customer, $team_bonus_points, $compensation);
+        $this->giveTeamBonusReward($customer);
     }
 
     public function teamBonusDeliver($user, $total_points, $commission_compensation, $level = 1){

@@ -499,6 +499,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1771,6 +1791,65 @@ var render = function() {
                   )
                 ])
               ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _vm.dashboard.reward_list != null
+                ? _c("div", { staticClass: "col-lg-5" }, [
+                    _c("div", { staticClass: "card" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card-body",
+                          attrs: { id: "graph-body" }
+                        },
+                        [
+                          _c("h2", [_vm._v("Team Bonus Reward")]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _vm._l(_vm.dashboard.reward_list, function(rl) {
+                            return _c("div", [
+                              _vm._v(
+                                "\n                                Reward Amount: " +
+                                  _vm._s(rl.reward_amount) +
+                                  ", Target Amount: " +
+                                  _vm._s(rl.target_amount) +
+                                  "\n                                "
+                              ),
+                              _c("div", { staticClass: "progress" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "progress-bar progress-bar-success",
+                                    style: "width:" + rl.percentage + "%",
+                                    attrs: {
+                                      role: "progressbar",
+                                      "aria-valuenow": rl.percentage,
+                                      "aria-valuemin": "0",
+                                      "aria-valuemax": "100"
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                        " +
+                                        _vm._s(rl.title) +
+                                        "-" +
+                                        _vm._s(rl.percentage + "%") +
+                                        "\n                                    "
+                                    )
+                                  ]
+                                )
+                              ])
+                            ])
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  ])
+                : _vm._e()
             ])
           ]),
           _vm._v(" "),

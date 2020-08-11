@@ -65,4 +65,9 @@ class User extends \TCG\Voyager\Models\User
         return $this->hasOne(Customer::class);
     }
 
+    public function user_rewards(){
+
+        return $this->belongsToMany(Reward::class, 'user_reward');
+    }
+
 }

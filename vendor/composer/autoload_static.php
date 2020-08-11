@@ -578,6 +578,8 @@ class ComposerStaticInit6ebc50747dd3c93f90b79e919d3dc707
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Providers\\ViewServiceProvider' => __DIR__ . '/../..' . '/app/Providers/ViewServiceProvider.php',
         'App\\Rank' => __DIR__ . '/../..' . '/app/Rank.php',
+        'App\\RewardType' => __DIR__ . '/../..' . '/app/RewardType.php',
+        'App\\Rewards' => __DIR__ . '/../..' . '/app/Rewards.php',
         'App\\SaleDetail' => __DIR__ . '/../..' . '/app/SaleDetail.php',
         'App\\SalesBonusDetail' => __DIR__ . '/../..' . '/app/SalesBonusDetail.php',
         'App\\Slider' => __DIR__ . '/../..' . '/app/Slider.php',
