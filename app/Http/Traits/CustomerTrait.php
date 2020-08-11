@@ -195,34 +195,35 @@ trait CustomerTrait
         $rewards_given = $user->user_rewards;
         $rewards = Reward::whereNotIn('id', $rewards_given->pluck('id'))->where('reward_type_id', RewardType::TEAM_BONUS_REWARD_TYPE)->get();
 
-        foreach ($rewards as $reward){
+        if(!empty($earning->team_bonus)) {
+            foreach ($rewards as $reward) {
 
-            /*
-            |--------------------------------------------------------------------------
-            | Reward Tier Amount Condition
-            |--------------------------------------------------------------------------
-            |
-            |   The condition below check that a particular user achieve enough team bonus
-            |   amount that it is now able to get reward according to the tier amount
-            |   that is achieved.
-            |
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | Reward Tier Amount Condition
+                |--------------------------------------------------------------------------
+                |
+                |   The condition below check that a particular user achieve enough team bonus
+                |   amount that it is now able to get reward according to the tier amount
+                |   that is achieved.
+                |
+                */
 
-            if( (float) $earning->team_bonus >= (float) $reward->tier_amount)
-            {
-                // Updating Earning entries after reward given
-                $earning->update([
-                    'team_bonus'=> (float) $earning->team_bonus + (float) $reward->reward_amount,
-                    'earned'=> (float) $earning->sales_bonus + (float) $earning->team_bonus,
-                ]);
+                if ((float)$earning->team_bonus >= (float)$reward->tier_amount) {
+                    // Updating Earning entries after reward given
+                    $earning->update([
+                        'team_bonus' => (float)$earning->team_bonus + (float)$reward->reward_amount,
+                        'earned' => (float)$earning->sales_bonus + (float)$earning->team_bonus,
+                    ]);
 
-                // User Reward Pivot table entry
-                UserReward::create([
-                    'user_id'=> $user->id,
-                    'reward_id'=> $reward->id,
-                ]);
+                    // User Reward Pivot table entry
+                    UserReward::create([
+                        'user_id' => $user->id,
+                        'reward_id' => $reward->id,
+                    ]);
+                }
+
             }
-
         }
     }
 
